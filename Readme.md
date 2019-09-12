@@ -1,7 +1,8 @@
-# Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
+ Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Василиса Варич](https://up.htmlacademy.ru/javascript/18/user/503705).
-* Наставник: `Неизвестно`.
+
+* Наставник: [Татьяна Москалёва](https://htmlacademy.ru/profile/id1117677).
 
 ---
 
