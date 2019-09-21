@@ -1,11 +1,21 @@
 'use strict';
 
-var typesArr = ['palace', 'flat', 'house', 'bungalo'];
-var checkinTimesArr = ['12:00', '13:00', '14:00'];
-var checkoutTimesArr = ['12:00', '13:00', '14:00'];
-var featuresArr = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var photosArr = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var TYPES_ARR = ['palace', 'flat', 'house', 'bungalo'];
+var CHECKIN_TIMES_ARR = ['12:00', '13:00', '14:00'];
+var CHECKOUT_TIMES_ARR = ['12:00', '13:00', '14:00'];
+var FEATURES_ARR = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var PHOTOS_ARR = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var adsQuantity = 8;
+var locationYMin = 130;
+var locationYMax = 630;
+var addressMin = 100;
+var addressMax = 999;
+var priceMin = 100;
+var priceMax = 10000;
+var roomsMin = 1;
+var roomsMax = 10;
+var guestsMin = 1;
+var guestsMax = 50;
 
 var map = document.querySelector('.map');
 var mapPins = document.querySelector('.map__pins');
@@ -30,7 +40,7 @@ var getRandomArr = function (arr) {
   var max = arr.length - 1;
   var maxIndex = getRandomNumber(min, max);
   var randomArr = [];
-  for (var i = 1; i <= maxIndex; i++) {
+  for (var i = 0; i < maxIndex; i++) {
     randomArr.push(arr[i]);
   }
   return randomArr;
@@ -57,24 +67,25 @@ var getAddress = function (minNumber, maxNumber) {
 var getOfferInfo = function () {
   var offer = {
     'title': 'Заголовок предложения',
-    'address': getAddress(100, 999),
-    'price': getRandomNumber(100, 10000),
-    'type': getRandomValue(typesArr),
-    'rooms': getRandomNumber(1, 10),
-    'guests': getRandomNumber(1, 50),
-    'checkin': getRandomValue(checkinTimesArr),
-    'checkout': getRandomValue(checkoutTimesArr),
-    'features': getRandomArr(featuresArr),
+    'address': getAddress(addressMin, addressMax),
+    'price': getRandomNumber(priceMin, priceMax),
+    'type': getRandomValue(TYPES_ARR),
+    'rooms': getRandomNumber(roomsMin, roomsMax),
+    'guests': getRandomNumber(guestsMin, guestsMax),
+    'checkin': getRandomValue(CHECKIN_TIMES_ARR),
+    'checkout': getRandomValue(CHECKOUT_TIMES_ARR),
+    'features': getRandomArr(FEATURES_ARR),
     'description': 'Строка с описанием. Строка с описанием. Строка с описанием.',
-    'photos': getRandomArr(photosArr)
+    'photos': getRandomArr(PHOTOS_ARR)
   };
   return offer;
 };
 
-var getLocation = function () {
+var getLocation = function (parentElement, yMin, yMax) {
+  var parentPositionInfo = parentElement.getBoundingClientRect();
   var location = {
-    'x': getRandomNumber(0, 1200),
-    'y': getRandomNumber(130, 630)
+    'x': getRandomNumber(0, parentPositionInfo.width),
+    'y': getRandomNumber(yMin, yMax)
   };
   return location;
 };
@@ -85,7 +96,7 @@ var getMockingAdsArr = function (quantity) {
     var ad = {
       'author': getAuthorInfo(i),
       'offer': getOfferInfo(),
-      'location': getLocation()
+      'location': getLocation(map, locationYMin, locationYMax)
     };
     mockingAds.push(ad);
   }
@@ -95,19 +106,24 @@ var getMockingAdsArr = function (quantity) {
 var renderPin = function (ad) {
   var pinElement = mapPin.cloneNode(true);
   var pinElementImg = pinElement.querySelector('img');
-  var location = ad.location;
-  var author = ad.author;
-  var offer = ad.offer;
-  pinElement.style = 'left: ' + location.x + 'px; top: ' + location.y + 'px;';
-  pinElementImg.src = author.avatar;
-  pinElementImg.alt = offer.title;
+  pinElement.style = 'left: ' + ad.location.x + 'px; top: ' + ad.location.y + 'px;';
+  pinElementImg.src = ad.author.avatar;
+  pinElementImg.alt = ad.offer.title;
   return pinElement;
 };
 
-map.classList.remove('map--faded');
-var mockingAds = getMockingAdsArr(adsQuantity);
-for (var i = 0; i < adsQuantity; i++) {
-  var pin = renderPin(mockingAds[i]);
-  mapPinsFragment.appendChild(pin);
-}
-mapPins.appendChild(mapPinsFragment);
+var toggleMapToActive = function () {
+  map.classList.remove('map--faded');
+};
+
+var renderMatchingPins = function () {
+  var mockingAds = getMockingAdsArr(adsQuantity);
+  for (var i = 0; i < adsQuantity; i++) {
+    var pin = renderPin(mockingAds[i]);
+    mapPinsFragment.appendChild(pin);
+  }
+  mapPins.appendChild(mapPinsFragment);
+};
+
+toggleMapToActive();
+renderMatchingPins();
