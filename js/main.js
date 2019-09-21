@@ -81,11 +81,16 @@ var getOfferInfo = function () {
   return offer;
 };
 
-var getLocation = function (parentElement, yMin, yMax) {
+var getLocation = function (parentElement, childElement, yMin, yMax) {
   var parentPositionInfo = parentElement.getBoundingClientRect();
+  var childPositionInfo = childElement.getBoundingClientRect();
+  var positionX = getRandomNumber(0, parentPositionInfo.width);
+  positionX -= childPositionInfo.width / 2;
+  var positionY = getRandomNumber(yMin, yMax);
+  positionY -= childPositionInfo.height;
   var location = {
-    'x': getRandomNumber(0, parentPositionInfo.width),
-    'y': getRandomNumber(yMin, yMax)
+    'x': positionX,
+    'y': positionY
   };
   return location;
 };
@@ -96,7 +101,7 @@ var getMockingAdsArr = function (quantity) {
     var ad = {
       'author': getAuthorInfo(i),
       'offer': getOfferInfo(),
-      'location': getLocation(map, locationYMin, locationYMax)
+      'location': getLocation(map, mapPin, locationYMin, locationYMax)
     };
     mockingAds.push(ad);
   }
