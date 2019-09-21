@@ -23,9 +23,7 @@ var mapPinsFragment = document.createDocumentFragment();
 var mapPin = document.querySelector('#pin').content.querySelector('.map__pin');
 
 var getRandomNumber = function (minNumber, maxNumber) {
-  var min = Math.ceil(minNumber);
-  var max = Math.floor(maxNumber);
-  return Math.floor(Math.random() * (max - min + 1) + min);
+  return Math.floor(Math.random() * (Math.floor(maxNumber) - Math.ceil(minNumber) + 1) + Math.ceil(minNumber));
 };
 
 var getRandomValue = function (arr) {
