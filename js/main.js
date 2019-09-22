@@ -82,10 +82,8 @@ var getOfferInfo = function () {
 var getLocation = function (parentElement, childElement, yMin, yMax) {
   var parentPositionInfo = parentElement.getBoundingClientRect();
   var childPositionInfo = childElement.getBoundingClientRect();
-  var positionX = getRandomNumber(0, parentPositionInfo.width);
-  positionX -= childPositionInfo.width / 2;
-  var positionY = getRandomNumber(yMin, yMax);
-  positionY -= childPositionInfo.height;
+  var positionX = getRandomNumber(0, parentPositionInfo.width) - childPositionInfo.width / 2;
+  var positionY = getRandomNumber(yMin, yMax) - childPositionInfo.height;
   var location = {
     'x': positionX,
     'y': positionY
