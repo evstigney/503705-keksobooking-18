@@ -5,17 +5,17 @@ var CHECKIN_TIMES_ARR = ['12:00', '13:00', '14:00'];
 var CHECKOUT_TIMES_ARR = ['12:00', '13:00', '14:00'];
 var FEATURES_ARR = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS_ARR = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-var adsQuantity = 8;
-var locationYMin = 130;
-var locationYMax = 630;
-var addressMin = 100;
-var addressMax = 999;
-var priceMin = 100;
-var priceMax = 10000;
-var roomsMin = 1;
-var roomsMax = 10;
-var guestsMin = 1;
-var guestsMax = 50;
+var ADS_QUANTITY = 8;
+var LOCATION_Y_MIN = 130;
+var LOCATION_Y_MAX = 630;
+var ADDRESS_MIN = 100;
+var ADDRESS_MAX = 999;
+var PRICE_MIN = 100;
+var PRICE_MAX = 10000;
+var ROOMS_MIN = 1;
+var ROOMS_MAX = 10;
+var GUESTS_MIN = 1;
+var GUESTS_MAX = 50;
 
 var map = document.querySelector('.map');
 var mapPins = document.querySelector('.map__pins');
@@ -65,11 +65,11 @@ var getAddress = function (minNumber, maxNumber) {
 var getOfferInfo = function () {
   var offer = {
     'title': 'Заголовок предложения',
-    'address': getAddress(addressMin, addressMax),
-    'price': getRandomNumber(priceMin, priceMax),
+    'address': getAddress(ADDRESS_MIN, ADDRESS_MAX),
+    'price': getRandomNumber(PRICE_MIN, PRICE_MAX),
     'type': getRandomValue(TYPES_ARR),
-    'rooms': getRandomNumber(roomsMin, roomsMax),
-    'guests': getRandomNumber(guestsMin, guestsMax),
+    'rooms': getRandomNumber(ROOMS_MIN, ROOMS_MAX),
+    'guests': getRandomNumber(GUESTS_MIN, GUESTS_MAX),
     'checkin': getRandomValue(CHECKIN_TIMES_ARR),
     'checkout': getRandomValue(CHECKOUT_TIMES_ARR),
     'features': getRandomArr(FEATURES_ARR),
@@ -99,7 +99,7 @@ var getMockingAdsArr = function (quantity) {
     var ad = {
       'author': getAuthorInfo(i),
       'offer': getOfferInfo(),
-      'location': getLocation(map, mapPin, locationYMin, locationYMax)
+      'location': getLocation(map, mapPin, LOCATION_Y_MIN, LOCATION_Y_MAX)
     };
     mockingAds.push(ad);
   }
@@ -120,8 +120,8 @@ var toggleMapToActive = function () {
 };
 
 var renderMatchingPins = function () {
-  var mockingAds = getMockingAdsArr(adsQuantity);
-  for (var i = 0; i < adsQuantity; i++) {
+  var mockingAds = getMockingAdsArr(ADS_QUANTITY);
+  for (var i = 0; i < ADS_QUANTITY; i++) {
     var pin = renderPin(mockingAds[i]);
     mapPinsFragment.appendChild(pin);
   }
