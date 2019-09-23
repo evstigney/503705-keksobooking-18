@@ -39,8 +39,24 @@ var getRandomArr = function (arr) {
   var max = arr.length - 1;
   var maxIndex = getRandomNumber(min, max);
   var randomArr = [];
-  for (var i = 0; i < maxIndex; i++) {
-    randomArr.push(arr[i]);
+  var flag = true;
+  for (var i = 0; i <= maxIndex; i++) {
+    var currentIndex = getRandomNumber(0, arr.length - 1);
+    if (i > 0) {
+      for (var j = 0; j < randomArr.length; j++) {
+        var currentValue = arr[currentIndex];
+        var randomValue = randomArr[j];
+        if (currentValue === randomValue) {
+          flag = false;
+          break;
+        } else {
+          flag = true;
+        }
+      }
+    }
+    if (flag) {
+      randomArr.push(arr[currentIndex]);
+    }
   }
   return randomArr;
 };
