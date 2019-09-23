@@ -154,8 +154,8 @@ var getPopupPhotos = function (elem, arr) {
   var photo = elem.querySelector('img');
   var i = 0;
   photo.src = arr[i];
-  while (i < arr.length - 1) {
-    i++;
+  i++;
+  for (i; i < arr.length; i++) {
     var photoNext = photo.cloneNode(true);
     photoNext.src = arr[i];
     elem.appendChild(photoNext);
