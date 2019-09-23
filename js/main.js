@@ -162,6 +162,17 @@ var getPopupPhotos = function (elem, arr) {
   return elem;
 };
 
+var getCapacityMessage = function (rooms, guests) {
+  var roomsInCase = (rooms === 1) ? 'комната' : 'комнаты';
+  var guestsInCase = (guests === 1) ? 'гостя' : 'гостей';
+  var re = /[05-9]\b/;
+  if (re.test(rooms.toString())) {
+    roomsInCase = 'комнат';
+  }
+  var message = rooms + ' ' + roomsInCase + ' для ' + guests + ' ' + guestsInCase;
+  return message;
+};
+
 var renderCard = function (ad) {
   var cardElement = mapCard.cloneNode(true);
   var title = cardElement.querySelector('.popup__title');
@@ -178,7 +189,7 @@ var renderCard = function (ad) {
   address.textContent = ad.offer.address;
   price.textContent = ad.offer.price + '₽/ночь';
   popupType.textContent = MAP_TYPES[ad.offer.type];
-  popupTextCapacity.textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
+  popupTextCapacity.textContent = getCapacityMessage(ad.offer.rooms, ad.offer.guests);
   popupTextTime.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
   getPopupFeatures(popupFeatures, ad.offer.features);
   popupDescription.textContent = ad.offer.description;
