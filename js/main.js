@@ -8,8 +8,8 @@ var PHOTOS_ARR = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://
 var ADS_QUANTITY = 8;
 var LOCATION_Y_MIN = 130;
 var LOCATION_Y_MAX = 630;
-var ADDRESS_MIN = 100;
-var ADDRESS_MAX = 999;
+// var ADDRESS_MIN = 100;
+// var ADDRESS_MAX = 999;
 var PRICE_MIN = 1000;
 var PRICE_MAX = 100000;
 var ROOMS_MIN = 1;
@@ -52,55 +52,42 @@ var getAuthorAvatar = function (index) {
   return 'img/avatars/user' + index + '.png';
 };
 
-var getAuthorInfo = function (index) {
-  var author = {
-    'avatar': getAuthorAvatar(index)
-  };
-  return author;
-};
-
-var getAddress = function (minNumber, maxNumber) {
-  var locationX = getRandomNumber(minNumber, maxNumber);
-  var locationY = getRandomNumber(minNumber, maxNumber);
-  return locationX + ', ' + locationY;
-};
-
-var getOfferInfo = function () {
-  var offer = {
-    'title': 'Заголовок предложения',
-    'address': getAddress(ADDRESS_MIN, ADDRESS_MAX),
-    'price': getRandomNumber(PRICE_MIN, PRICE_MAX),
-    'type': getRandomValue(TYPES_ARR),
-    'rooms': getRandomNumber(ROOMS_MIN, ROOMS_MAX),
-    'guests': getRandomNumber(GUESTS_MIN, GUESTS_MAX),
-    'checkin': getRandomValue(CHECKIN_TIMES_ARR),
-    'checkout': getRandomValue(CHECKOUT_TIMES_ARR),
-    'features': getRandomArr(FEATURES_ARR),
-    'description': 'С точки зрения банальной эрудиции каждый индивидуум не может игнорировать критерии утопического субъективизма.',
-    'photos': getRandomArr(PHOTOS_ARR)
-  };
-  return offer;
-};
-
-var getLocation = function (parentElement, childElement, yMin, yMax) {
-  var parentPositionInfo = parentElement.getBoundingClientRect();
-  var childPositionInfo = childElement.getBoundingClientRect();
-  var positionX = getRandomNumber(0, parentPositionInfo.width) - childPositionInfo.width / 2;
-  var positionY = getRandomNumber(yMin, yMax) - childPositionInfo.height;
+var getLocationParameters = function (elem) {
+  var max = elem.getBoundingClientRect().width;
+  var locationX = getRandomNumber(0, max);
+  var locationY = getRandomNumber(LOCATION_Y_MIN, LOCATION_Y_MAX);
   var location = {
-    'x': positionX,
-    'y': positionY
+    x: locationX,
+    y: locationY
   };
   return location;
 };
 
 var getMockingAdsArr = function (quantity) {
+  var locationParameters = getLocationParameters(map);
   var mockingAds = [];
   for (var i = 0; i < quantity; i++) {
     var ad = {
-      'author': getAuthorInfo(i),
-      'offer': getOfferInfo(),
-      'location': getLocation(map, mapPin, LOCATION_Y_MIN, LOCATION_Y_MAX)
+      'author': {
+        'avatar': getAuthorAvatar(i)
+      },
+      'offer': {
+        'title': 'Заголовок предложения',
+        'address': locationParameters.x + ', ' + locationParameters.y,
+        'price': getRandomNumber(PRICE_MIN, PRICE_MAX),
+        'type': getRandomValue(TYPES_ARR),
+        'rooms': getRandomNumber(ROOMS_MIN, ROOMS_MAX),
+        'guests': getRandomNumber(GUESTS_MIN, GUESTS_MAX),
+        'checkin': getRandomValue(CHECKIN_TIMES_ARR),
+        'checkout': getRandomValue(CHECKOUT_TIMES_ARR),
+        'features': getRandomArr(FEATURES_ARR),
+        'description': 'С точки зрения банальной эрудиции каждый индивидуум не может игнорировать критерии утопического субъективизма.',
+        'photos': getRandomArr(PHOTOS_ARR)
+      },
+      'location': {
+        'x': locationParameters.x,
+        'y': locationParameters.y
+      }
     };
     mockingAds.push(ad);
   }
@@ -116,18 +103,18 @@ var renderPin = function (ad) {
   return pinElement;
 };
 
-var getPopupTypeString = function (type) {
-  var typeString = 'Непонятный тип жилья';
+var getPopupType = function (type) {
+  var typeMessage = 'Непонятный тип жилья';
   if (type === 'flat') {
-    typeString = 'Квартира';
+    typeMessage = 'Квартира';
   } else if (type === 'bungalo') {
-    typeString = 'Бунгало';
+    typeMessage = 'Бунгало';
   } else if (type === 'house') {
-    typeString = 'Дом';
+    typeMessage = 'Дом';
   } else {
-    typeString = 'Дворец';
+    typeMessage = 'Дворец';
   }
-  return typeString;
+  return typeMessage;
 };
 
 var getPopupFeatures = function (elem, arr) {
@@ -168,7 +155,7 @@ var renderCard = function (ad) {
   title.textContent = ad.offer.title;
   address.textContent = ad.offer.address;
   price.textContent = ad.offer.price + '₽/ночь';
-  popupType.textContent = getPopupTypeString(ad.offer.type);
+  popupType.textContent = getPopupType(ad.offer.type);
   popupTextCapacity.textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
   popupTextTime.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
   getPopupFeatures(popupFeatures, ad.offer.features);
