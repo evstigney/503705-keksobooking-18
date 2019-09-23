@@ -15,6 +15,15 @@ var ROOMS_MAX = 10;
 var GUESTS_MIN = 1;
 var GUESTS_MAX = 50;
 
+var MAP_FEATURES_CLASSES = {
+  'wifi': 'popup__feature--wifi',
+  'dishwasher': 'popup__feature--dishwasher',
+  'parking': 'popup__feature--parking',
+  'washer': 'popup__feature--washer',
+  'elevator': 'popup__feature--elevator',
+  'conditioner': 'popup__feature--conditioner'
+};
+
 var map = document.querySelector('.map');
 var filters = document.querySelector('.map__filters-container');
 var mapPins = document.querySelector('.map__pins');
@@ -133,12 +142,19 @@ var getPopupType = function (type) {
 
 var getPopupFeatures = function (elem, arr) {
   var features = elem.querySelectorAll('.popup__feature');
-  var i = features.length;
-  while (i > arr.length) {
-    i--;
-    features.item([i]).remove();
+  for (var i = 0; i < features.length; i++) {
+    var currentFeature = features[i];
+    for (var key in MAP_FEATURES_CLASSES) {
+      if (currentFeature.classList.contains(MAP_FEATURES_CLASSES[key])) {
+        currentFeature.classList.remove(MAP_FEATURES_CLASSES[key]);
+      }
+    }
+    if (i >= arr.length) {
+      currentFeature.remove();
+    } else {
+      currentFeature.classList.add(MAP_FEATURES_CLASSES[arr[i]]);
+    }
   }
-  return features;
 };
 
 var getPopupPhotos = function (elem, arr) {
