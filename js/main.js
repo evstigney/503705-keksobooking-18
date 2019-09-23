@@ -95,7 +95,7 @@ var getMockingAdsArr = function (quantity) {
 var renderPin = function (ad) {
   var pinElement = mapPin.cloneNode(true);
   var pinElementImg = pinElement.querySelector('img');
-  pinElement.style = 'left: ' + ad.location.x + 'px; top: ' + ad.location.y + 'px;';
+  pinElement.style = 'left: ' + (ad.location.x - pinElement.getBoundingClientRect().width / 2) + 'px; top: ' + (ad.location.y - pinElement.getBoundingClientRect().height) + 'px;';
   pinElementImg.src = ad.author.avatar;
   pinElementImg.alt = ad.offer.title;
   return pinElement;
