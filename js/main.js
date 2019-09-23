@@ -23,6 +23,12 @@ var MAP_FEATURES_CLASSES = {
   'elevator': 'popup__feature--elevator',
   'conditioner': 'popup__feature--conditioner'
 };
+var MAP_TYPES = {
+  'flat': 'Квартира',
+  'bungalo': 'Бунгало',
+  'house': 'Дом',
+  'palace': 'Дворец'
+};
 
 var map = document.querySelector('.map');
 var filters = document.querySelector('.map__filters-container');
@@ -126,20 +132,6 @@ var renderPin = function (ad) {
   return pinElement;
 };
 
-var getPopupType = function (type) {
-  var typeMessage = 'Непонятный тип жилья';
-  if (type === 'flat') {
-    typeMessage = 'Квартира';
-  } else if (type === 'bungalo') {
-    typeMessage = 'Бунгало';
-  } else if (type === 'house') {
-    typeMessage = 'Дом';
-  } else {
-    typeMessage = 'Дворец';
-  }
-  return typeMessage;
-};
-
 var getPopupFeatures = function (elem, arr) {
   var features = elem.querySelectorAll('.popup__feature');
   for (var i = 0; i < features.length; i++) {
@@ -185,7 +177,7 @@ var renderCard = function (ad) {
   title.textContent = ad.offer.title;
   address.textContent = ad.offer.address;
   price.textContent = ad.offer.price + '₽/ночь';
-  popupType.textContent = getPopupType(ad.offer.type);
+  popupType.textContent = MAP_TYPES[ad.offer.type];
   popupTextCapacity.textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
   popupTextTime.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
   getPopupFeatures(popupFeatures, ad.offer.features);
