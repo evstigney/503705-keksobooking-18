@@ -165,10 +165,14 @@ var getPopupPhotos = function (elem, arr) {
 
 var getCapacityMessage = function (rooms, guests) {
   var roomsInCase = (rooms === 1) ? 'комната' : 'комнаты';
-  var guestsInCase = (guests === 1) ? 'гостя' : 'гостей';
-  var re = /[05-9]\b/;
-  if (re.test(rooms.toString())) {
+  var guestsInCase = 'гостей';
+  var reRooms = /[05-9]\b/;
+  if (reRooms.test(rooms.toString())) {
     roomsInCase = 'комнат';
+  }
+  var reGuests = /1{1}\b/;
+  if (reGuests.test(guests.toString())) {
+    guestsInCase = 'гостя';
   }
   var message = rooms + ' ' + roomsInCase + ' для ' + guests + ' ' + guestsInCase;
   return message;
