@@ -147,6 +147,7 @@ var getPopupFeatures = function (elem, arr) {
       currentFeature.classList.add(MAP_FEATURES_CLASSES[arr[i]]);
     }
   }
+  return features;
 };
 
 var getPopupPhotos = function (elem, arr) {
@@ -182,6 +183,7 @@ var renderCard = function (ad) {
   var popupTextCapacity = cardElement.querySelector('.popup__text--capacity');
   var popupTextTime = cardElement.querySelector('.popup__text--time');
   var popupFeatures = cardElement.querySelector('.popup__features');
+  var copyPopupFeatures = popupFeatures;
   var popupDescription = cardElement.querySelector('.popup__description');
   var popupPhotos = cardElement.querySelector('.popup__photos');
   var popupAvatar = cardElement.querySelector('.popup__avatar');
@@ -191,7 +193,7 @@ var renderCard = function (ad) {
   popupType.textContent = MAP_TYPES[ad.offer.type];
   popupTextCapacity.textContent = getCapacityMessage(ad.offer.rooms, ad.offer.guests);
   popupTextTime.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
-  getPopupFeatures(popupFeatures, ad.offer.features);
+  popupFeatures = getPopupFeatures(copyPopupFeatures, ad.offer.features);
   popupDescription.textContent = ad.offer.description;
   getPopupPhotos(popupPhotos, ad.offer.photos);
   popupAvatar.src = ad.author.avatar;
