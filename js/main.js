@@ -186,6 +186,7 @@ var renderCard = function (ad) {
   var copyPopupFeatures = popupFeatures;
   var popupDescription = cardElement.querySelector('.popup__description');
   var popupPhotos = cardElement.querySelector('.popup__photos');
+  var copyPopupPhotos = popupPhotos;
   var popupAvatar = cardElement.querySelector('.popup__avatar');
   title.textContent = ad.offer.title;
   address.textContent = ad.offer.address;
@@ -195,7 +196,7 @@ var renderCard = function (ad) {
   popupTextTime.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
   popupFeatures = getPopupFeatures(copyPopupFeatures, ad.offer.features);
   popupDescription.textContent = ad.offer.description;
-  getPopupPhotos(popupPhotos, ad.offer.photos);
+  popupPhotos = getPopupPhotos(copyPopupPhotos, ad.offer.photos);
   popupAvatar.src = ad.author.avatar;
   return cardElement;
 };
