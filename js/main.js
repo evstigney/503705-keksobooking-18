@@ -64,9 +64,9 @@ var getLocationParameters = function (elem) {
 };
 
 var getMockingAdsArr = function (quantity) {
-  var locationParameters = getLocationParameters(map);
   var mockingAds = [];
   for (var i = 0; i < quantity; i++) {
+    var locationParameters = getLocationParameters(map);
     var ad = {
       'author': {
         'avatar': getAuthorAvatar(i)
