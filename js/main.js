@@ -134,17 +134,19 @@ var renderPin = function (ad) {
 
 var getPopupFeatures = function (elem, arr) {
   var features = elem.querySelectorAll('.popup__feature');
-  for (var i = 0; i < features.length; i++) {
-    var currentFeature = features[i];
-    for (var key in MAP_FEATURES_CLASSES) {
-      if (currentFeature.classList.contains(MAP_FEATURES_CLASSES[key])) {
-        currentFeature.classList.remove(MAP_FEATURES_CLASSES[key]);
+  for (var i = features.length - 1; i >= 0; i--) {
+    if (i < arr.length) {
+      var currentClassesArr = features[i].classList;
+      var reFeatureClass = /\bpopup__feature--/;
+      for (var j = 0; j < currentClassesArr.length; j++) {
+        if (reFeatureClass.test(currentClassesArr[j])) {
+          var currentClass = currentClassesArr[j];
+          features[i].classList.remove(currentClass);
+          features[i].classList.add(MAP_FEATURES_CLASSES[arr[i]]);
+        }
       }
-    }
-    if (i >= arr.length) {
-      currentFeature.remove();
     } else {
-      currentFeature.classList.add(MAP_FEATURES_CLASSES[arr[i]]);
+      features[i].remove();
     }
   }
   return features;
