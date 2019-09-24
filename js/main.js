@@ -59,13 +59,12 @@ var getRandomArr = function (arr) {
     var currentIndex = getRandomNumber(0, arr.length - 1);
     if (i > 0) {
       for (var j = 0; j < randomArr.length; j++) {
+        flag = true;
         var currentValue = arr[currentIndex];
         var randomValue = randomArr[j];
         if (currentValue === randomValue) {
           flag = false;
           break;
-        } else {
-          flag = true;
         }
       }
     }
