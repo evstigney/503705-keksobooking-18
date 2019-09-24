@@ -171,7 +171,7 @@ var getCapacityMessage = function (rooms, guests) {
     roomsInCase = 'комнат';
   }
   var reGuests = /1{1}\b/;
-  if (reGuests.test(guests.toString())) {
+  if (reGuests.test(guests.toString()) && guests !== 11) {
     guestsInCase = 'гостя';
   }
   var message = rooms + ' ' + roomsInCase + ' для ' + guests + ' ' + guestsInCase;
