@@ -15,6 +15,8 @@ var ROOMS_MAX = 10;
 var GUESTS_MIN = 1;
 var GUESTS_MAX = 50;
 
+var ENTER_KEYCODE = 13;
+
 var MAP_FEATURES_CLASSES = {
   'wifi': 'popup__feature--wifi',
   'dishwasher': 'popup__feature--dishwasher',
@@ -32,11 +34,21 @@ var MAP_TYPES = {
 
 var map = document.querySelector('.map');
 var filters = document.querySelector('.map__filters-container');
-var mapPins = document.querySelector('.map__pins');
+var mapPins = map.querySelector('.map__pins');
 var mapPin = document.querySelector('#pin').content.querySelector('.map__pin');
+var mapPinMain = map.querySelector('.map__pin--main');
+var mapPinMainButton = map.querySelector('button.map__pin--main');
 var mapCard = document.querySelector('#card').content.querySelector('.map__card');
 var mapPinsFragment = document.createDocumentFragment();
 var mapCardsFragment = document.createDocumentFragment();
+var adForm = document.querySelector('.ad-form');
+var adAddressField = adForm.querySelector('#address');
+
+var MAIN_PIN_X = mapPinMain.getBoundingClientRect().x;
+var MAIN_PIN_Y = mapPinMain.getBoundingClientRect().y;
+var MAIN_PIN_WIDTH = mapPinMain.getBoundingClientRect().width;
+var MAIN_PIN_HEIGHT = mapPinMain.getBoundingClientRect().height;
+var MAIN_PIN_BUTTON_HEIGHT = mapPinMainButton.getBoundingClientRect().height;
 
 var getRandomNumber = function (minNumber, maxNumber) {
   return Math.floor(Math.random() * (Math.floor(maxNumber) - Math.ceil(minNumber) + 1) + Math.ceil(minNumber));
@@ -226,9 +238,44 @@ var renderMatchingCards = function (arr) {
 
 var renderMockingData = function () {
   var mockingAdsArr = getMockingAdsArr(ADS_QUANTITY);
-  toggleMapToActive();
   renderMatchingPins(mockingAdsArr);
   renderMatchingCards(mockingAdsArr);
 };
 
-renderMockingData();
+var addDisabled = function (htmlCollection) {
+  for (var i = 0; i < htmlCollection.length; i++) {
+    htmlCollection[i].setAttribute('disabled', 'disabled');
+  }
+};
+
+var removeDisabled = function (htmlCollection) {
+  for (var i = 0; i < htmlCollection.length; i++) {
+    htmlCollection[i].removeAttribute('disabled');
+  }
+};
+
+var toggleMapToDisabled = function () {
+  addDisabled(adForm.children);
+  var address = Math.round((MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset)) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT / 2 + pageYOffset);
+  adAddressField.setAttribute('placeholder', address);
+};
+
+toggleMapToDisabled();
+
+mapPinMain.addEventListener('mousedown', function () {
+  toggleMapToActive();
+  adForm.classList.remove('ad-form--disabled');
+  removeDisabled(adForm.children);
+  var address = Math.round(MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT + MAIN_PIN_BUTTON_HEIGHT + pageYOffset);
+  adAddressField.setAttribute('placeholder', address);
+});
+
+mapPinMain.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    toggleMapToActive();
+    adForm.classList.remove('ad-form--disabled');
+    removeDisabled(adForm.children);
+    var address = Math.round(MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT + MAIN_PIN_BUTTON_HEIGHT + pageYOffset);
+    adAddressField.setAttribute('placeholder', address);
+  }
+});
