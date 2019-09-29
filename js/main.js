@@ -32,6 +32,13 @@ var MAP_TYPES = {
   'palace': 'Дворец'
 };
 
+var MAP_CAPACITY = {
+  1: ['1'],
+  2: ['2', '1'],
+  3: ['3', '2', '1'],
+  100: ['0']
+};
+
 var map = document.querySelector('.map');
 var filters = document.querySelector('.map__filters-container');
 var mapPins = map.querySelector('.map__pins');
@@ -43,6 +50,8 @@ var mapPinsFragment = document.createDocumentFragment();
 var mapCardsFragment = document.createDocumentFragment();
 var adForm = document.querySelector('.ad-form');
 var adAddressField = adForm.querySelector('#address');
+var adRoomNumber = adForm.querySelector('#room_number');
+var adCapacity = adForm.querySelector('#capacity');
 
 var MAIN_PIN_X = mapPinMain.getBoundingClientRect().x;
 var MAIN_PIN_Y = mapPinMain.getBoundingClientRect().y;
@@ -260,6 +269,32 @@ var toggleMapToDisabled = function () {
   adAddressField.setAttribute('placeholder', address);
 };
 
+var validateCapacity = function () {
+  var capacityOptions = adCapacity.options;
+  var selectedRooms = adRoomNumber.value;
+  var selectedRoomsArr = MAP_CAPACITY[selectedRooms];
+  for (var i = 0; i < capacityOptions.length; i++) {
+    var currentOption = capacityOptions[i];
+    var flag;
+    for (var j = 0; j < selectedRoomsArr.length; j++) {
+      if (currentOption.value === selectedRoomsArr[0]) {
+        adCapacity.value = currentOption.value;
+      }
+      if (currentOption.value === selectedRoomsArr[j]) {
+        flag = true;
+        break;
+      } else {
+        flag = false;
+      }
+    }
+    if (flag) {
+      currentOption.removeAttribute('disabled');
+    } else {
+      currentOption.setAttribute('disabled', 'disabled');
+    }
+  }
+};
+
 toggleMapToDisabled();
 
 mapPinMain.addEventListener('mousedown', function () {
@@ -268,6 +303,7 @@ mapPinMain.addEventListener('mousedown', function () {
   removeDisabled(adForm.children);
   var address = Math.round(MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT + MAIN_PIN_BUTTON_HEIGHT + pageYOffset);
   adAddressField.setAttribute('placeholder', address);
+  validateCapacity();
 });
 
 mapPinMain.addEventListener('keydown', function (evt) {
@@ -277,5 +313,10 @@ mapPinMain.addEventListener('keydown', function (evt) {
     removeDisabled(adForm.children);
     var address = Math.round(MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT + MAIN_PIN_BUTTON_HEIGHT + pageYOffset);
     adAddressField.setAttribute('placeholder', address);
+    validateCapacity();
   }
+});
+
+adRoomNumber.addEventListener('change', function () {
+  validateCapacity();
 });
