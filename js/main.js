@@ -297,12 +297,14 @@ var validateCapacity = function () {
   }
 };
 
+renderMockingData();
 toggleMapToDisabled();
 renderStartAddress();
 
 mapPinMain.addEventListener('mousedown', function () {
   toggleMapToActive();
   adForm.classList.remove('ad-form--disabled');
+  noticeTitle.classList.remove('ad-form--disabled');
   removeDisabled(adForm.children);
   var address = Math.round(MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT + MAIN_PIN_BUTTON_HEIGHT + pageYOffset);
   adAddressField.setAttribute('placeholder', address);
@@ -313,6 +315,7 @@ mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     toggleMapToActive();
     adForm.classList.remove('ad-form--disabled');
+    noticeTitle.classList.remove('ad-form--disabled');
     removeDisabled(adForm.children);
     var address = Math.round(MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT + MAIN_PIN_BUTTON_HEIGHT + pageYOffset);
     adAddressField.setAttribute('placeholder', address);
