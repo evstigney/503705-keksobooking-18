@@ -303,6 +303,7 @@ renderStartAddress();
 
 mapPinMain.addEventListener('mousedown', function () {
   toggleMapToActive();
+  renderStartAddress();
   adForm.classList.remove('ad-form--disabled');
   noticeTitle.classList.remove('ad-form--disabled');
   removeDisabled(adForm.children);
@@ -314,6 +315,7 @@ mapPinMain.addEventListener('mousedown', function () {
 mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     toggleMapToActive();
+    renderStartAddress();
     adForm.classList.remove('ad-form--disabled');
     noticeTitle.classList.remove('ad-form--disabled');
     removeDisabled(adForm.children);
