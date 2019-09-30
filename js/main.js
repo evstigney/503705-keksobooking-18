@@ -52,6 +52,7 @@ var adForm = document.querySelector('.ad-form');
 var adAddressField = adForm.querySelector('#address');
 var adRoomNumber = adForm.querySelector('#room_number');
 var adCapacity = adForm.querySelector('#capacity');
+var noticeTitle = document.querySelector('.notice__title');
 
 var MAIN_PIN_X = mapPinMain.getBoundingClientRect().x;
 var MAIN_PIN_Y = mapPinMain.getBoundingClientRect().y;
@@ -227,10 +228,6 @@ var renderCard = function (ad) {
   return cardElement;
 };
 
-var toggleMapToActive = function () {
-  map.classList.remove('map--faded');
-};
-
 var renderMatchingPins = function (arr) {
   for (var i = 0; i < arr.length; i++) {
     var pin = renderPin(arr[i]);
@@ -251,6 +248,41 @@ var renderMockingData = function () {
   renderMatchingCards(mockingAdsArr);
 };
 
+var renderAddress = function () {
+  var address = Math.round(MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset) + ', ';
+  if (adForm.classList.contains('ad-form--disabled')) {
+    address += Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT / 2 + pageYOffset);
+  } else {
+    address += Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT + MAIN_PIN_BUTTON_HEIGHT + pageYOffset);
+  }
+  adAddressField.setAttribute('placeholder', address);
+  return address;
+};
+
+var validateCapacity = function () {
+  var capacityOptions = adCapacity.options;
+  var selectedRooms = adRoomNumber.value;
+  var selectedRoomsArr = MAP_CAPACITY[selectedRooms];
+  for (var i = 0; i < capacityOptions.length; i++) {
+    var currentOption = capacityOptions[i];
+    var flag = false;
+    for (var j = 0; j < selectedRoomsArr.length; j++) {
+      if (currentOption.value === selectedRoomsArr[0]) {
+        adCapacity.value = currentOption.value;
+      }
+      if (currentOption.value === selectedRoomsArr[j]) {
+        flag = true;
+        break;
+      }
+    }
+    if (flag) {
+      currentOption.removeAttribute('disabled');
+    } else {
+      currentOption.setAttribute('disabled', 'disabled');
+    }
+  }
+};
+
 var addDisabled = function (htmlCollection) {
   for (var i = 0; i < htmlCollection.length; i++) {
     htmlCollection[i].setAttribute('disabled', 'disabled');
@@ -263,56 +295,38 @@ var removeDisabled = function (htmlCollection) {
   }
 };
 
+var toggleMapToActive = function () {
+  map.classList.remove('map--faded');
+};
+
 var toggleMapToDisabled = function () {
   addDisabled(adForm.children);
-  var address = Math.round((MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset)) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT / 2 + pageYOffset);
-  adAddressField.setAttribute('placeholder', address);
 };
 
-var validateCapacity = function () {
-  var capacityOptions = adCapacity.options;
-  var selectedRooms = adRoomNumber.value;
-  var selectedRoomsArr = MAP_CAPACITY[selectedRooms];
-  for (var i = 0; i < capacityOptions.length; i++) {
-    var currentOption = capacityOptions[i];
-    var flag;
-    for (var j = 0; j < selectedRoomsArr.length; j++) {
-      if (currentOption.value === selectedRoomsArr[0]) {
-        adCapacity.value = currentOption.value;
-      }
-      if (currentOption.value === selectedRoomsArr[j]) {
-        flag = true;
-        break;
-      } else {
-        flag = false;
-      }
-    }
-    if (flag) {
-      currentOption.removeAttribute('disabled');
-    } else {
-      currentOption.setAttribute('disabled', 'disabled');
-    }
-  }
+var toggleFormToActive = function () {
+  adForm.classList.remove('ad-form--disabled');
+  noticeTitle.classList.remove('ad-form--disabled');
 };
 
+var formToActiveHandler = function () {
+  toggleMapToActive();
+  toggleFormToActive();
+  removeDisabled(adForm.children);
+  renderAddress();
+};
+
+renderMockingData();
 toggleMapToDisabled();
+renderAddress();
 
 mapPinMain.addEventListener('mousedown', function () {
-  toggleMapToActive();
-  adForm.classList.remove('ad-form--disabled');
-  removeDisabled(adForm.children);
-  var address = Math.round(MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT + MAIN_PIN_BUTTON_HEIGHT + pageYOffset);
-  adAddressField.setAttribute('placeholder', address);
+  formToActiveHandler();
   validateCapacity();
 });
 
 mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
-    toggleMapToActive();
-    adForm.classList.remove('ad-form--disabled');
-    removeDisabled(adForm.children);
-    var address = Math.round(MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT + MAIN_PIN_BUTTON_HEIGHT + pageYOffset);
-    adAddressField.setAttribute('placeholder', address);
+    formToActiveHandler();
     validateCapacity();
   }
 });
