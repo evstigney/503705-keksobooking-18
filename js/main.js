@@ -270,8 +270,10 @@ var validateCapacity = function () {
       if (currentOption.value === selectedRoomsArr[0]) {
         adCapacity.value = currentOption.value;
       }
-      flag = (currentOption.value === selectedRoomsArr[j]) ? true : false;
-      break;
+      if (currentOption.value === selectedRoomsArr[j]) {
+        flag = true;
+        break;
+      }
     }
     if (flag) {
       currentOption.removeAttribute('disabled');
