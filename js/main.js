@@ -248,7 +248,7 @@ var renderMockingData = function () {
   renderMatchingCards(mockingAdsArr);
 };
 
-var renderStartAddress = function () {
+var renderAddress = function () {
   var address = (adForm.classList.contains('ad-form--disabled')) ? Math.round((MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset)) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT / 2 + pageYOffset) : Math.round(MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT + MAIN_PIN_BUTTON_HEIGHT + pageYOffset);
   adAddressField.setAttribute('placeholder', address);
   return address;
@@ -305,12 +305,12 @@ var formToActiveHandler = function () {
   toggleMapToActive();
   toggleFormToActive();
   removeDisabled(adForm.children);
-  renderStartAddress();
+  renderAddress();
 };
 
 renderMockingData();
 toggleMapToDisabled();
-renderStartAddress();
+renderAddress();
 
 mapPinMain.addEventListener('mousedown', function () {
   formToActiveHandler();
