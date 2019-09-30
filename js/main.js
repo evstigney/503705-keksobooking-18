@@ -228,10 +228,6 @@ var renderCard = function (ad) {
   return cardElement;
 };
 
-var toggleMapToActive = function () {
-  map.classList.remove('map--faded');
-};
-
 var renderMatchingPins = function (arr) {
   for (var i = 0; i < arr.length; i++) {
     var pin = renderPin(arr[i]);
@@ -252,25 +248,10 @@ var renderMockingData = function () {
   renderMatchingCards(mockingAdsArr);
 };
 
-var addDisabled = function (htmlCollection) {
-  for (var i = 0; i < htmlCollection.length; i++) {
-    htmlCollection[i].setAttribute('disabled', 'disabled');
-  }
-};
-
-var removeDisabled = function (htmlCollection) {
-  for (var i = 0; i < htmlCollection.length; i++) {
-    htmlCollection[i].removeAttribute('disabled');
-  }
-};
-
-var toggleMapToDisabled = function () {
-  addDisabled(adForm.children);
-};
-
 var renderStartAddress = function () {
-  var address = Math.round((MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset)) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT / 2 + pageYOffset);
+  var address = (adForm.classList.contains('ad-form--disabled')) ? Math.round((MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset)) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT / 2 + pageYOffset) : Math.round(MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT + MAIN_PIN_BUTTON_HEIGHT + pageYOffset);
   adAddressField.setAttribute('placeholder', address);
+  return address;
 };
 
 var validateCapacity = function () {
@@ -284,10 +265,8 @@ var validateCapacity = function () {
       if (currentOption.value === selectedRoomsArr[0]) {
         adCapacity.value = currentOption.value;
       }
-      if (currentOption.value === selectedRoomsArr[j]) {
-        flag = true;
-        break;
-      }
+      flag = (currentOption.value === selectedRoomsArr[j]) ? true : false;
+      break;
     }
     if (flag) {
       currentOption.removeAttribute('disabled');
@@ -297,30 +276,50 @@ var validateCapacity = function () {
   }
 };
 
+var addDisabled = function (htmlCollection) {
+  for (var i = 0; i < htmlCollection.length; i++) {
+    htmlCollection[i].setAttribute('disabled', 'disabled');
+  }
+};
+
+var removeDisabled = function (htmlCollection) {
+  for (var i = 0; i < htmlCollection.length; i++) {
+    htmlCollection[i].removeAttribute('disabled');
+  }
+};
+
+var toggleMapToActive = function () {
+  map.classList.remove('map--faded');
+};
+
+var toggleMapToDisabled = function () {
+  addDisabled(adForm.children);
+};
+
+var toggleFormToActive = function () {
+  adForm.classList.remove('ad-form--disabled');
+  noticeTitle.classList.remove('ad-form--disabled');
+};
+
+var formToActiveHandler = function () {
+  toggleMapToActive();
+  toggleFormToActive();
+  removeDisabled(adForm.children);
+  renderStartAddress();
+};
+
 renderMockingData();
 toggleMapToDisabled();
 renderStartAddress();
 
 mapPinMain.addEventListener('mousedown', function () {
-  toggleMapToActive();
-  renderStartAddress();
-  adForm.classList.remove('ad-form--disabled');
-  noticeTitle.classList.remove('ad-form--disabled');
-  removeDisabled(adForm.children);
-  var address = Math.round(MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT + MAIN_PIN_BUTTON_HEIGHT + pageYOffset);
-  adAddressField.setAttribute('placeholder', address);
+  formToActiveHandler();
   validateCapacity();
 });
 
 mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
-    toggleMapToActive();
-    renderStartAddress();
-    adForm.classList.remove('ad-form--disabled');
-    noticeTitle.classList.remove('ad-form--disabled');
-    removeDisabled(adForm.children);
-    var address = Math.round(MAIN_PIN_X + MAIN_PIN_WIDTH / 2 + pageXOffset) + ', ' + Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT + MAIN_PIN_BUTTON_HEIGHT + pageYOffset);
-    adAddressField.setAttribute('placeholder', address);
+    formToActiveHandler();
     validateCapacity();
   }
 });
