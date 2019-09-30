@@ -52,7 +52,7 @@ var adForm = document.querySelector('.ad-form');
 var adAddressField = adForm.querySelector('#address');
 var adRoomNumber = adForm.querySelector('#room_number');
 var adCapacity = adForm.querySelector('#capacity');
-var noticeTitle = adForm.querySelector('.notice__title');
+var noticeTitle = document.querySelector('.notice__title');
 
 var MAIN_PIN_X = mapPinMain.getBoundingClientRect().x;
 var MAIN_PIN_Y = mapPinMain.getBoundingClientRect().y;
@@ -266,7 +266,6 @@ var removeDisabled = function (htmlCollection) {
 
 var toggleMapToDisabled = function () {
   addDisabled(adForm.children);
-  noticeTitle.classList.add('ad-form--disabled');
 };
 
 var renderStartAddress = function () {
@@ -280,7 +279,7 @@ var validateCapacity = function () {
   var selectedRoomsArr = MAP_CAPACITY[selectedRooms];
   for (var i = 0; i < capacityOptions.length; i++) {
     var currentOption = capacityOptions[i];
-    var flag;
+    var flag = false;
     for (var j = 0; j < selectedRoomsArr.length; j++) {
       if (currentOption.value === selectedRoomsArr[0]) {
         adCapacity.value = currentOption.value;
@@ -288,8 +287,6 @@ var validateCapacity = function () {
       if (currentOption.value === selectedRoomsArr[j]) {
         flag = true;
         break;
-      } else {
-        flag = false;
       }
     }
     if (flag) {
