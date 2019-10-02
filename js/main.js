@@ -273,11 +273,17 @@ var renderMatchingCard = function (target, arr) {
 var renderMockingData = function () {
   var mockingAdsArr = getMockingAdsArr(ADS_QUANTITY);
   var pins = renderMatchingPins(mockingAdsArr);
+  var openPopupCardHandler = function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE && document.activeElement === evt.currentTarget) {
+      renderMatchingCard(evt.currentTarget, mockingAdsArr);
+    }
+  };
   for (var i = 1; i < pins.children.length; i++) {
     if (!(pins.children[i].classList.contains('map__pin--main'))) {
       pins.children[i].addEventListener('click', function (evt) {
         renderMatchingCard(evt.currentTarget, mockingAdsArr);
       });
+      pins.children[i].addEventListener('keydown', openPopupCardHandler);
     }
   }
   return pins;
