@@ -74,6 +74,8 @@ var adTypeSelect = adForm.querySelector('#type');
 var adPriceField = adForm.querySelector('#price');
 var adRoomNumberSelect = adForm.querySelector('#room_number');
 var adCapacitySelect = adForm.querySelector('#capacity');
+var adTimeinSelect = adForm.querySelector('#timein');
+var adTimeoutSelect = adForm.querySelector('#timeout');
 var noticeTitle = document.querySelector('.notice__title');
 
 var MAIN_PIN_X = mapPinMain.getBoundingClientRect().x;
@@ -318,6 +320,7 @@ var renderAddress = function () {
     address += Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT + MAIN_PIN_BUTTON_HEIGHT + pageYOffset);
   }
   adAddressField.setAttribute('placeholder', address);
+  adAddressField.value = address;
   return address;
 };
 
@@ -355,7 +358,17 @@ var validatePrice = function () {
   var currentType = adTypeSelect.value;
   if (adPriceField.validity.rangeUnderflow) {
     adPriceField.setCustomValidity(MAP_MIN_PRICE[currentType].errorMessage);
+  } else {
+    adPriceField.setCustomValidity('');
   }
+};
+
+var validateTimein = function () {
+  adTimeoutSelect.value = adTimeinSelect.value;
+};
+
+var validateTimeout = function () {
+  adTimeinSelect.value = adTimeoutSelect.value;
 };
 
 var addDisabled = function (htmlCollection) {
@@ -397,6 +410,7 @@ var activateMap = function () {
   activatePage();
   validateCapacity();
   validateType();
+  validateTimein();
 };
 
 var activateMapHandler = function (evt) {
@@ -420,6 +434,14 @@ adTypeSelect.addEventListener('change', function () {
 
 adPriceField.addEventListener('change', function () {
   validatePrice();
+});
+
+adTimeinSelect.addEventListener('change', function () {
+  validateTimein();
+});
+
+adTimeoutSelect.addEventListener('change', function () {
+  validateTimeout();
 });
 
 toggleMapToDisabled();
