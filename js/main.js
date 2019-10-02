@@ -16,6 +16,7 @@ var GUESTS_MIN = 1;
 var GUESTS_MAX = 50;
 
 var ENTER_KEYCODE = 13;
+var ESC_KEYCODE = 27;
 
 var MAP_FEATURES_CLASSES = {
   'wifi': 'popup__feature--wifi',
@@ -241,16 +242,32 @@ var renderCard = function (arr, index) {
   var card = getCard(arr[index]);
   mapCardsFragment.appendChild(card);
   map.insertBefore(mapCardsFragment, filters);
-  return map;
+  return card;
 };
 
 var renderMatchingCard = function (target, arr) {
   for (var i = arr.length - 1; i >= 0; i--) {
     var j = i + (mapPins.children.length - arr.length);
     if (target === mapPins.children[j]) {
-      renderCard(arr, i);
+      var card = renderCard(arr, i);
+      break;
     }
   }
+  var closePopupButtonHandler = function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      map.removeChild(card);
+    }
+  };
+  var closePopupButton = card.querySelector('.popup__close');
+  closePopupButton.addEventListener('click', function () {
+    map.removeChild(card);
+  });
+  document.addEventListener('keydown', closePopupButtonHandler);
+  document.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ESC_KEYCODE && !(document.querySelector('.map__card'))) {
+      document.removeEventListener('keydown', closePopupButtonHandler);
+    }
+  });
 };
 
 var renderMockingData = function () {
@@ -326,7 +343,7 @@ var toggleFormToActive = function () {
   noticeTitle.classList.remove('ad-form--disabled');
 };
 
-var formToActiveHandler = function () {
+var activatePage = function () {
   toggleMapToActive();
   toggleFormToActive();
   removeDisabled(adForm.children);
@@ -335,13 +352,13 @@ var formToActiveHandler = function () {
 };
 
 mapPinMain.addEventListener('mousedown', function () {
-  formToActiveHandler();
+  activatePage();
   validateCapacity();
 });
 
 mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
-    formToActiveHandler();
+    activatePage();
     validateCapacity();
   }
 });
