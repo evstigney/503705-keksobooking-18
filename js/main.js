@@ -201,7 +201,7 @@ var getCapacityMessage = function (rooms, guests) {
   return message;
 };
 
-var renderCard = function (ad) {
+var getCard = function (ad) {
   var cardElement = mapCard.cloneNode(true);
   var title = cardElement.querySelector('.popup__title');
   var address = cardElement.querySelector('.popup__text--address');
@@ -234,18 +234,36 @@ var renderMatchingPins = function (arr) {
     mapPinsFragment.appendChild(pin);
   }
   mapPins.appendChild(mapPinsFragment);
+  return mapPins;
 };
 
-var renderMatchingCards = function (arr) {
-  var card = renderCard(arr[0]);
+var renderCard = function (arr, index) {
+  var card = getCard(arr[index]);
   mapCardsFragment.appendChild(card);
   map.insertBefore(mapCardsFragment, filters);
+  return map;
+};
+
+var renderMatchingCard = function (target, arr) {
+  for (var i = arr.length - 1; i >= 0; i--) {
+    var j = i + (mapPins.children.length - arr.length);
+    if (target === mapPins.children[j]) {
+      renderCard(arr, i);
+    }
+  }
 };
 
 var renderMockingData = function () {
   var mockingAdsArr = getMockingAdsArr(ADS_QUANTITY);
-  renderMatchingPins(mockingAdsArr);
-  renderMatchingCards(mockingAdsArr);
+  var pins = renderMatchingPins(mockingAdsArr);
+  for (var i = 1; i < pins.children.length; i++) {
+    if (!(pins.children[i].classList.contains('map__pin--main'))) {
+      pins.children[i].addEventListener('click', function (evt) {
+        renderMatchingCard(evt.currentTarget, mockingAdsArr);
+      });
+    }
+  }
+  return pins;
 };
 
 var renderAddress = function () {
@@ -312,12 +330,9 @@ var formToActiveHandler = function () {
   toggleMapToActive();
   toggleFormToActive();
   removeDisabled(adForm.children);
+  renderMockingData();
   renderAddress();
 };
-
-renderMockingData();
-toggleMapToDisabled();
-renderAddress();
 
 mapPinMain.addEventListener('mousedown', function () {
   formToActiveHandler();
@@ -334,3 +349,6 @@ mapPinMain.addEventListener('keydown', function (evt) {
 adRoomNumber.addEventListener('change', function () {
   validateCapacity();
 });
+
+toggleMapToDisabled();
+renderAddress();
