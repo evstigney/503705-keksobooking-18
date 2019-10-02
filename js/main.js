@@ -40,6 +40,25 @@ var MAP_CAPACITY = {
   100: ['0']
 };
 
+var MAP_MIN_PRICE = {
+  'bungalo': {
+    minPrice: '0',
+    errorMessage: 'Для бунгало минимальная цена за ночь - 0 рублей.'
+  },
+  'flat': {
+    minPrice: '1000',
+    errorMessage: 'Для квартиры минимальная цена за ночь - 1000 рублей.'
+  },
+  'house': {
+    minPrice: '5000',
+    errorMessage: 'Для дома минимальная цена за ночь - 5000 рублей.'
+  },
+  'palace': {
+    minPrice: '10000',
+    errorMessage: 'Для дворца минимальная цена за ночь - 10000 рублей.'
+  }
+};
+
 var map = document.querySelector('.map');
 var filters = document.querySelector('.map__filters-container');
 var mapPins = map.querySelector('.map__pins');
@@ -51,8 +70,10 @@ var mapPinsFragment = document.createDocumentFragment();
 var mapCardsFragment = document.createDocumentFragment();
 var adForm = document.querySelector('.ad-form');
 var adAddressField = adForm.querySelector('#address');
-var adRoomNumber = adForm.querySelector('#room_number');
-var adCapacity = adForm.querySelector('#capacity');
+var adTypeSelect = adForm.querySelector('#type');
+var adPriceField = adForm.querySelector('#price');
+var adRoomNumberSelect = adForm.querySelector('#room_number');
+var adCapacitySelect = adForm.querySelector('#capacity');
 var noticeTitle = document.querySelector('.notice__title');
 
 var MAIN_PIN_X = mapPinMain.getBoundingClientRect().x;
@@ -123,7 +144,7 @@ var getMockingAdsArr = function (quantity) {
         'avatar': getAuthorAvatar(i)
       },
       'offer': {
-        'title': 'Заголовок предложения',
+        'title': 'Заголовок предложения. Это очень хорошее предложение.',
         'address': locationParameters.x + ', ' + locationParameters.y,
         'price': getRandomNumber(PRICE_MIN, PRICE_MAX),
         'type': getRandomValue(TYPES_ARR),
@@ -301,15 +322,15 @@ var renderAddress = function () {
 };
 
 var validateCapacity = function () {
-  var capacityOptions = adCapacity.options;
-  var selectedRooms = adRoomNumber.value;
+  var capacityOptions = adCapacitySelect.options;
+  var selectedRooms = adRoomNumberSelect.value;
   var selectedRoomsArr = MAP_CAPACITY[selectedRooms];
   for (var i = 0; i < capacityOptions.length; i++) {
     var currentOption = capacityOptions[i];
     var flag = false;
     for (var j = 0; j < selectedRoomsArr.length; j++) {
       if (currentOption.value === selectedRoomsArr[0]) {
-        adCapacity.value = currentOption.value;
+        adCapacitySelect.value = currentOption.value;
       }
       if (currentOption.value === selectedRoomsArr[j]) {
         flag = true;
@@ -321,6 +342,19 @@ var validateCapacity = function () {
     } else {
       currentOption.setAttribute('disabled', 'disabled');
     }
+  }
+};
+
+var validateType = function () {
+  var currentType = adTypeSelect.value;
+  adPriceField.min = MAP_MIN_PRICE[currentType].minPrice;
+  adPriceField.setAttribute('placeholder', MAP_MIN_PRICE[currentType].minPrice);
+};
+
+var validatePrice = function () {
+  var currentType = adTypeSelect.value;
+  if (adPriceField.validity.rangeUnderflow) {
+    adPriceField.setCustomValidity(MAP_MIN_PRICE[currentType].errorMessage);
   }
 };
 
@@ -355,22 +389,37 @@ var activatePage = function () {
   removeDisabled(adForm.children);
   renderMockingData();
   renderAddress();
+  mapPinMain.removeEventListener('mousedown', activateMap);
+  mapPinMain.removeEventListener('keydown', activateMapHandler);
 };
 
-mapPinMain.addEventListener('mousedown', function () {
+var activateMap = function () {
   activatePage();
   validateCapacity();
-});
+  validateType();
+};
 
-mapPinMain.addEventListener('keydown', function (evt) {
+var activateMapHandler = function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
-    activatePage();
-    validateCapacity();
+    activateMap();
   }
+};
+
+mapPinMain.addEventListener('mousedown', activateMap);
+
+mapPinMain.addEventListener('keydown', activateMapHandler);
+
+adRoomNumberSelect.addEventListener('change', function () {
+  validateCapacity();
 });
 
-adRoomNumber.addEventListener('change', function () {
-  validateCapacity();
+adTypeSelect.addEventListener('change', function () {
+  validateType();
+  validatePrice();
+});
+
+adPriceField.addEventListener('change', function () {
+  validatePrice();
 });
 
 toggleMapToDisabled();
