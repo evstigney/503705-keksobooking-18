@@ -277,14 +277,12 @@ var renderMatchingCard = function (target, arr) {
     }
   }
   var closePopupButtonHandler = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
+    if (evt.type === 'click' || evt.keyCode === ESC_KEYCODE) {
       map.removeChild(card);
     }
   };
   var closePopupButton = card.querySelector('.popup__close');
-  closePopupButton.addEventListener('click', function () {
-    map.removeChild(card);
-  });
+  closePopupButton.addEventListener('click', closePopupButtonHandler);
   document.addEventListener('keydown', closePopupButtonHandler);
   document.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ESC_KEYCODE && !(document.querySelector('.map__card'))) {
@@ -304,17 +302,14 @@ var renderMockingData = function () {
     }
   };
   var openPopupCardHandler = function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE && document.activeElement === evt.currentTarget) {
+    if (evt.type === 'click' || evt.keyCode === ENTER_KEYCODE && document.activeElement === evt.currentTarget) {
       checkCard();
       renderMatchingCard(evt.currentTarget, mockingAdsArr);
     }
   };
   for (var i = 0; i < pins.length; i++) {
     if (!(pins[i].classList.contains('map__pin--main'))) {
-      pins[i].addEventListener('click', function (evt) {
-        checkCard();
-        renderMatchingCard(evt.currentTarget, mockingAdsArr);
-      });
+      pins[i].addEventListener('click', openPopupCardHandler);
       pins[i].addEventListener('keydown', openPopupCardHandler);
     }
   }
