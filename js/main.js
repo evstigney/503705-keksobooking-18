@@ -241,7 +241,7 @@ var getCard = function (ad) {
   var popupAvatar = cardElement.querySelector('.popup__avatar');
   title.textContent = ad.offer.title;
   address.textContent = ad.offer.address;
-  price.textContent = ad.offer.price + '₽/ночь';
+  price.textContent = ad.offer.price + ' ₽/ночь';
   popupType.textContent = MAP_TYPES[ad.offer.type];
   popupTextCapacity.textContent = getCapacityMessage(ad.offer.rooms, ad.offer.guests);
   popupTextTime.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
@@ -296,14 +296,22 @@ var renderMatchingCard = function (target, arr) {
 var renderMockingData = function () {
   var mockingAdsArr = getMockingAdsArr(ADS_QUANTITY);
   var pins = renderMatchingPins(mockingAdsArr);
+  var checkCard = function () {
+    if (map.querySelector('.map__card.popup')) {
+      var previousCard = map.querySelector('.map__card.popup');
+      map.removeChild(previousCard);
+    }
+  };
   var openPopupCardHandler = function (evt) {
     if (evt.keyCode === ENTER_KEYCODE && document.activeElement === evt.currentTarget) {
+      checkCard();
       renderMatchingCard(evt.currentTarget, mockingAdsArr);
     }
   };
   for (var i = 1; i < pins.children.length; i++) {
     if (!(pins.children[i].classList.contains('map__pin--main'))) {
       pins.children[i].addEventListener('click', function (evt) {
+        checkCard();
         renderMatchingCard(evt.currentTarget, mockingAdsArr);
       });
       pins.children[i].addEventListener('keydown', openPopupCardHandler);
