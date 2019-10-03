@@ -296,6 +296,7 @@ var renderMatchingCard = function (target, arr) {
 var renderMockingData = function () {
   var mockingAdsArr = getMockingAdsArr(ADS_QUANTITY);
   var pins = renderMatchingPins(mockingAdsArr);
+  pins = pins.querySelectorAll('.map__pin');
   var checkCard = function () {
     if (map.querySelector('.map__card.popup')) {
       var previousCard = map.querySelector('.map__card.popup');
@@ -308,13 +309,13 @@ var renderMockingData = function () {
       renderMatchingCard(evt.currentTarget, mockingAdsArr);
     }
   };
-  for (var i = 1; i < pins.children.length; i++) {
-    if (!(pins.children[i].classList.contains('map__pin--main'))) {
-      pins.children[i].addEventListener('click', function (evt) {
+  for (var i = 0; i < pins.length; i++) {
+    if (!(pins[i].classList.contains('map__pin--main'))) {
+      pins[i].addEventListener('click', function (evt) {
         checkCard();
         renderMatchingCard(evt.currentTarget, mockingAdsArr);
       });
-      pins.children[i].addEventListener('keydown', openPopupCardHandler);
+      pins[i].addEventListener('keydown', openPopupCardHandler);
     }
   }
   return pins;
