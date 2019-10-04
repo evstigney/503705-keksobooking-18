@@ -252,6 +252,11 @@ var getCard = function (ad) {
   return cardElement;
 };
 
+var isPin = function (elem) {
+  var flag = (elem.classList.contains('map__pin--main')) ? false : true;
+  return flag;
+};
+
 var renderMatchingPins = function (arr) {
   for (var i = 0; i < arr.length; i++) {
     var pin = renderPin(arr[i]);
@@ -269,13 +274,15 @@ var renderCard = function (arr, index) {
 };
 
 var renderMatchingCard = function (target, arr) {
-  for (var i = arr.length - 1; i >= 0; i--) {
-    var j = i + (mapPins.children.length - arr.length);
-    if (target === mapPins.children[j]) {
-      var card = renderCard(arr, i);
-      break;
+  var allPins = mapPins.querySelectorAll('.map__pin');
+  var matchingPins = [];
+  for (var i = 0; i < allPins.length; i++) {
+    if (isPin(allPins[i])) {
+      matchingPins.push(allPins[i]);
     }
   }
+  var index = matchingPins.indexOf(target);
+  var card = renderCard(arr, index);
   var closePopupButtonHandler = function (evt) {
     if (evt.type === 'click' || evt.keyCode === ESC_KEYCODE) {
       map.removeChild(card);
@@ -308,7 +315,7 @@ var renderMockingData = function () {
     }
   };
   for (var i = 0; i < pins.length; i++) {
-    if (!(pins[i].classList.contains('map__pin--main'))) {
+    if (isPin(pins[i])) {
       pins[i].addEventListener('click', openPopupCardHandler);
       pins[i].addEventListener('keydown', openPopupCardHandler);
     }
