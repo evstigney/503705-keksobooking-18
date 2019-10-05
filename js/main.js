@@ -16,6 +16,7 @@ var GUESTS_MIN = 1;
 var GUESTS_MAX = 50;
 
 var ENTER_KEYCODE = 13;
+var ESC_KEYCODE = 27;
 
 var MAP_FEATURES_CLASSES = {
   'wifi': 'popup__feature--wifi',
@@ -39,6 +40,25 @@ var MAP_CAPACITY = {
   100: ['0']
 };
 
+var MAP_MIN_PRICE = {
+  'bungalo': {
+    minPrice: '0',
+    errorMessage: 'Для бунгало минимальная цена за ночь - 0 рублей.'
+  },
+  'flat': {
+    minPrice: '1000',
+    errorMessage: 'Для квартиры минимальная цена за ночь - 1000 рублей.'
+  },
+  'house': {
+    minPrice: '5000',
+    errorMessage: 'Для дома минимальная цена за ночь - 5000 рублей.'
+  },
+  'palace': {
+    minPrice: '10000',
+    errorMessage: 'Для дворца минимальная цена за ночь - 10000 рублей.'
+  }
+};
+
 var map = document.querySelector('.map');
 var filters = document.querySelector('.map__filters-container');
 var mapPins = map.querySelector('.map__pins');
@@ -50,8 +70,12 @@ var mapPinsFragment = document.createDocumentFragment();
 var mapCardsFragment = document.createDocumentFragment();
 var adForm = document.querySelector('.ad-form');
 var adAddressField = adForm.querySelector('#address');
-var adRoomNumber = adForm.querySelector('#room_number');
-var adCapacity = adForm.querySelector('#capacity');
+var adTypeSelect = adForm.querySelector('#type');
+var adPriceField = adForm.querySelector('#price');
+var adRoomNumberSelect = adForm.querySelector('#room_number');
+var adCapacitySelect = adForm.querySelector('#capacity');
+var adTimeinSelect = adForm.querySelector('#timein');
+var adTimeoutSelect = adForm.querySelector('#timeout');
 var noticeTitle = document.querySelector('.notice__title');
 
 var MAIN_PIN_X = mapPinMain.getBoundingClientRect().x;
@@ -113,16 +137,16 @@ var getLocationParameters = function (elem) {
   return location;
 };
 
-var getMockingAdsArr = function (quantity) {
+var getMockingAdsArr = function () {
   var mockingAds = [];
-  for (var i = 0; i < quantity; i++) {
+  for (var i = 0; i < ADS_QUANTITY; i++) {
     var locationParameters = getLocationParameters(map);
     var ad = {
       'author': {
         'avatar': getAuthorAvatar(i)
       },
       'offer': {
-        'title': 'Заголовок предложения',
+        'title': 'Заголовок предложения. Это очень хорошее предложение.',
         'address': locationParameters.x + ', ' + locationParameters.y,
         'price': getRandomNumber(PRICE_MIN, PRICE_MAX),
         'type': getRandomValue(TYPES_ARR),
@@ -142,6 +166,13 @@ var getMockingAdsArr = function (quantity) {
     mockingAds.push(ad);
   }
   return mockingAds;
+};
+
+var mockingData = {
+  adsArr: getMockingAdsArr(),
+  getCountOfPins: function () {
+    return this.adsArr.length;
+  }
 };
 
 var renderPin = function (ad) {
@@ -201,7 +232,7 @@ var getCapacityMessage = function (rooms, guests) {
   return message;
 };
 
-var renderCard = function (ad) {
+var getCard = function (ad) {
   var cardElement = mapCard.cloneNode(true);
   var title = cardElement.querySelector('.popup__title');
   var address = cardElement.querySelector('.popup__text--address');
@@ -217,7 +248,7 @@ var renderCard = function (ad) {
   var popupAvatar = cardElement.querySelector('.popup__avatar');
   title.textContent = ad.offer.title;
   address.textContent = ad.offer.address;
-  price.textContent = ad.offer.price + '₽/ночь';
+  price.textContent = ad.offer.price + ' ₽/ночь';
   popupType.textContent = MAP_TYPES[ad.offer.type];
   popupTextCapacity.textContent = getCapacityMessage(ad.offer.rooms, ad.offer.guests);
   popupTextTime.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
@@ -228,24 +259,74 @@ var renderCard = function (ad) {
   return cardElement;
 };
 
-var renderMatchingPins = function (arr) {
-  for (var i = 0; i < arr.length; i++) {
-    var pin = renderPin(arr[i]);
+var isPin = function (elem) {
+  var flag = (elem.classList.contains('map__pin--main')) ? false : true;
+  return flag;
+};
+
+var renderMatchingPins = function () {
+  for (var i = 0; i < mockingData.getCountOfPins(); i++) {
+    var pin = renderPin(mockingData.adsArr[i]);
     mapPinsFragment.appendChild(pin);
   }
   mapPins.appendChild(mapPinsFragment);
+  return mapPins;
 };
 
-var renderMatchingCards = function (arr) {
-  var card = renderCard(arr[0]);
+var renderCard = function (index) {
+  var card = getCard(mockingData.adsArr[index]);
   mapCardsFragment.appendChild(card);
   map.insertBefore(mapCardsFragment, filters);
+  return card;
+};
+
+var renderMatchingCard = function (target) {
+  var allPins = mapPins.querySelectorAll('.map__pin');
+  var matchingPins = [];
+  for (var i = 0; i < allPins.length; i++) {
+    if (isPin(allPins[i])) {
+      matchingPins.push(allPins[i]);
+    }
+  }
+  var index = matchingPins.indexOf(target);
+  var card = renderCard(index);
+  var closePopupButtonHandler = function (evt) {
+    if (evt.type === 'click' || evt.keyCode === ESC_KEYCODE) {
+      map.removeChild(card);
+    }
+  };
+  var closePopupButton = card.querySelector('.popup__close');
+  closePopupButton.addEventListener('click', closePopupButtonHandler);
+  document.addEventListener('keydown', closePopupButtonHandler);
+  document.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ESC_KEYCODE && !(document.querySelector('.map__card'))) {
+      document.removeEventListener('keydown', closePopupButtonHandler);
+    }
+  });
 };
 
 var renderMockingData = function () {
-  var mockingAdsArr = getMockingAdsArr(ADS_QUANTITY);
-  renderMatchingPins(mockingAdsArr);
-  renderMatchingCards(mockingAdsArr);
+  var pins = renderMatchingPins();
+  pins = pins.querySelectorAll('.map__pin');
+  var checkCard = function () {
+    if (map.querySelector('.map__card.popup')) {
+      var previousCard = map.querySelector('.map__card.popup');
+      map.removeChild(previousCard);
+    }
+  };
+  var openPopupCardHandler = function (evt) {
+    if (evt.type === 'click' || evt.keyCode === ENTER_KEYCODE && document.activeElement === evt.currentTarget) {
+      checkCard();
+      renderMatchingCard(evt.currentTarget);
+    }
+  };
+  for (var i = 0; i < pins.length; i++) {
+    if (isPin(pins[i])) {
+      pins[i].addEventListener('click', openPopupCardHandler);
+      pins[i].addEventListener('keydown', openPopupCardHandler);
+    }
+  }
+  return pins;
 };
 
 var renderAddress = function () {
@@ -256,19 +337,20 @@ var renderAddress = function () {
     address += Math.round(MAIN_PIN_Y + MAIN_PIN_HEIGHT + MAIN_PIN_BUTTON_HEIGHT + pageYOffset);
   }
   adAddressField.setAttribute('placeholder', address);
+  adAddressField.value = address;
   return address;
 };
 
 var validateCapacity = function () {
-  var capacityOptions = adCapacity.options;
-  var selectedRooms = adRoomNumber.value;
+  var capacityOptions = adCapacitySelect.options;
+  var selectedRooms = adRoomNumberSelect.value;
   var selectedRoomsArr = MAP_CAPACITY[selectedRooms];
   for (var i = 0; i < capacityOptions.length; i++) {
     var currentOption = capacityOptions[i];
     var flag = false;
     for (var j = 0; j < selectedRoomsArr.length; j++) {
       if (currentOption.value === selectedRoomsArr[0]) {
-        adCapacity.value = currentOption.value;
+        adCapacitySelect.value = currentOption.value;
       }
       if (currentOption.value === selectedRoomsArr[j]) {
         flag = true;
@@ -281,6 +363,29 @@ var validateCapacity = function () {
       currentOption.setAttribute('disabled', 'disabled');
     }
   }
+};
+
+var validateType = function () {
+  var currentType = adTypeSelect.value;
+  adPriceField.min = MAP_MIN_PRICE[currentType].minPrice;
+  adPriceField.setAttribute('placeholder', MAP_MIN_PRICE[currentType].minPrice);
+};
+
+var validatePrice = function () {
+  var currentType = adTypeSelect.value;
+  if (adPriceField.validity.rangeUnderflow) {
+    adPriceField.setCustomValidity(MAP_MIN_PRICE[currentType].errorMessage);
+  } else {
+    adPriceField.setCustomValidity('');
+  }
+};
+
+var validateTimein = function () {
+  adTimeoutSelect.value = adTimeinSelect.value;
+};
+
+var validateTimeout = function () {
+  adTimeinSelect.value = adTimeoutSelect.value;
 };
 
 var addDisabled = function (htmlCollection) {
@@ -308,29 +413,49 @@ var toggleFormToActive = function () {
   noticeTitle.classList.remove('ad-form--disabled');
 };
 
-var formToActiveHandler = function () {
+var activatePage = function () {
   toggleMapToActive();
   toggleFormToActive();
   removeDisabled(adForm.children);
+  renderMockingData();
   renderAddress();
+  mapPinMain.removeEventListener('mousedown', activateMap);
+  mapPinMain.removeEventListener('keydown', activateMapHandler);
 };
 
-renderMockingData();
+var activateMap = function () {
+  activatePage();
+  validateCapacity();
+  validateType();
+  validateTimein();
+};
+
+var activateMapHandler = function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    activateMap();
+  }
+};
+
+mapPinMain.addEventListener('mousedown', activateMap);
+
+mapPinMain.addEventListener('keydown', activateMapHandler);
+
+adRoomNumberSelect.addEventListener('change', function () {
+  validateCapacity();
+});
+
+adTypeSelect.addEventListener('change', function () {
+  validateType();
+  validatePrice();
+});
+
+adPriceField.addEventListener('change', function () {
+  validatePrice();
+});
+
+adTimeinSelect.addEventListener('change', validateTimein);
+
+adTimeoutSelect.addEventListener('change', validateTimeout);
+
 toggleMapToDisabled();
 renderAddress();
-
-mapPinMain.addEventListener('mousedown', function () {
-  formToActiveHandler();
-  validateCapacity();
-});
-
-mapPinMain.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
-    formToActiveHandler();
-    validateCapacity();
-  }
-});
-
-adRoomNumber.addEventListener('change', function () {
-  validateCapacity();
-});
