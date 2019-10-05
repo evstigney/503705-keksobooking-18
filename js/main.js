@@ -453,13 +453,9 @@ adPriceField.addEventListener('change', function () {
   validatePrice();
 });
 
-adTimeinSelect.addEventListener('change', function () {
-  validateTimein();
-});
+adTimeinSelect.addEventListener('change', validateTimein);
 
-adTimeoutSelect.addEventListener('change', function () {
-  validateTimeout();
-});
+adTimeoutSelect.addEventListener('change', validateTimeout);
 
 toggleMapToDisabled();
 renderAddress();
