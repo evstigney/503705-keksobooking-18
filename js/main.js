@@ -137,9 +137,9 @@ var getLocationParameters = function (elem) {
   return location;
 };
 
-var getMockingAdsArr = function (quantity) {
+var getMockingAdsArr = function () {
   var mockingAds = [];
-  for (var i = 0; i < quantity; i++) {
+  for (var i = 0; i < ADS_QUANTITY; i++) {
     var locationParameters = getLocationParameters(map);
     var ad = {
       'author': {
@@ -166,6 +166,13 @@ var getMockingAdsArr = function (quantity) {
     mockingAds.push(ad);
   }
   return mockingAds;
+};
+
+var mockingData = {
+  adsArr: getMockingAdsArr(),
+  getCountOfPins: function () {
+    return this.adsArr.length;
+  }
 };
 
 var renderPin = function (ad) {
@@ -257,23 +264,23 @@ var isPin = function (elem) {
   return flag;
 };
 
-var renderMatchingPins = function (arr) {
-  for (var i = 0; i < arr.length; i++) {
-    var pin = renderPin(arr[i]);
+var renderMatchingPins = function () {
+  for (var i = 0; i < mockingData.getCountOfPins(); i++) {
+    var pin = renderPin(mockingData.adsArr[i]);
     mapPinsFragment.appendChild(pin);
   }
   mapPins.appendChild(mapPinsFragment);
   return mapPins;
 };
 
-var renderCard = function (arr, index) {
-  var card = getCard(arr[index]);
+var renderCard = function (index) {
+  var card = getCard(mockingData.adsArr[index]);
   mapCardsFragment.appendChild(card);
   map.insertBefore(mapCardsFragment, filters);
   return card;
 };
 
-var renderMatchingCard = function (target, arr) {
+var renderMatchingCard = function (target) {
   var allPins = mapPins.querySelectorAll('.map__pin');
   var matchingPins = [];
   for (var i = 0; i < allPins.length; i++) {
@@ -282,7 +289,7 @@ var renderMatchingCard = function (target, arr) {
     }
   }
   var index = matchingPins.indexOf(target);
-  var card = renderCard(arr, index);
+  var card = renderCard(index);
   var closePopupButtonHandler = function (evt) {
     if (evt.type === 'click' || evt.keyCode === ESC_KEYCODE) {
       map.removeChild(card);
@@ -299,8 +306,7 @@ var renderMatchingCard = function (target, arr) {
 };
 
 var renderMockingData = function () {
-  var mockingAdsArr = getMockingAdsArr(ADS_QUANTITY);
-  var pins = renderMatchingPins(mockingAdsArr);
+  var pins = renderMatchingPins();
   pins = pins.querySelectorAll('.map__pin');
   var checkCard = function () {
     if (map.querySelector('.map__card.popup')) {
@@ -311,7 +317,7 @@ var renderMockingData = function () {
   var openPopupCardHandler = function (evt) {
     if (evt.type === 'click' || evt.keyCode === ENTER_KEYCODE && document.activeElement === evt.currentTarget) {
       checkCard();
-      renderMatchingCard(evt.currentTarget, mockingAdsArr);
+      renderMatchingCard(evt.currentTarget);
     }
   };
   for (var i = 0; i < pins.length; i++) {
