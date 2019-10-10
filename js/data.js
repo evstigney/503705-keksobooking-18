@@ -45,13 +45,13 @@ window.data = (function () {
         minPrice: '1000',
         errorMessage: 'Для квартиры минимальная цена за ночь - 1000 рублей.'
       },
-      'house': {
-        minPrice: '5000',
-        errorMessage: 'Для дома минимальная цена за ночь - 5000 рублей.'
-      },
       'palace': {
         minPrice: '10000',
         errorMessage: 'Для дворца минимальная цена за ночь - 10000 рублей.'
+      },
+      'house': {
+        minPrice: '5000',
+        errorMessage: 'Для дома минимальная цена за ночь - 5000 рублей.'
       }
     }
   };

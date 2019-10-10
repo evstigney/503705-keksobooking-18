@@ -47,6 +47,11 @@ window.util = (function () {
         }
       }
       return randomArr;
+    },
+    removeDisabled: function (htmlCollection) {
+      for (var i = 0; i < htmlCollection.length; i++) {
+        htmlCollection[i].removeAttribute('disabled');
+      }
     }
   };
 })();
