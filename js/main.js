@@ -25,43 +25,6 @@ var MAIN_PIN_WIDTH = mapPinMain.getBoundingClientRect().width;
 var MAIN_PIN_HEIGHT = mapPinMain.getBoundingClientRect().height;
 var MAIN_PIN_BUTTON_HEIGHT = mapPinMainButton.getBoundingClientRect().height;
 
-var getRandomNumber = function (minNumber, maxNumber) {
-  return Math.floor(Math.random() * (Math.floor(maxNumber) - Math.ceil(minNumber) + 1) + Math.ceil(minNumber));
-};
-
-var getRandomValue = function (arr) {
-  var min = 0;
-  var max = arr.length - 1;
-  var index = getRandomNumber(min, max);
-  return arr[index];
-};
-
-var getRandomArr = function (arr) {
-  var min = 1;
-  var max = arr.length - 1;
-  var maxIndex = getRandomNumber(min, max);
-  var randomArr = [];
-  var flag = true;
-  for (var i = 0; i <= maxIndex; i++) {
-    var currentIndex = getRandomNumber(0, arr.length - 1);
-    if (i > 0) {
-      for (var j = 0; j < randomArr.length; j++) {
-        flag = true;
-        var currentValue = arr[currentIndex];
-        var randomValue = randomArr[j];
-        if (currentValue === randomValue) {
-          flag = false;
-          break;
-        }
-      }
-    }
-    if (flag) {
-      randomArr.push(arr[currentIndex]);
-    }
-  }
-  return randomArr;
-};
-
 var getAuthorAvatar = function (index) {
   index = '0' + (index + 1);
   return 'img/avatars/user' + index + '.png';
@@ -69,8 +32,8 @@ var getAuthorAvatar = function (index) {
 
 var getLocationParameters = function (elem) {
   var max = elem.getBoundingClientRect().width;
-  var locationX = getRandomNumber(0, max);
-  var locationY = getRandomNumber(window.data.LOCATION_Y_MIN, window.data.LOCATION_Y_MAX);
+  var locationX = window.util.getRandomNumber(0, max);
+  var locationY = window.util.getRandomNumber(window.data.LOCATION_Y_MIN, window.data.LOCATION_Y_MAX);
   var location = {
     x: locationX,
     y: locationY
@@ -89,15 +52,15 @@ var getMockingAdsArr = function () {
       'offer': {
         'title': 'Заголовок предложения. Это очень хорошее предложение.',
         'address': locationParameters.x + ', ' + locationParameters.y,
-        'price': getRandomNumber(window.data.PRICE_MIN, window.data.PRICE_MAX),
-        'type': getRandomValue(window.data.TYPES_ARR),
-        'rooms': getRandomNumber(window.data.ROOMS_MIN, window.data.ROOMS_MAX),
-        'guests': getRandomNumber(window.data.GUESTS_MIN, window.data.GUESTS_MAX),
-        'checkin': getRandomValue(window.data.CHECKIN_TIMES_ARR),
-        'checkout': getRandomValue(window.data.CHECKOUT_TIMES_ARR),
-        'features': getRandomArr(window.data.FEATURES_ARR),
+        'price': window.util.getRandomNumber(window.data.PRICE_MIN, window.data.PRICE_MAX),
+        'type': window.util.getRandomValue(window.data.TYPES_ARR),
+        'rooms': window.util.getRandomNumber(window.data.ROOMS_MIN, window.data.ROOMS_MAX),
+        'guests': window.util.getRandomNumber(window.data.GUESTS_MIN, window.data.GUESTS_MAX),
+        'checkin': window.util.getRandomValue(window.data.CHECKIN_TIMES_ARR),
+        'checkout': window.util.getRandomValue(window.data.CHECKOUT_TIMES_ARR),
+        'features': window.util.getRandomArr(window.data.FEATURES_ARR),
         'description': 'С точки зрения банальной эрудиции каждый индивидуум не может игнорировать критерии утопического субъективизма.',
-        'photos': getRandomArr(window.data.PHOTOS_ARR)
+        'photos': window.util.getRandomArr(window.data.PHOTOS_ARR)
       },
       'location': {
         'x': locationParameters.x,
