@@ -81,9 +81,9 @@ window.card = (function () {
       return cardElement;
     },
     renderCard: function (index) {
-      var card = this.getCard(window.map.mockingData.adsArr[index]);
+      var card = this.getCard(window.data.mockingData.adsArr[index]);
       mapCardsFragment.appendChild(card);
-      window.map.map.insertBefore(mapCardsFragment, filters);
+      window.data.map.insertBefore(mapCardsFragment, filters);
       return card;
     }
   };
