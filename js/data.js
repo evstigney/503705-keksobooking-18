@@ -18,11 +18,24 @@ window.data = (function () {
 
   var map = document.querySelector('.map');
 
+  /**
+   * Получаем адрес мокового аватара пользователя
+   *
+   * @param  {number} index индекс текущего объявления
+   * @return {string}       адрес изображения аватара пользователя
+   */
   var getAuthorAvatar = function (index) {
     index = '0' + (index + 1);
     return 'img/avatars/user' + index + '.png';
   };
 
+  /**
+   * Получаем координаты пина пользователя - набор случайных цифр
+   * в заданном диапазоне
+   *
+   * @param  {object} elem пин пользователя (обычный, не главный)
+   * @return {object}      объект с координатами x y пина
+   */
   var getLocationParameters = function (elem) {
     var max = elem.getBoundingClientRect().width;
     var locationX = window.util.getRandomNumber(0, max);
@@ -34,6 +47,11 @@ window.data = (function () {
     return location;
   };
 
+  /**
+   * Составляем массив из объектов с моковыми данными
+   *
+   * @return {object}  массив с моковыми данными
+   */
   var getMockingAdsArr = function () {
     var mockingAds = [];
     for (var i = 0; i < ADS_QUANTITY; i++) {
@@ -80,6 +98,10 @@ window.data = (function () {
     ROOMS_MAX: ROOMS_MAX,
     GUESTS_MIN: GUESTS_MIN,
     GUESTS_MAX: GUESTS_MAX,
+
+    /**
+     * Карта соответствий наличия фичей (удобств) в жильте и css классов в разметке
+     */
     MAP_FEATURES_CLASSES: {
       'wifi': 'popup__feature--wifi',
       'dishwasher': 'popup__feature--dishwasher',
@@ -88,18 +110,32 @@ window.data = (function () {
       'elevator': 'popup__feature--elevator',
       'conditioner': 'popup__feature--conditioner'
     },
+
+    /**
+     * Карта соответствий типов жилья и их значений
+     */
     MAP_TYPES: {
       'flat': 'Квартира',
       'bungalo': 'Бунгало',
       'house': 'Дом',
       'palace': 'Дворец'
     },
+
+    /**
+     * Карта соответствий количества комнат и количества гостей
+     */
     MAP_CAPACITY: {
       1: ['1'],
       2: ['2', '1'],
       3: ['3', '2', '1'],
       100: ['0']
     },
+
+    /**
+     * Карта соответствий типа жилья и его минимальной стоимости,
+     * а также сообщения об ошибке при неверном вводе стоимости для
+     * данного типа жилья
+     */
     MAP_MIN_PRICE: {
       'bungalo': {
         minPrice: '0',
@@ -119,6 +155,11 @@ window.data = (function () {
       }
     },
     map: map,
+
+    /**
+     * Объект соостоящий их массива с моковыми данными и
+     * общего количества объявлений (следовательно и пинов)
+     */
     mockingData: {
       adsArr: getMockingAdsArr(),
       getCountOfPins: function () {

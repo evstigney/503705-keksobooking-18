@@ -5,6 +5,14 @@ window.card = (function () {
   var mapCardsFragment = document.createDocumentFragment();
   var filters = document.querySelector('.map__filters-container');
 
+  /**
+   * Получаем строку с количеством комнат и гостей для карточки,
+   * проверка падежных окончаний для корректного отображения строки в карточке
+   *
+   * @param  {number} rooms  количество комнат в объявлении
+   * @param  {number} guests количество гостей, которых можно в комнатах разместить
+   * @return {string}        строка, составленнная из данного количества комнат и гостей
+   */
   var getCapacityMessage = function (rooms, guests) {
     var roomsInCase = (rooms === 1) ? 'комната' : 'комнаты';
     var guestsInCase = 'гостей';
@@ -20,6 +28,13 @@ window.card = (function () {
     return message;
   };
 
+  /**
+   * Для доступных фмчей объявления (удобств) добавляем подходящие css классы
+   *
+   * @param  {object} elem блок в разметке, где отображаются доступные фичи для этого объявления
+   * @param  {object} arr  массив с доступными фичами для этого объявления
+   * @return {object}      блок в размеке с фичами, к которым добавлены корректные css классы
+   */
   var getPopupFeatures = function (elem, arr) {
     var features = elem.querySelectorAll('.popup__feature');
     for (var i = features.length - 1; i >= 0; i--) {
@@ -40,6 +55,13 @@ window.card = (function () {
     return features;
   };
 
+  /**
+   * Добавляем фотографии жилья в карточку
+   *
+   * @param  {object} elem блок в разметке, куда добавляются фотографии жилья
+   * @param  {object} arr  массив с фотографиями жилья для этого объявления
+   * @return {object}      блок в разметке, куда добавлены фотографии жилья
+   */
   var getPopupPhotos = function (elem, arr) {
     var photo = elem.querySelector('img');
     var i = 0;
@@ -54,6 +76,13 @@ window.card = (function () {
   };
 
   return {
+
+    /**
+     * Составляем нужную карточку для конкретного объявления
+     *
+     * @param  {object} ad объект из массива с объявлениями (одно объявление)
+     * @return {object}    составляем карточка
+     */
     getCard: function (ad) {
       var cardElement = mapCard.cloneNode(true);
       var title = cardElement.querySelector('.popup__title');
@@ -80,6 +109,13 @@ window.card = (function () {
       popupAvatar.src = ad.author.avatar;
       return cardElement;
     },
+
+    /**
+     * Отрисовывем нужную карточку по индексу пина
+     *
+     * @param  {number} index индекс кликнутого пина
+     * @return {object}       отрисованная карточка
+     */
     renderCard: function (index) {
       var card = this.getCard(window.data.mockingData.adsArr[index]);
       mapCardsFragment.appendChild(card);

@@ -11,14 +11,23 @@ window.form = (function () {
   var adTimeinSelect = adForm.querySelector('#timein');
   var adTimeoutSelect = adForm.querySelector('#timeout');
 
+  /**
+   * Время выезда приравниваем к времени заезда
+   */
   var validateTimein = function () {
     adTimeoutSelect.value = adTimeinSelect.value;
   };
 
+  /**
+   * Время заезда приравниваем к времени выезда
+   */
   var validateTimeout = function () {
     adTimeinSelect.value = adTimeoutSelect.value;
   };
 
+  /**
+   * Проверяем поле ввода цены, если неверно - выводим сообщение об ошибке
+   */
   var validatePrice = function () {
     var currentType = adTypeSelect.value;
     if (adPriceField.validity.rangeUnderflow) {
@@ -28,22 +37,20 @@ window.form = (function () {
     }
   };
 
+  /**
+   * В зависимости от выбранного типа жилья записываем в placeholder
+   * минимальную цену для этого типа
+   */
   var validateType = function () {
     var currentType = adTypeSelect.value;
     adPriceField.min = window.data.MAP_MIN_PRICE[currentType].minPrice;
     adPriceField.setAttribute('placeholder', window.data.MAP_MIN_PRICE[currentType].minPrice);
   };
 
-  var addDisabled = function (htmlCollection) {
-    for (var i = 0; i < htmlCollection.length; i++) {
-      htmlCollection[i].setAttribute('disabled', 'disabled');
-    }
-  };
-
-  var toggleMapToDisabled = function () {
-    addDisabled(adForm.children);
-  };
-
+  /**
+   * В зависимости от выбранного количества комнат делаем неактивными
+   *  количество гостей, которые к этому количеству комнат не подходят по ТЗ
+   */
   var validateCapacity = function () {
     var capacityOptions = adCapacitySelect.options;
     var selectedRooms = adRoomNumberSelect.value;
@@ -68,6 +75,12 @@ window.form = (function () {
     }
   };
 
+  /**
+   *  Отрисовка адреса в форме в поле ввода адреса в зависимости
+   * от положения главного пина
+   *
+   * @return {string}  координаты главного пина
+   */
   var renderAddress = function () {
     var address = Math.round(window.map.MAIN_PIN_X + window.map.MAIN_PIN_WIDTH / 2 + pageXOffset) + ', ';
     if (adForm.classList.contains('ad-form--disabled')) {
@@ -91,11 +104,15 @@ window.form = (function () {
     validateCapacity();
   });
 
-  toggleMapToDisabled();
+  window.util.addDisabled(adForm.children);
   renderAddress();
 
   return {
     adForm: adForm,
+
+    /**
+     * Метод визуально переключает форму в активное состояние путем удаления классов
+     */
     toggleFormToActive: function () {
       adForm.classList.remove('ad-form--disabled');
       noticeTitle.classList.remove('ad-form--disabled');
