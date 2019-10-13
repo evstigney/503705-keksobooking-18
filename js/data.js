@@ -22,6 +22,8 @@ window.data = (function () {
   var PHOTOS_ARR = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
   var map = document.querySelector('.map');
+  var adForm = document.querySelector('.ad-form');
+  var adAddressField = adForm.querySelector('#address');
 
   /**
    * Получаем адрес мокового аватара пользователя
@@ -89,6 +91,8 @@ window.data = (function () {
   };
 
   return {
+    LOCATION_Y_MIN: LOCATION_Y_MIN,
+    LOCATION_Y_MAX: LOCATION_Y_MAX,
     /**
      * Карта соответствий наличия фичей (удобств) в жильте и css классов в разметке
      */
@@ -145,6 +149,8 @@ window.data = (function () {
       }
     },
     map: map,
+    adForm: adForm,
+    adAddressField: adAddressField,
 
     /**
      * Объект соостоящий их массива с моковыми данными и
