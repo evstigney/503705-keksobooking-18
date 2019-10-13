@@ -3,7 +3,7 @@
 /**
  * Модуль по работе с главным пином карты
  *
- * @return {object}  главый пин, его координаты
+ * @return {object}  главый пин, его координаты, метод
  */
 window.pinMain = (function () {
   var map = window.data.map;
@@ -11,12 +11,9 @@ window.pinMain = (function () {
   var pinButton = map.querySelector('button.map__pin--main');
   var addressField = window.data.adAddressField;
 
-  // var MAIN_PIN_WIDTH = pinMain.getBoundingClientRect().width;
-  //  var MAIN_PIN_HEIGHT = pinMain.getBoundingClientRect().height;
+  var MAP_WIDTH = map.getBoundingClientRect().width;
   var MAIN_PIN_BUTTON_WIDTH = pinButton.getBoundingClientRect().width;
   var MAIN_PIN_BUTTON_HEIGHT = pinButton.getBoundingClientRect().height;
-  // var LOCATION_X_MIN = map.offsetLeft + MAIN_PIN_WIDTH / 2;
-  // var LOCATION_X_MAX = map.offsetLeft + window.data.map.getBoundingClientRect().width - MAIN_PIN_WIDTH / 2;
 
   var location = {
     x: Math.round(pinButton.offsetLeft + MAIN_PIN_BUTTON_WIDTH / 2),
@@ -82,8 +79,13 @@ window.pinMain = (function () {
         location.y = (location.y > window.data.LOCATION_Y_MAX) ? window.data.LOCATION_Y_MAX : window.data.LOCATION_Y_MIN;
         styleTop = pinMain.offsetTop;
       }
+      var styleLeft = pinMain.offsetLeft - shift.x;
+      if (location.x < 0 || location.x > MAP_WIDTH) {
+        location.x = (location.x < 0) ? 0 : MAP_WIDTH;
+        styleLeft = pinMain.offsetLeft;
+      }
       pinMain.style.top = styleTop + 'px';
-      pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      pinMain.style.left = styleLeft + 'px';
       renderAddress();
     };
 
