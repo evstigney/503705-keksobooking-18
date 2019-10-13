@@ -6,15 +6,13 @@
  * @return {object}  форма, методы
  */
 window.form = (function () {
-  var adForm = document.querySelector('.ad-form');
   var noticeTitle = document.querySelector('.notice__title');
-  var adAddressField = adForm.querySelector('#address');
-  var adCapacitySelect = adForm.querySelector('#capacity');
-  var adRoomNumberSelect = adForm.querySelector('#room_number');
-  var adTypeSelect = adForm.querySelector('#type');
-  var adPriceField = adForm.querySelector('#price');
-  var adTimeinSelect = adForm.querySelector('#timein');
-  var adTimeoutSelect = adForm.querySelector('#timeout');
+  var adCapacitySelect = window.data.adForm.querySelector('#capacity');
+  var adRoomNumberSelect = window.data.adForm.querySelector('#room_number');
+  var adTypeSelect = window.data.adForm.querySelector('#type');
+  var adPriceField = window.data.adForm.querySelector('#price');
+  var adTimeinSelect = window.data.adForm.querySelector('#timein');
+  var adTimeoutSelect = window.data.adForm.querySelector('#timeout');
 
   /**
    * Время выезда приравниваем к времени заезда
@@ -80,24 +78,6 @@ window.form = (function () {
     }
   };
 
-  /**
-   *  Отрисовка адреса в форме в поле ввода адреса в зависимости
-   * от положения главного пина
-   *
-   * @return {string}  координаты главного пина
-   */
-  var renderAddress = function () {
-    var address = Math.round(window.map.MAIN_PIN_X + window.map.MAIN_PIN_WIDTH / 2 + pageXOffset) + ', ';
-    if (adForm.classList.contains('ad-form--disabled')) {
-      address += Math.round(window.map.MAIN_PIN_Y + window.map.MAIN_PIN_HEIGHT / 2 + pageYOffset);
-    } else {
-      address += Math.round(window.map.MAIN_PIN_Y + window.map.MAIN_PIN_HEIGHT + window.map.MAIN_PIN_BUTTON_HEIGHT + pageYOffset);
-    }
-    adAddressField.setAttribute('placeholder', address);
-    adAddressField.value = address;
-    return address;
-  };
-
   adTimeinSelect.addEventListener('change', validateTimein);
   adTimeoutSelect.addEventListener('change', validateTimeout);
   adPriceField.addEventListener('change', validatePrice);
@@ -109,20 +89,17 @@ window.form = (function () {
     validateCapacity();
   });
 
-  window.util.addDisabled(adForm.children);
-  renderAddress();
+  window.util.addDisabled(window.data.adForm.children);
+  window.pinMain.renderAddress();
 
   return {
-    adForm: adForm,
-
     /**
      * Метод визуально переключает форму в активное состояние путем удаления классов
      */
     toggleFormToActive: function () {
-      adForm.classList.remove('ad-form--disabled');
+      window.data.adForm.classList.remove('ad-form--disabled');
       noticeTitle.classList.remove('ad-form--disabled');
     },
-    renderAddress: renderAddress,
     validateCapacity: validateCapacity,
     validateType: validateType,
     validateTimein: validateTimein

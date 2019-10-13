@@ -7,15 +7,7 @@
  */
 window.map = (function () {
   var mapPins = window.data.map.querySelector('.map__pins');
-  var mapPinMain = window.data.map.querySelector('.map__pin--main');
-  var mapPinMainButton = window.data.map.querySelector('button.map__pin--main');
   var mapPinsFragment = document.createDocumentFragment();
-
-  var MAIN_PIN_X = mapPinMain.getBoundingClientRect().x;
-  var MAIN_PIN_Y = mapPinMain.getBoundingClientRect().y;
-  var MAIN_PIN_WIDTH = mapPinMain.getBoundingClientRect().width;
-  var MAIN_PIN_HEIGHT = mapPinMain.getBoundingClientRect().height;
-  var MAIN_PIN_BUTTON_HEIGHT = mapPinMainButton.getBoundingClientRect().height;
 
   /**
    * Описываю отрисовку пинов на основе моковых данных
@@ -126,11 +118,11 @@ window.map = (function () {
   var activatePage = function () {
     window.data.map.classList.remove('map--faded');
     window.form.toggleFormToActive();
-    window.util.removeDisabled(window.form.adForm.children);
+    window.util.removeDisabled(window.data.adForm.children);
     renderMockingData();
-    window.form.renderAddress();
-    mapPinMain.removeEventListener('mousedown', activateMap);
-    mapPinMain.removeEventListener('keydown', activateMapHandler);
+    window.pinMain.renderAddress();
+    window.pinMain.pin.removeEventListener('mousedown', activateMap);
+    window.pinMain.pin.removeEventListener('keydown', activateMapHandler);
   };
 
   /**
@@ -149,15 +141,10 @@ window.map = (function () {
     window.util.isEnterEvent(evt, activateMap);
   };
 
-  mapPinMain.addEventListener('mousedown', activateMap);
-  mapPinMain.addEventListener('keydown', activateMapHandler);
+  window.pinMain.pin.addEventListener('mousedown', activateMap);
+  window.pinMain.pin.addEventListener('keydown', activateMapHandler);
 
   return {
     mapPins: mapPins,
-    MAIN_PIN_X: MAIN_PIN_X,
-    MAIN_PIN_Y: MAIN_PIN_Y,
-    MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
-    MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
-    MAIN_PIN_BUTTON_HEIGHT: MAIN_PIN_BUTTON_HEIGHT
   };
 })();
