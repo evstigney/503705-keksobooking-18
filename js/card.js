@@ -1,16 +1,20 @@
 'use strict';
 
+/**
+ * Модуль для работы с карточкой объявления
+ *
+ * @return {object}  набот методов
+ */
 window.card = (function () {
   var mapCard = document.querySelector('#card').content.querySelector('.map__card');
   var mapCardsFragment = document.createDocumentFragment();
   var filters = document.querySelector('.map__filters-container');
 
   /**
-   * Получаем строку с количеством комнат и гостей для карточки,
-   * проверка падежных окончаний для корректного отображения строки в карточке
+   * Получаем строку с количеством комнат и гостей для карточки
    *
    * @param  {number} rooms  количество комнат в объявлении
-   * @param  {number} guests количество гостей, которых можно в комнатах разместить
+   * @param  {number} guests количество гостей
    * @return {string}        строка, составленнная из данного количества комнат и гостей
    */
   var getCapacityMessage = function (rooms, guests) {
@@ -29,7 +33,7 @@ window.card = (function () {
   };
 
   /**
-   * Для доступных фмчей объявления (удобств) добавляем подходящие css классы
+   * Для доступных фичей объявления (удобств) добавляем подходящие css классы
    *
    * @param  {object} elem блок в разметке, где отображаются доступные фичи для этого объявления
    * @param  {object} arr  массив с доступными фичами для этого объявления
@@ -59,7 +63,7 @@ window.card = (function () {
    * Добавляем фотографии жилья в карточку
    *
    * @param  {object} elem блок в разметке, куда добавляются фотографии жилья
-   * @param  {object} arr  массив с фотографиями жилья для этого объявления
+   * @param  {object} arr  массив с фотографиями жилья
    * @return {object}      блок в разметке, куда добавлены фотографии жилья
    */
   var getPopupPhotos = function (elem, arr) {
@@ -81,7 +85,7 @@ window.card = (function () {
      * Составляем нужную карточку для конкретного объявления
      *
      * @param  {object} ad объект из массива с объявлениями (одно объявление)
-     * @return {object}    составляем карточка
+     * @return {object}    карточка объявления
      */
     getCard: function (ad) {
       var cardElement = mapCard.cloneNode(true);

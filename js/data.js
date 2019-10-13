@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * Модуль для работы с данными
+ *
+ * @return {type}  description
+ */
 window.data = (function () {
   var ADS_QUANTITY = 8;
   var LOCATION_Y_MIN = 130;
@@ -84,21 +89,6 @@ window.data = (function () {
   };
 
   return {
-    TYPES_ARR: TYPES_ARR,
-    CHECKIN_TIMES_ARR: CHECKIN_TIMES_ARR,
-    CHECKOUT_TIMES_ARR: CHECKOUT_TIMES_ARR,
-    FEATURES_ARR: FEATURES_ARR,
-    PHOTOS_ARR: PHOTOS_ARR,
-    ADS_QUANTITY: ADS_QUANTITY,
-    LOCATION_Y_MIN: LOCATION_Y_MIN,
-    LOCATION_Y_MAX: LOCATION_Y_MAX,
-    PRICE_MIN: PRICE_MIN,
-    PRICE_MAX: PRICE_MAX,
-    ROOMS_MIN: ROOMS_MIN,
-    ROOMS_MAX: ROOMS_MAX,
-    GUESTS_MIN: GUESTS_MIN,
-    GUESTS_MAX: GUESTS_MAX,
-
     /**
      * Карта соответствий наличия фичей (удобств) в жильте и css классов в разметке
      */

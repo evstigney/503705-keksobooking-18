@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * Модуль со служебными программами
+ *
+ * @return {object} набор служебных функций и данных
+ */
 window.util = (function () {
   return {
     ESC_KEYCODE: 27,

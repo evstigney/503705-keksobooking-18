@@ -1,4 +1,10 @@
 'use strict';
+
+/**
+ * Модуль для работы с пином
+ *
+ * @return {object}  методы
+ */
 window.pin = (function () {
   var mapPin = document.querySelector('#pin').content.querySelector('.map__pin');
 

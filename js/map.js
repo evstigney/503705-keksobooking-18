@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * Метод для работы с картой
+ *
+ * @return {object}  главный пин с параметрами и обычные пины
+ */
 window.map = (function () {
   var mapPins = window.data.map.querySelector('.map__pins');
   var mapPinMain = window.data.map.querySelector('.map__pin--main');

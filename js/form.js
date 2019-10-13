@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * Модуль для работы с формой объявления
+ *
+ * @return {object}  форма, методы
+ */
 window.form = (function () {
   var adForm = document.querySelector('.ad-form');
   var noticeTitle = document.querySelector('.notice__title');
