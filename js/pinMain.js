@@ -46,13 +46,23 @@ window.pinMain = (function () {
     return flag;
   };
 
+  /**
+   * Описываем событие по нажатию на гл пин
+   *
+   * @param  {object} evt объект события Event
+   */
   var onMouseDown = function (evt) {
     evt.preventDefault();
-    var dragged = false;
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
     };
+
+    /**
+     * Описываем событие по перемещению зажатой мыши
+     *
+     * @param  {object} moveEvt объект события Event
+     */
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       var shift = {
@@ -76,9 +86,14 @@ window.pinMain = (function () {
       pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
       renderAddress();
     };
+
+    /**
+     * Описываем событие по поднятию клавиши мыши
+     *
+     * @param  {object} upEvt объект события Event
+     */
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      console.log('up');
       map.removeEventListener('mousedown', onMouseDown);
       map.removeEventListener('mousemove', onMouseMove);
     };
@@ -86,6 +101,10 @@ window.pinMain = (function () {
     document.addEventListener('mouseup', onMouseUp);
   };
 
+
+  /**
+   * Обработчик проверяет активна ли карта и запускает событие нажатия
+   */
   var pinMainHandler = function () {
     if (isMapActive) {
       pinMain.addEventListener('mousedown', onMouseDown);
