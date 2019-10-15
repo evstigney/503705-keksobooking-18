@@ -5,6 +5,7 @@
  *
  * @return {type}  description
  */
+
 window.data = (function () {
   var ADS_QUANTITY = 8;
   var LOCATION_Y_MIN = 130;
@@ -24,7 +25,20 @@ window.data = (function () {
   var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
   var adAddressField = adForm.querySelector('#address');
+  var serverData = [];
 
+  var successLoad = function (data) {
+    for (var i = 0; i < data.length; i++) {
+      serverData.push(data[i]);
+    }
+    return serverData;
+  };
+
+  var failLoad = function (message) {
+    return message;
+  };
+
+  window.backend.load(successLoad, failLoad);
   /**
    * Получаем адрес мокового аватара пользователя
    *
@@ -161,6 +175,7 @@ window.data = (function () {
       getCountOfPins: function () {
         return this.adsArr.length;
       }
-    }
+    },
+    serverData: serverData
   };
 })();

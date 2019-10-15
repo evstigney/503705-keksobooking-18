@@ -15,8 +15,8 @@ window.map = (function () {
    * @return {object}  отрисованные пины
    */
   var renderMatchingPins = function () {
-    for (var i = 0; i < window.data.mockingData.getCountOfPins(); i++) {
-      var pin = window.pin.renderPin(window.data.mockingData.adsArr[i]);
+    for (var i = 0; i < window.data.serverData.length; i++) {
+      var pin = window.pin.renderPin(window.data.serverData[i]);
       mapPinsFragment.appendChild(pin);
     }
     mapPins.appendChild(mapPinsFragment);

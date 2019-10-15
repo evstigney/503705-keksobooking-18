@@ -3,7 +3,7 @@
 /**
  * Модуль для работы с карточкой объявления
  *
- * @return {object}  набот методов
+ * @return {object}  набор методов
  */
 window.card = (function () {
   var mapCard = document.querySelector('#card').content.querySelector('.map__card');
