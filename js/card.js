@@ -93,7 +93,6 @@ window.card = (function () {
       flag = false;
     } else if (previousCard) {
       window.data.map.removeChild(previousCard);
-      flag = true;
     }
     return flag;
   };
