@@ -121,7 +121,7 @@ window.card = (function () {
      * @return {object}       отрисованная карточка
      */
     renderCard: function (index) {
-      var card = this.getCard(window.data.mockingData.adsArr[index]);
+      var card = this.getCard(window.data.serverData[index]);
       mapCardsFragment.appendChild(card);
       window.data.map.insertBefore(mapCardsFragment, filters);
       return card;
