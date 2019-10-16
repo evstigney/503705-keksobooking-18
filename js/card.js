@@ -79,6 +79,25 @@ window.card = (function () {
     return elem;
   };
 
+  /**
+   * Проверяем перед открытием карточки - не открыта ли другая на странице,
+   * если открыта - предыдущую удаляем
+   *
+   * @param {object} nextCard карточка объявления
+   * @return {boolean}        нужно ли отрисовывать новую карточку
+   */
+  var checkCard = function (nextCard) {
+    var flag = true;
+    var previousCard = window.data.map.querySelector('.map__card.popup');
+    if (previousCard && previousCard === nextCard) {
+      flag = false;
+    } else if (previousCard) {
+      window.data.map.removeChild(previousCard);
+      flag = true;
+    }
+    return flag;
+  };
+
   return {
     /**
      * Составляем нужную карточку для конкретного объявления
@@ -120,9 +139,8 @@ window.card = (function () {
      * @return {object}       отрисованная карточка
      */
     renderCard: function (index) {
-      var previousCard = document.querySelector('.map__card.popup');
       var card = this.getCard(window.data.serverData.adsArr[index]);
-      if (!previousCard || previousCard !== card) {
+      if (checkCard(card)) {
         mapCardsFragment.appendChild(card);
         window.data.map.insertBefore(mapCardsFragment, filters);
       }
