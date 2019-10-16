@@ -9,6 +9,7 @@ window.util = (function () {
   return {
     ESC_KEYCODE: 27,
     ENTER_KEYCODE: 13,
+
     /**
      * Событие происходит по нажатию клавиши ESC
      *

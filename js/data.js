@@ -5,7 +5,6 @@
  *
  * @return {object}
  */
-
 window.data = (function () {
   var ADS_QUANTITY = 8;
   var LOCATION_Y_MIN = 130;
@@ -48,7 +47,6 @@ window.data = (function () {
   var renderErrorMessage = function (message) {
     var popupTemplate = document.querySelector('#error').content.querySelector('.error');
     var popupMessage = popupTemplate.querySelector('.error__message');
-
 
     /**
      * Удаляем сообщение
@@ -211,11 +209,6 @@ window.data = (function () {
     map: map,
     adForm: adForm,
     adAddressField: adAddressField,
-
-    /**
-     * Объект соостоящий их массива с моковыми данными и
-     * общего количества объявлений (следовательно и пинов)
-     */
     mockingData: {
       adsArr: getMockingAdsArr()
     },

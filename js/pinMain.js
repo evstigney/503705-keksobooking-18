@@ -103,7 +103,6 @@ window.pinMain = (function () {
     document.addEventListener('mouseup', onMouseUp);
   };
 
-
   /**
    * Обработчик проверяет активна ли карта и запускает событие нажатия
    */

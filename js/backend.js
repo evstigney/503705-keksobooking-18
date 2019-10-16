@@ -45,7 +45,6 @@ window.backend = (function () {
   };
 
   return {
-
     /**
      * Загрузка данных с сервера
      *
