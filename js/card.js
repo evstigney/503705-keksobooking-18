@@ -122,7 +122,7 @@ window.card = (function () {
      */
     renderCard: function (index) {
       var previousCard = document.querySelector('.map__card.popup');
-      var card = this.getCard(window.data.serverData[index]);
+      var card = this.getCard(window.data.serverData.adsArr[index]);
       if (!previousCard || previousCard !== card) {
         mapCardsFragment.appendChild(card);
         window.data.map.insertBefore(mapCardsFragment, filters);

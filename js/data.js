@@ -25,7 +25,7 @@ window.data = (function () {
   var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
   var adAddressField = adForm.querySelector('#address');
-  var serverData = [];
+  var serverAdsArr = [];
 
   /**
    * Получаем данные в массив
@@ -35,9 +35,9 @@ window.data = (function () {
    */
   var successLoad = function (data) {
     for (var i = 0; i < data.length; i++) {
-      serverData.push(data[i]);
+      serverAdsArr.push(data[i]);
     }
-    return serverData;
+    return serverAdsArr;
   };
 
   /**
@@ -217,11 +217,10 @@ window.data = (function () {
      * общего количества объявлений (следовательно и пинов)
      */
     mockingData: {
-      adsArr: getMockingAdsArr(),
-      getCountOfPins: function () {
-        return this.adsArr.length;
-      }
+      adsArr: getMockingAdsArr()
     },
-    serverData: serverData
+    serverData: {
+      adsArr: serverAdsArr
+    }
   };
 })();
