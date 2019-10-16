@@ -34,8 +34,27 @@ window.data = (function () {
     return serverData;
   };
 
+  var renderErrorMessage = function (message) {
+    var popupTemplate = document.querySelector('#error').content.querySelector('.error');
+    var popupMessage = popupTemplate.querySelector('.error__message');
+    var closePopupHandler = function () {
+      popup.remove();
+    };
+    popupMessage.textContent = message;
+    document.body.querySelector('main').append(popupTemplate);
+    if (document.querySelector('main').querySelector('.error')) {
+      var popup = document.querySelector('main').querySelector('.error');
+      var button = popup.querySelector('.error__button');
+    }
+    button.addEventListener('click', closePopupHandler);
+    document.addEventListener('keydown', function (evt) {
+      window.util.isEscEvent(evt, closePopupHandler);
+    });
+    document.addEventListener('click', closePopupHandler);
+  };
+
   var failLoad = function (message) {
-    return message;
+    renderErrorMessage(message);
   };
 
   window.backend.load(successLoad, failLoad);
