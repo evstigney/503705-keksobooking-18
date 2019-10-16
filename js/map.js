@@ -15,8 +15,8 @@ window.map = (function () {
    * @return {object}  отрисованные пины
    */
   var renderMatchingPins = function () {
-    for (var i = 0; i < window.data.mockingData.getCountOfPins(); i++) {
-      var pin = window.pin.renderPin(window.data.mockingData.adsArr[i]);
+    for (var i = 0; i < window.data.serverData.adsArr.length; i++) {
+      var pin = window.pin.renderPin(window.data.serverData.adsArr[i]);
       mapPinsFragment.appendChild(pin);
     }
     mapPins.appendChild(mapPinsFragment);
@@ -73,17 +73,6 @@ window.map = (function () {
     pins = pins.querySelectorAll('.map__pin');
 
     /**
-     * Проверяем перед открытием карточки - не открыта ли другая на странице,
-     * если открыта - предыдущую удаляем
-     */
-    var checkCard = function () {
-      if (window.data.map.querySelector('.map__card.popup')) {
-        var previousCard = window.data.map.querySelector('.map__card.popup');
-        window.data.map.removeChild(previousCard);
-      }
-    };
-
-    /**
      * Обработчик событий клика и ENTER, по наступлению которых
      * запускаем проверку отрисоку предыдущих карточек и
      * запускаем отрисовку новой
@@ -92,7 +81,6 @@ window.map = (function () {
      */
     var openPopupCardHandler = function (evt) {
       if (evt.type === 'click' || evt.keyCode === window.util.ENTER_KEYCODE && document.activeElement === evt.currentTarget) {
-        checkCard();
         renderMatchingCard(evt.currentTarget);
       }
     };

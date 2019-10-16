@@ -9,7 +9,6 @@ window.pin = (function () {
   var mapPin = document.querySelector('#pin').content.querySelector('.map__pin');
 
   return {
-
     /**
      * составляем один html элемент пина на основе заданного объявления
      *
