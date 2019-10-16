@@ -121,9 +121,12 @@ window.card = (function () {
      * @return {object}       отрисованная карточка
      */
     renderCard: function (index) {
+      var previousCard = document.querySelector('.map__card.popup');
       var card = this.getCard(window.data.serverData[index]);
-      mapCardsFragment.appendChild(card);
-      window.data.map.insertBefore(mapCardsFragment, filters);
+      if (!previousCard || previousCard !== card) {
+        mapCardsFragment.appendChild(card);
+        window.data.map.insertBefore(mapCardsFragment, filters);
+      }
       return card;
     }
   };
