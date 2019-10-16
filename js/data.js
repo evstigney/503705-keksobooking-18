@@ -3,7 +3,7 @@
 /**
  * Модуль для работы с данными
  *
- * @return {type}  description
+ * @return {object}
  */
 
 window.data = (function () {
@@ -27,6 +27,12 @@ window.data = (function () {
   var adAddressField = adForm.querySelector('#address');
   var serverData = [];
 
+  /**
+   * Получаем данные в массив
+   *
+   * @param  {object} data полученные данные
+   * @return {object}      массив полученных данных
+   */
   var successLoad = function (data) {
     for (var i = 0; i < data.length; i++) {
       serverData.push(data[i]);
@@ -34,30 +40,51 @@ window.data = (function () {
     return serverData;
   };
 
+  /**
+   * Отрисовываем на странице сообщение об ошибке
+   *
+   * @param  {string} message
+   */
   var renderErrorMessage = function (message) {
     var popupTemplate = document.querySelector('#error').content.querySelector('.error');
     var popupMessage = popupTemplate.querySelector('.error__message');
+
+
+    /**
+     * Удаляем сообщение
+     *
+     */
     var closePopupHandler = function () {
       popup.remove();
     };
+
     popupMessage.textContent = message;
     document.body.querySelector('main').append(popupTemplate);
+
     if (document.querySelector('main').querySelector('.error')) {
       var popup = document.querySelector('main').querySelector('.error');
       var button = popup.querySelector('.error__button');
+
+      button.addEventListener('click', closePopupHandler);
+      document.addEventListener('click', closePopupHandler);
+      document.addEventListener('keydown', function (evt) {
+        window.util.isEscEvent(evt, closePopupHandler);
+      });
     }
-    button.addEventListener('click', closePopupHandler);
-    document.addEventListener('keydown', function (evt) {
-      window.util.isEscEvent(evt, closePopupHandler);
-    });
-    document.addEventListener('click', closePopupHandler);
   };
 
+  /**
+   * Обработки ошибки загрузки данных
+   * пока оставлю на случай, если - кроме сообщения - другие действия нужны будут
+   *
+   * @param  {string} message
+   */
   var failLoad = function (message) {
     renderErrorMessage(message);
   };
 
   window.backend.load(successLoad, failLoad);
+
   /**
    * Получаем адрес мокового аватара пользователя
    *
