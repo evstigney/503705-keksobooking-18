@@ -17,16 +17,6 @@ window.form = (function () {
   var adTimeoutSelect = adForm.querySelector('#timeout');
 
   /**
-   * Значения полей ввода по умолчанию
-   */
-  var fieldsDefaultValues = {
-    text: window.util.getValues(adForm.querySelectorAll('input[type="text"]')),
-    number: window.util.getValues(adForm.querySelectorAll('input[type="number"]')),
-    select: window.util.getValues(adForm.querySelectorAll('select')),
-    textarea: window.util.getValues(adForm.querySelectorAll('textarea'))
-  };
-
-  /**
    * Время выезда приравниваем к времени заезда
    */
   var validateTimein = function () {
@@ -91,21 +81,6 @@ window.form = (function () {
   };
 
   /**
-   * Устанавливаем полям ввода значения по умалчанию
-   */
-  var setDefaultValues = function () {
-    var inputsTypeText = adForm.querySelectorAll('input[type="text"]');
-    var selects = adForm.querySelectorAll('select');
-    var textareas = adForm.querySelectorAll('textarea');
-    window.util.setValues(inputsTypeText, fieldsDefaultValues.text);
-    window.util.setValues(selects, fieldsDefaultValues.select);
-    window.util.setValues(textareas, fieldsDefaultValues.textarea);
-    var inputPrice = adForm.querySelector('#price');
-    inputPrice.value = '';
-    validateCapacity();
-  };
-
-  /**
    * Отрисовывем сообщение об успешной загрузке объяления на сервер
    */
   var renderSuccessMessage = function () {
@@ -129,7 +104,8 @@ window.form = (function () {
    */
   var onLoad = function () {
     renderSuccessMessage();
-    setDefaultValues();
+    adForm.reset();
+    validateCapacity();
     window.map.reset();
   };
 

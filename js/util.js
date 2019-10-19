@@ -114,33 +114,6 @@ window.util = (function () {
         htmlCollection[i].setAttribute('disabled', 'disabled');
       }
       return (htmlCollection);
-    },
-
-    /**
-     * Получаем значения полей ввода
-     *
-     * @param  {object} collection HTML коллекция
-     * @return {object}            массив значений
-     */
-    getValues: function (collection) {
-      var defaultValues = [];
-      for (var i = 0; i < collection.length; i++) {
-        var value = collection[i].value;
-        defaultValues.push(value);
-      }
-      return defaultValues;
-    },
-
-    /**
-     * Устанавливаем value
-     *
-     * @param  {object} collection HTML коллекция
-     * @param  {object} values     массив значений
-     */
-    setValues: function (collection, values) {
-      for (var i = 0; i < collection.length; i++) {
-        collection[i].value = values[i];
-      }
     }
   };
 })();
