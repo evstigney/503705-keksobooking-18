@@ -14,7 +14,7 @@ window.card = (function () {
    * Удаление карточки
    */
   var removeCard = function () {
-    vopenedCard = document.querySelector('.map__card');
+    var openedCard = document.querySelector('.map__card');
     if (openedCard) {
       openedCard.remove();
     }
