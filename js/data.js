@@ -22,6 +22,7 @@ window.data = (function () {
   var PHOTOS_ARR = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
   var map = document.querySelector('.map');
+  var main = document.querySelector('main');
   var adForm = document.querySelector('.ad-form');
   var adAddressField = adForm.querySelector('#address');
   var serverAdsArr = [];
@@ -57,10 +58,10 @@ window.data = (function () {
     };
 
     popupMessage.textContent = message;
-    document.body.querySelector('main').append(popupTemplate);
+    main.append(popupTemplate);
 
-    if (document.querySelector('main').querySelector('.error')) {
-      var popup = document.querySelector('main').querySelector('.error');
+    if (main.querySelector('.error')) {
+      var popup = main.querySelector('.error');
       var button = popup.querySelector('.error__button');
 
       button.addEventListener('click', closePopupHandler);
@@ -207,6 +208,7 @@ window.data = (function () {
       }
     },
     map: map,
+    main: main,
     adForm: adForm,
     adAddressField: adAddressField,
     mockingData: {
@@ -214,6 +216,7 @@ window.data = (function () {
     },
     serverData: {
       adsArr: serverAdsArr
-    }
+    },
+    failLoad: failLoad
   };
 })();

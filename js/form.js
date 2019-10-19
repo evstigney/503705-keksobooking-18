@@ -6,13 +6,22 @@
  * @return {object}  форма, методы
  */
 window.form = (function () {
+  var adForm = window.data.adForm;
+  var main = window.data.main;
   var noticeTitle = document.querySelector('.notice__title');
-  var adCapacitySelect = window.data.adForm.querySelector('#capacity');
-  var adRoomNumberSelect = window.data.adForm.querySelector('#room_number');
-  var adTypeSelect = window.data.adForm.querySelector('#type');
-  var adPriceField = window.data.adForm.querySelector('#price');
-  var adTimeinSelect = window.data.adForm.querySelector('#timein');
-  var adTimeoutSelect = window.data.adForm.querySelector('#timeout');
+  var adCapacitySelect = adForm.querySelector('#capacity');
+  var adRoomNumberSelect = adForm.querySelector('#room_number');
+  var adTypeSelect = adForm.querySelector('#type');
+  var adPriceField = adForm.querySelector('#price');
+  var adTimeinSelect = adForm.querySelector('#timein');
+  var adTimeoutSelect = adForm.querySelector('#timeout');
+
+  var fieldsDefaultValues = {
+    text: window.util.getValues(adForm.querySelectorAll('input[type="text"]')),
+    number: window.util.getValues(adForm.querySelectorAll('input[type="number"]')),
+    select: window.util.getValues(adForm.querySelectorAll('select')),
+    textarea: window.util.getValues(adForm.querySelectorAll('textarea'))
+  };
 
   /**
    * Время выезда приравниваем к времени заезда
@@ -78,6 +87,18 @@ window.form = (function () {
     }
   };
 
+  var setDefaultValues = function () {
+    var inputsTypeText = adForm.querySelectorAll('input[type="text"]');
+    var selects = adForm.querySelectorAll('select');
+    var textareas = adForm.querySelectorAll('textarea');
+    window.util.setValues(inputsTypeText, fieldsDefaultValues.text);
+    window.util.setValues(selects, fieldsDefaultValues.select);
+    window.util.setValues(textareas, fieldsDefaultValues.textarea);
+    var inputPrice = adForm.querySelector('#price');
+    inputPrice.value = '';
+    validateCapacity();
+  };
+
   adTimeinSelect.addEventListener('change', validateTimein);
   adTimeoutSelect.addEventListener('change', validateTimeout);
   adPriceField.addEventListener('change', validatePrice);
@@ -87,6 +108,33 @@ window.form = (function () {
   });
   adRoomNumberSelect.addEventListener('change', function () {
     validateCapacity();
+  });
+
+  var renderSuccessMessage = function () {
+    var popup = document.querySelector('#success').content.querySelector('.success');
+    main.append(popup);
+
+    var removePopupHandler = function () {
+      popup.remove();
+    };
+
+    if (main.querySelector('.success')) {
+      document.addEventListener('click', removePopupHandler);
+      document.addEventListener('keydown', function (evt) {
+        window.util.isEscEvent(evt, removePopupHandler);
+      });
+    }
+  };
+
+  var onLoad = function () {
+    renderSuccessMessage();
+    setDefaultValues();
+    window.map.reset();
+  };
+
+  adForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(adForm), onLoad, window.data.failLoad);
+    evt.preventDefault();
   });
 
   window.util.addDisabled(window.data.adForm.children);

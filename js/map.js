@@ -6,7 +6,8 @@
  * @return {object}  главный пин с параметрами и обычные пины
  */
 window.map = (function () {
-  var mapPins = window.data.map.querySelector('.map__pins');
+  var map = window.data.map;
+  var mapPins = map.querySelector('.map__pins');
   var mapPinsFragment = document.createDocumentFragment();
 
   /**
@@ -104,7 +105,7 @@ window.map = (function () {
    * удаляем обработчик активации страницы
    */
   var activatePage = function () {
-    window.data.map.classList.remove('map--faded');
+    map.classList.remove('map--faded');
     window.form.toggleFormToActive();
     window.util.removeDisabled(window.data.adForm.children);
     renderMockingData();
@@ -129,10 +130,24 @@ window.map = (function () {
     window.util.isEnterEvent(evt, activateMap);
   };
 
+  var removePins = function () {
+    var pins = map.querySelectorAll('.map__pin');
+    for (var i = 0; i < pins.length; i++) {
+      if (pins[i] !== window.pinMain.pin) {
+        pins[i].remove();
+      }
+    }
+  };
+
   window.pinMain.pin.addEventListener('mousedown', activateMap);
   window.pinMain.pin.addEventListener('keydown', activateMapHandler);
 
   return {
     mapPins: mapPins,
+    reset: function () {
+      window.pinMain.setStartCoords();
+      removePins();
+      window.card.remove();
+    }
   };
 })();

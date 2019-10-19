@@ -6,7 +6,7 @@
  * @return {object}  методы загрузки и сохранения
  */
 window.backend = (function () {
-  var URL = 'https://js.dump.academy/keksobooking/data';
+  var URL = 'https://js.dump.academy/keksobooking';
   var TIMEOUT = 6000;
 
   /**
@@ -68,8 +68,28 @@ window.backend = (function () {
         onTimeout(onError);
       });
 
-      xhr.open('GET', URL);
+      xhr.open('GET', URL + '/data');
       xhr.send();
+    },
+    save: function (data, onLoad, onError) {
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'json';
+      xhr.timeout = TIMEOUT;
+
+      xhr.addEventListener('load', function () {
+        onLoad(xhr.response);
+      });
+
+      xhr.addEventListener('error', function () {
+        onError(getErrorMessage(xhr.status));
+      });
+
+      xhr.addEventListener('timeout', function () {
+        onTimeout(onError);
+      });
+
+      xhr.open('POST', URL);
+      xhr.send(data);
     }
   };
 })();

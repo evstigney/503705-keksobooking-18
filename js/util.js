@@ -114,6 +114,19 @@ window.util = (function () {
         htmlCollection[i].setAttribute('disabled', 'disabled');
       }
       return (htmlCollection);
+    },
+    getValues: function (collection) {
+      var defaultValues = [];
+      for (var i = 0; i < collection.length; i++) {
+        var value = collection[i].value;
+        defaultValues.push(value);
+      }
+      return defaultValues;
+    },
+    setValues: function (collection, values) {
+      for (var i = 0; i < collection.length; i++) {
+        collection[i].value = values[i];
+      }
     }
   };
 })();

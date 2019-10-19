@@ -20,6 +20,17 @@ window.pinMain = (function () {
     y: Math.round(pinButton.offsetTop + MAIN_PIN_BUTTON_HEIGHT)
   };
 
+  var getStartCoords = function () {
+    var x = location.x;
+    var y = location.y;
+    return {
+      x: x,
+      y: y
+    };
+  };
+
+  var pinStartCoords = getStartCoords();
+
   /**
    *  Отрисовка адреса в форме в поле ввода адреса в зависимости
    *  от положения главного пина
@@ -31,6 +42,13 @@ window.pinMain = (function () {
     addressField.setAttribute('placeholder', address);
     addressField.value = address;
     return address;
+  };
+
+  var setStartCoords = function () {
+    location = pinStartCoords;
+    pinMain.style.top = (location.y - MAIN_PIN_BUTTON_HEIGHT) + 'px';
+    pinMain.style.left = (location.x - MAIN_PIN_BUTTON_WIDTH / 2) + 'px';
+    renderAddress();
   };
 
   /**
@@ -117,6 +135,7 @@ window.pinMain = (function () {
   return {
     pin: pinMain,
     location: location,
-    renderAddress: renderAddress
+    renderAddress: renderAddress,
+    setStartCoords: setStartCoords
   };
 })();
