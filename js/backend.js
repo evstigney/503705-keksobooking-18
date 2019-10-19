@@ -71,6 +71,15 @@ window.backend = (function () {
       xhr.open('GET', URL + '/data');
       xhr.send();
     },
+
+    /**
+     * Загрузка даных на сервер
+     *
+     * @param  {object} data    данные
+     * @param  {function} onLoad
+     * @param  {function} onError
+     */
+
     save: function (data, onLoad, onError) {
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';

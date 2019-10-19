@@ -126,10 +126,18 @@ window.map = (function () {
     window.form.validateTimein();
   };
 
+  /**
+   * Обработчик активации карты
+   *
+   * @param  {object} evt Объект Event
+   */
   var activateMapHandler = function (evt) {
     window.util.isEnterEvent(evt, activateMap);
   };
 
+  /**
+   * Удаляем пины из разметки
+   */
   var removePins = function () {
     var pins = map.querySelectorAll('.map__pin');
     for (var i = 0; i < pins.length; i++) {

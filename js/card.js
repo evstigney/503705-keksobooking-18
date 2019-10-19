@@ -10,8 +10,11 @@ window.card = (function () {
   var mapCardsFragment = document.createDocumentFragment();
   var filters = document.querySelector('.map__filters-container');
 
+  /**
+   * Удаление карточки
+   */
   var removeCard = function () {
-    var openedCard = document.querySelector('.map__card');
+    vopenedCard = document.querySelector('.map__card');
     if (openedCard) {
       openedCard.remove();
     }

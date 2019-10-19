@@ -44,6 +44,9 @@ window.pinMain = (function () {
     return address;
   };
 
+  /**
+   * Начальные координаты гл пина
+   */
   var setStartCoords = function () {
     location = pinStartCoords;
     pinMain.style.top = (location.y - MAIN_PIN_BUTTON_HEIGHT) + 'px';

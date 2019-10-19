@@ -16,6 +16,9 @@ window.form = (function () {
   var adTimeinSelect = adForm.querySelector('#timein');
   var adTimeoutSelect = adForm.querySelector('#timeout');
 
+  /**
+   * Значения полей ввода по умолчанию
+   */
   var fieldsDefaultValues = {
     text: window.util.getValues(adForm.querySelectorAll('input[type="text"]')),
     number: window.util.getValues(adForm.querySelectorAll('input[type="number"]')),
@@ -87,6 +90,9 @@ window.form = (function () {
     }
   };
 
+  /**
+   * Устанавливаем полям ввода значения по умалчанию
+   */
   var setDefaultValues = function () {
     var inputsTypeText = adForm.querySelectorAll('input[type="text"]');
     var selects = adForm.querySelectorAll('select');
@@ -99,17 +105,9 @@ window.form = (function () {
     validateCapacity();
   };
 
-  adTimeinSelect.addEventListener('change', validateTimein);
-  adTimeoutSelect.addEventListener('change', validateTimeout);
-  adPriceField.addEventListener('change', validatePrice);
-  adTypeSelect.addEventListener('change', function () {
-    validateType();
-    validatePrice();
-  });
-  adRoomNumberSelect.addEventListener('change', function () {
-    validateCapacity();
-  });
-
+  /**
+   * Отрисовывем сообщение об успешной загрузке объяления на сервер
+   */
   var renderSuccessMessage = function () {
     var popup = document.querySelector('#success').content.querySelector('.success');
     main.append(popup);
@@ -126,11 +124,25 @@ window.form = (function () {
     }
   };
 
+  /**
+   * Выполняем при успешной загрузке
+   */
   var onLoad = function () {
     renderSuccessMessage();
     setDefaultValues();
     window.map.reset();
   };
+
+  adTimeinSelect.addEventListener('change', validateTimein);
+  adTimeoutSelect.addEventListener('change', validateTimeout);
+  adPriceField.addEventListener('change', validatePrice);
+  adTypeSelect.addEventListener('change', function () {
+    validateType();
+    validatePrice();
+  });
+  adRoomNumberSelect.addEventListener('change', function () {
+    validateCapacity();
+  });
 
   adForm.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(adForm), onLoad, window.data.failLoad);
