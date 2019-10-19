@@ -110,8 +110,6 @@ window.map = (function () {
     window.util.removeDisabled(window.data.adForm.children);
     renderMockingData();
     window.pinMain.renderAddress();
-    window.pinMain.pin.removeEventListener('mousedown', activateMap);
-    window.pinMain.pin.removeEventListener('keydown', activateMapHandler);
   };
 
   /**
@@ -156,6 +154,7 @@ window.map = (function () {
       window.pinMain.setStartCoords();
       removePins();
       window.card.remove();
+      map.classList.add('map--faded');
     }
   };
 })();

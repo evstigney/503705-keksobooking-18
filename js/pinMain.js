@@ -20,6 +20,11 @@ window.pinMain = (function () {
     y: Math.round(pinButton.offsetTop + MAIN_PIN_BUTTON_HEIGHT)
   };
 
+  /**
+   * Получаем координаты
+   *
+   * @return {object} координаты
+   */
   var getStartCoords = function () {
     var x = location.x;
     var y = location.y;
@@ -45,23 +50,13 @@ window.pinMain = (function () {
   };
 
   /**
-   * Начальные координаты гл пина
+   * Устанавливаем начальные координаты гл пина
    */
   var setStartCoords = function () {
     location = pinStartCoords;
     pinMain.style.top = (location.y - MAIN_PIN_BUTTON_HEIGHT) + 'px';
     pinMain.style.left = (location.x - MAIN_PIN_BUTTON_WIDTH / 2) + 'px';
     renderAddress();
-  };
-
-  /**
-   * Проверяем активна ли карта
-   *
-   * @return {boolean}  если true - активна
-   */
-  var isMapActive = function () {
-    var flag = (map.classList.contains('map--faded')) ? false : true;
-    return flag;
   };
 
   /**
@@ -124,16 +119,8 @@ window.pinMain = (function () {
     document.addEventListener('mouseup', onMouseUp);
   };
 
-  /**
-   * Обработчик проверяет активна ли карта и запускает событие нажатия
-   */
-  var pinMainHandler = function () {
-    if (isMapActive) {
-      pinMain.addEventListener('mousedown', onMouseDown);
-    }
-  };
+  pinMain.addEventListener('mousedown', onMouseDown);
 
-  pinMain.addEventListener('mousedown', pinMainHandler);
 
   return {
     pin: pinMain,

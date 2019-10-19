@@ -99,13 +99,19 @@ window.form = (function () {
     }
   };
 
+  var resetForm = function () {
+    adForm.reset();
+    adForm.classList.add('ad-form--disabled');
+    window.util.addDisabled(adForm.children);
+    validateCapacity();
+  };
+
   /**
    * Выполняем при успешной загрузке
    */
   var onLoad = function () {
     renderSuccessMessage();
-    adForm.reset();
-    validateCapacity();
+    resetForm();
     window.map.reset();
   };
 
@@ -125,7 +131,7 @@ window.form = (function () {
     evt.preventDefault();
   });
 
-  window.util.addDisabled(window.data.adForm.children);
+  window.util.addDisabled(adForm.children);
   window.pinMain.renderAddress();
 
   return {
