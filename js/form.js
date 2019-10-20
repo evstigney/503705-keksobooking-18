@@ -6,13 +6,16 @@
  * @return {object}  форма, методы
  */
 window.form = (function () {
+  var adForm = window.data.adForm;
+  var main = window.data.main;
   var noticeTitle = document.querySelector('.notice__title');
-  var adCapacitySelect = window.data.adForm.querySelector('#capacity');
-  var adRoomNumberSelect = window.data.adForm.querySelector('#room_number');
-  var adTypeSelect = window.data.adForm.querySelector('#type');
-  var adPriceField = window.data.adForm.querySelector('#price');
-  var adTimeinSelect = window.data.adForm.querySelector('#timein');
-  var adTimeoutSelect = window.data.adForm.querySelector('#timeout');
+  var adCapacitySelect = adForm.querySelector('#capacity');
+  var adRoomNumberSelect = adForm.querySelector('#room_number');
+  var adTypeSelect = adForm.querySelector('#type');
+  var adPriceField = adForm.querySelector('#price');
+  var adTimeinSelect = adForm.querySelector('#timein');
+  var adTimeoutSelect = adForm.querySelector('#timeout');
+  var popupSuccess = document.querySelector('#success').content.querySelector('.success');
 
   /**
    * Время выезда приравниваем к времени заезда
@@ -78,6 +81,40 @@ window.form = (function () {
     }
   };
 
+  /**
+   * Отрисовывем сообщение об успешной загрузке объяления на сервер
+   */
+  var renderSuccessMessage = function () {
+    main.append(popupSuccess);
+
+    var removePopupHandler = function () {
+      popupSuccess.remove();
+    };
+
+    if (main.querySelector('.success')) {
+      document.addEventListener('click', removePopupHandler);
+      document.addEventListener('keydown', function (evt) {
+        window.util.isEscEvent(evt, removePopupHandler);
+      });
+    }
+  };
+
+  var resetForm = function () {
+    adForm.reset();
+    adForm.classList.add('ad-form--disabled');
+    window.util.addDisabled(adForm.children);
+    validateCapacity();
+  };
+
+  /**
+   * Выполняем при успешной загрузке
+   */
+  var onLoad = function () {
+    renderSuccessMessage();
+    resetForm();
+    window.map.reset();
+  };
+
   adTimeinSelect.addEventListener('change', validateTimein);
   adTimeoutSelect.addEventListener('change', validateTimeout);
   adPriceField.addEventListener('change', validatePrice);
@@ -89,7 +126,12 @@ window.form = (function () {
     validateCapacity();
   });
 
-  window.util.addDisabled(window.data.adForm.children);
+  adForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(adForm), onLoad, window.data.failLoad);
+    evt.preventDefault();
+  });
+
+  window.util.addDisabled(adForm.children);
   window.pinMain.renderAddress();
 
   return {

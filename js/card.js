@@ -11,6 +11,16 @@ window.card = (function () {
   var filters = document.querySelector('.map__filters-container');
 
   /**
+   * Удаление карточки
+   */
+  var removeCard = function () {
+    var openedCard = document.querySelector('.map__card');
+    if (openedCard) {
+      openedCard.remove();
+    }
+  };
+
+  /**
    * Получаем строку с количеством комнат и гостей для карточки
    *
    * @param  {number} rooms  количество комнат в объявлении
@@ -144,6 +154,7 @@ window.card = (function () {
         window.data.map.insertBefore(mapCardsFragment, filters);
       }
       return card;
-    }
+    },
+    remove: removeCard
   };
 })();

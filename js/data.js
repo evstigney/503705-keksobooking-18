@@ -22,8 +22,11 @@ window.data = (function () {
   var PHOTOS_ARR = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
   var map = document.querySelector('.map');
+  var main = document.querySelector('main');
   var adForm = document.querySelector('.ad-form');
   var adAddressField = adForm.querySelector('#address');
+  var popupError = document.querySelector('#error').content.querySelector('.error');
+  var popupMessage = popupError.querySelector('.error__message');
   var serverAdsArr = [];
 
   /**
@@ -45,22 +48,19 @@ window.data = (function () {
    * @param  {string} message
    */
   var renderErrorMessage = function (message) {
-    var popupTemplate = document.querySelector('#error').content.querySelector('.error');
-    var popupMessage = popupTemplate.querySelector('.error__message');
 
     /**
      * Удаляем сообщение
-     *
      */
     var closePopupHandler = function () {
-      popup.remove();
+      popupError.remove();
     };
 
     popupMessage.textContent = message;
-    document.body.querySelector('main').append(popupTemplate);
+    main.append(popupError);
 
-    if (document.querySelector('main').querySelector('.error')) {
-      var popup = document.querySelector('main').querySelector('.error');
+    if (main.querySelector('.error')) {
+      var popup = main.querySelector('.error');
       var button = popup.querySelector('.error__button');
 
       button.addEventListener('click', closePopupHandler);
@@ -207,6 +207,7 @@ window.data = (function () {
       }
     },
     map: map,
+    main: main,
     adForm: adForm,
     adAddressField: adAddressField,
     mockingData: {
@@ -214,6 +215,7 @@ window.data = (function () {
     },
     serverData: {
       adsArr: serverAdsArr
-    }
+    },
+    failLoad: failLoad
   };
 })();

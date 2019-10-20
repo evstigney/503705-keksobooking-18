@@ -21,6 +21,22 @@ window.pinMain = (function () {
   };
 
   /**
+   * Получаем координаты
+   *
+   * @return {object} координаты
+   */
+  var getStartCoords = function () {
+    var x = location.x;
+    var y = location.y;
+    return {
+      x: x,
+      y: y
+    };
+  };
+
+  var pinStartCoords = getStartCoords();
+
+  /**
    *  Отрисовка адреса в форме в поле ввода адреса в зависимости
    *  от положения главного пина
    *
@@ -34,13 +50,13 @@ window.pinMain = (function () {
   };
 
   /**
-   * Проверяем активна ли карта
-   *
-   * @return {boolean}  если true - активна
+   * Устанавливаем начальные координаты гл пина
    */
-  var isMapActive = function () {
-    var flag = (map.classList.contains('map--faded')) ? false : true;
-    return flag;
+  var setStartCoords = function () {
+    location = pinStartCoords;
+    pinMain.style.top = (location.y - MAIN_PIN_BUTTON_HEIGHT) + 'px';
+    pinMain.style.left = (location.x - MAIN_PIN_BUTTON_WIDTH / 2) + 'px';
+    renderAddress();
   };
 
   /**
@@ -103,20 +119,13 @@ window.pinMain = (function () {
     document.addEventListener('mouseup', onMouseUp);
   };
 
-  /**
-   * Обработчик проверяет активна ли карта и запускает событие нажатия
-   */
-  var pinMainHandler = function () {
-    if (isMapActive) {
-      pinMain.addEventListener('mousedown', onMouseDown);
-    }
-  };
+  pinMain.addEventListener('mousedown', onMouseDown);
 
-  pinMain.addEventListener('mousedown', pinMainHandler);
 
   return {
     pin: pinMain,
     location: location,
-    renderAddress: renderAddress
+    renderAddress: renderAddress,
+    setStartCoords: setStartCoords
   };
 })();

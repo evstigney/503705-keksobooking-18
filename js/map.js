@@ -6,7 +6,8 @@
  * @return {object}  главный пин с параметрами и обычные пины
  */
 window.map = (function () {
-  var mapPins = window.data.map.querySelector('.map__pins');
+  var map = window.data.map;
+  var mapPins = map.querySelector('.map__pins');
   var mapPinsFragment = document.createDocumentFragment();
 
   /**
@@ -104,13 +105,11 @@ window.map = (function () {
    * удаляем обработчик активации страницы
    */
   var activatePage = function () {
-    window.data.map.classList.remove('map--faded');
+    map.classList.remove('map--faded');
     window.form.toggleFormToActive();
     window.util.removeDisabled(window.data.adForm.children);
     renderMockingData();
     window.pinMain.renderAddress();
-    window.pinMain.pin.removeEventListener('mousedown', activateMap);
-    window.pinMain.pin.removeEventListener('keydown', activateMapHandler);
   };
 
   /**
@@ -125,8 +124,25 @@ window.map = (function () {
     window.form.validateTimein();
   };
 
+  /**
+   * Обработчик активации карты
+   *
+   * @param  {object} evt Объект Event
+   */
   var activateMapHandler = function (evt) {
     window.util.isEnterEvent(evt, activateMap);
+  };
+
+  /**
+   * Удаляем пины из разметки
+   */
+  var removePins = function () {
+    var pins = map.querySelectorAll('.map__pin');
+    for (var i = 0; i < pins.length; i++) {
+      if (pins[i] !== window.pinMain.pin) {
+        pins[i].remove();
+      }
+    }
   };
 
   window.pinMain.pin.addEventListener('mousedown', activateMap);
@@ -134,5 +150,11 @@ window.map = (function () {
 
   return {
     mapPins: mapPins,
+    reset: function () {
+      window.pinMain.setStartCoords();
+      removePins();
+      window.card.remove();
+      map.classList.add('map--faded');
+    }
   };
 })();
