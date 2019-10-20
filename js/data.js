@@ -25,6 +25,8 @@ window.data = (function () {
   var main = document.querySelector('main');
   var adForm = document.querySelector('.ad-form');
   var adAddressField = adForm.querySelector('#address');
+  var popupError = document.querySelector('#error').content.querySelector('.error');
+  var popupMessage = popupError.querySelector('.error__message');
   var serverAdsArr = [];
 
   /**
@@ -46,19 +48,16 @@ window.data = (function () {
    * @param  {string} message
    */
   var renderErrorMessage = function (message) {
-    var popupTemplate = document.querySelector('#error').content.querySelector('.error');
-    var popupMessage = popupTemplate.querySelector('.error__message');
 
     /**
      * Удаляем сообщение
-     *
      */
     var closePopupHandler = function () {
-      popup.remove();
+      popupError.remove();
     };
 
     popupMessage.textContent = message;
-    main.append(popupTemplate);
+    main.append(popupError);
 
     if (main.querySelector('.error')) {
       var popup = main.querySelector('.error');

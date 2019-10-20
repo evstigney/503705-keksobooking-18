@@ -15,6 +15,7 @@ window.form = (function () {
   var adPriceField = adForm.querySelector('#price');
   var adTimeinSelect = adForm.querySelector('#timein');
   var adTimeoutSelect = adForm.querySelector('#timeout');
+  var popupSuccess = document.querySelector('#success').content.querySelector('.success');
 
   /**
    * Время выезда приравниваем к времени заезда
@@ -84,11 +85,10 @@ window.form = (function () {
    * Отрисовывем сообщение об успешной загрузке объяления на сервер
    */
   var renderSuccessMessage = function () {
-    var popup = document.querySelector('#success').content.querySelector('.success');
-    main.append(popup);
+    main.append(popupSuccess);
 
     var removePopupHandler = function () {
-      popup.remove();
+      popupSuccess.remove();
     };
 
     if (main.querySelector('.success')) {
