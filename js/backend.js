@@ -12,7 +12,7 @@ window.backend = (function () {
   /**
    * Карта сообщений об ошибках
    */
-  var MAP_ERRORS = {
+  var ErrorCode = {
     0: 'нет интернет соединения',
     400: 'неверный запрос',
     401: 'пользователь не авторизован',
@@ -27,10 +27,10 @@ window.backend = (function () {
    * @return {string}
    */
   var getErrorMessage = function (status) {
-    if (!MAP_ERRORS[status]) {
-      MAP_ERRORS[status] = 'что-то пошло не так, мы уже решаем проблему';
+    if (!ErrorCode[status]) {
+      ErrorCode[status] = 'что-то пошло не так, мы уже решаем проблему';
     }
-    var message = 'Ошибка ' + status + ': ' + MAP_ERRORS[status];
+    var message = 'Ошибка ' + status + ': ' + ErrorCode[status];
     return message;
   };
 
@@ -79,7 +79,6 @@ window.backend = (function () {
      * @param  {function} onLoad
      * @param  {function} onError
      */
-
     save: function (data, onLoad, onError) {
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';

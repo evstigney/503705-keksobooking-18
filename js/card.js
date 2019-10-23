@@ -59,7 +59,7 @@ window.card = (function () {
           if (reFeatureClass.test(currentClassesArr[j])) {
             var currentClass = currentClassesArr[j];
             features[i].classList.remove(currentClass);
-            features[i].classList.add(window.data.MAP_FEATURES_CLASSES[arr[i]]);
+            features[i].classList.add(window.data.featuresClassesMap[arr[i]]);
           }
         }
       } else {
@@ -131,7 +131,7 @@ window.card = (function () {
       title.textContent = ad.offer.title;
       address.textContent = ad.offer.address;
       price.textContent = ad.offer.price + ' ₽/ночь';
-      popupType.textContent = window.data.MAP_TYPES[ad.offer.type];
+      popupType.textContent = window.data.typesMap[ad.offer.type];
       popupTextCapacity.textContent = getCapacityMessage(ad.offer.rooms, ad.offer.guests);
       popupTextTime.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
       popupFeatures = getPopupFeatures(copyPopupFeatures, ad.offer.features);

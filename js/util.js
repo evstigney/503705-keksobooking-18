@@ -7,8 +7,10 @@
  */
 window.util = (function () {
   return {
-    ESC_KEYCODE: 27,
-    ENTER_KEYCODE: 13,
+    KeyCode: {
+      escape: 27,
+      enter: 13
+    },
 
     /**
      * Событие происходит по нажатию клавиши ESC
@@ -17,7 +19,7 @@ window.util = (function () {
      * @param  {function} action любая функция - обработчик события
      */
     isEscEvent: function (evt, action) {
-      if (evt.keyCode === this.ESC_KEYCODE) {
+      if (evt.keyCode === this.KeyCode.escape) {
         action();
       }
     },
@@ -29,7 +31,7 @@ window.util = (function () {
      * @param  {function} action любая функция - обработчик события
      */
     isEnterEvent: function (evt, action) {
-      if (evt.keyCode === this.ENTER_KEYCODE) {
+      if (evt.keyCode === this.KeyCode.enter) {
         action();
       }
     },
