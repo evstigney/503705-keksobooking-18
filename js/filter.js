@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * Модуль для работы с фильтами объявлений
+ */
 window.filter = (function () {
   var map = document.querySelector('.map');
   var ads = window.data.serverData.adsArr;
