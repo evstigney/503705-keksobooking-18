@@ -9,6 +9,7 @@ window.card = (function () {
   var mapCard = document.querySelector('#card').content.querySelector('.map__card');
   var mapCardsFragment = document.createDocumentFragment();
   var filters = document.querySelector('.map__filters-container');
+  var ads = window.map.ads;
 
   /**
    * Удаление карточки
@@ -148,7 +149,7 @@ window.card = (function () {
      * @return {object}       отрисованная карточка
      */
     renderCard: function (index) {
-      var card = this.getCard(window.data.serverData.adsArr[index]);
+      var card = this.getCard(ads[index]);
       if (checkCard(card)) {
         mapCardsFragment.appendChild(card);
         window.data.map.insertBefore(mapCardsFragment, filters);

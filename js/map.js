@@ -9,15 +9,19 @@ window.map = (function () {
   var map = window.data.map;
   var mapPins = map.querySelector('.map__pins');
   var mapPinsFragment = document.createDocumentFragment();
+  var ads = window.data.serverData.adsArr;
+
+  var ADS_QUANTITY = 5;
 
   /**
-   * Описываю отрисовку пинов на основе моковых данных
+   * Описываю отрисовку пинов данных
    *
+   * @param {object} arr массив с данными объявлений
    * @return {object}  отрисованные пины
    */
-  var renderMatchingPins = function () {
-    for (var i = 0; i < window.data.serverData.adsArr.length; i++) {
-      var pin = window.pin.renderPin(window.data.serverData.adsArr[i]);
+  var renderMatchingPins = function (arr) {
+    for (var i = 0; i < arr.length; i++) {
+      var pin = window.pin.renderPin(arr[i]);
       mapPinsFragment.appendChild(pin);
     }
     mapPins.appendChild(mapPinsFragment);
@@ -63,14 +67,17 @@ window.map = (function () {
   };
 
   /**
-   * Отрисовывем пины на странице на основе моки,
+   * Отрисовывем пины на странице,
    * добавление событий открытия карточки по клику или ENTER,
    * проверка карточки
    *
+   * @param {object} arr
+   * @param {function} filter
    * @return {object}  отрисованные на странице пины
    */
-  var renderMockingData = function () {
-    var pins = renderMatchingPins();
+  var renderPinsData = function (arr) {
+    arr = arr.slice(ADS_QUANTITY);
+    var pins = renderMatchingPins(arr);
     pins = pins.querySelectorAll('.map__pin');
 
     /**
@@ -108,7 +115,7 @@ window.map = (function () {
     map.classList.remove('map--faded');
     window.form.toggleFormToActive();
     window.util.removeDisabled(window.data.adForm.children);
-    renderMockingData();
+    renderPinsData(ads);
     window.pinMain.renderAddress();
   };
 
@@ -149,12 +156,14 @@ window.map = (function () {
   window.pinMain.pin.addEventListener('keydown', activateMapHandler);
 
   return {
+    ads: ads,
     mapPins: mapPins,
     reset: function () {
       window.pinMain.setStartCoords();
       removePins();
       window.card.remove();
       map.classList.add('map--faded');
-    }
+    },
+    renderPins: renderPinsData
   };
 })();
