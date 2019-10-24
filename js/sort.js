@@ -30,9 +30,12 @@ window.sort = (function () {
    * @return {object}      отсортированные данные
    */
   var sortByType = function (arr, type) {
-    var sortedArr = arr.filter(function (ad) {
-      return ad.offer.type === type;
-    });
+    var sortedArr = arr.slice();
+    if (type !== 'any') {
+      sortedArr = arr.filter(function (ad) {
+        return ad.offer.type === type;
+      });
+    }
     return checkArrLength(sortedArr);
   };
 
