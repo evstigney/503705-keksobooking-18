@@ -74,7 +74,7 @@ window.map = (function () {
    * @return {object}  отрисованные на странице пины
    */
   var renderPinsData = function (arr) {
-    arr = window.sort.byLength(arr.slice());
+    arr = window.filter.byLength(arr.slice());
     var pins = renderMatchingPins(arr);
     pins = pins.querySelectorAll('.map__pin');
 

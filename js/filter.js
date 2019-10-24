@@ -1,21 +1,46 @@
 'use strict';
 
 /**
- * Модуль для работы с фильтами объявлений
+ * Модуль с функциями сортировки данных
+ *
+ * @return {object} методы
  */
 window.filter = (function () {
-  var map = document.querySelector('.map');
-  var ads = window.data.serverData.adsArr;
-  var mapFilters = document.querySelector('.map__filters');
-  var typeSelect = mapFilters.querySelector('#housing-type');
+  var ADS_QUANTITY = 5;
 
-  typeSelect.addEventListener('change', function (evt) {
-    map.querySelectorAll('.map__pin').forEach(function (pin) {
-      if (window.pin.isPin(pin)) {
-        pin.remove();
-      }
-    });
-    var sortedAds = window.sort.byType(ads.slice(), evt.target.value);
-    window.map.renderPins(sortedAds);
-  });
+  /**
+   * Проверка количества выходных данных
+   *
+   * @param  {object} arr весь массив данных
+   * @return {object}     массив определенной длинны
+   */
+  var checkArrLength = function (arr) {
+    var sortedArr = arr.slice();
+    if (sortedArr.length > ADS_QUANTITY) {
+      sortedArr = sortedArr.slice(ADS_QUANTITY);
+    }
+    return sortedArr;
+  };
+
+  /**
+   * Сортировка по типу жилья
+   *
+   * @param  {object} arr  данные объявлений
+   * @param  {string} type тип жилья
+   * @return {object}      отсортированные данные
+   */
+  var filterByType = function (arr, type) {
+    var sortedArr = arr.slice();
+    if (type !== 'any') {
+      sortedArr = arr.filter(function (ad) {
+        return ad.offer.type === type;
+      });
+    }
+    return checkArrLength(sortedArr);
+  };
+
+  return {
+    byType: filterByType,
+    byLength: checkArrLength
+  };
 })();
