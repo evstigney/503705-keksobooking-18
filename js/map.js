@@ -11,8 +11,6 @@ window.map = (function () {
   var mapPinsFragment = document.createDocumentFragment();
   var ads = window.data.serverData.adsArr;
 
-  var ADS_QUANTITY = 5;
-
   /**
    * Описываю отрисовку пинов данных
    *
@@ -75,7 +73,7 @@ window.map = (function () {
    * @return {object}  отрисованные на странице пины
    */
   var renderPinsData = function (arr) {
-    arr = arr.slice(ADS_QUANTITY);
+    arr = window.sort.byLength(arr.slice());
     var pins = renderMatchingPins(arr);
     pins = pins.querySelectorAll('.map__pin');
 
