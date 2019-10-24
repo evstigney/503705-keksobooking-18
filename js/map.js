@@ -30,9 +30,10 @@ window.map = (function () {
    * Описываем отрисовку карточку в зависимости от кликнутого пина,
    * добавляем в нее событие закрытия по нажатию на ESCAPE или клику на крестик
    *
+   * @param  {object} dataArr текущий массив с данными
    * @param  {object} target пин, по которому произошел клик или ENTER
    */
-  var renderMatchingCard = function (target) {
+  var renderMatchingCard = function (dataArr, target) {
     var allPins = mapPins.querySelectorAll('.map__pin');
     var matchingPins = [];
     for (var i = 0; i < allPins.length; i++) {
@@ -41,7 +42,7 @@ window.map = (function () {
       }
     }
     var index = matchingPins.indexOf(target);
-    var card = window.card.renderCard(index);
+    var card = window.card.renderCard(dataArr, index);
 
     /**
      * По клику или ESCAPE удаляем карточку
@@ -86,7 +87,7 @@ window.map = (function () {
      */
     var openPopupCardHandler = function (evt) {
       if (evt.type === 'click' || evt.keyCode === window.util.KeyCode.ENTER && document.activeElement === evt.currentTarget) {
-        renderMatchingCard(evt.currentTarget);
+        renderMatchingCard(arr, evt.currentTarget);
       }
     };
 

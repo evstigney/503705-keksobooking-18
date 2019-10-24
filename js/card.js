@@ -9,7 +9,6 @@ window.card = (function () {
   var mapCard = document.querySelector('#card').content.querySelector('.map__card');
   var mapCardsFragment = document.createDocumentFragment();
   var filters = document.querySelector('.map__filters-container');
-  var ads = window.map.ads;
 
   /**
    * Удаление карточки
@@ -145,11 +144,12 @@ window.card = (function () {
     /**
      * Отрисовывем нужную карточку по индексу пина
      *
+     * @param  {object} dataArr данные
      * @param  {number} index индекс кликнутого пина
      * @return {object}       отрисованная карточка
      */
-    renderCard: function (index) {
-      var card = this.getCard(ads[index]);
+    renderCard: function (dataArr, index) {
+      var card = this.getCard(dataArr[index]);
       if (checkCard(card)) {
         mapCardsFragment.appendChild(card);
         window.data.map.insertBefore(mapCardsFragment, filters);
