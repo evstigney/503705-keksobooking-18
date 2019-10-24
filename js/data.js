@@ -45,15 +45,19 @@ window.data = (function () {
   /**
    * Отрисовываем на странице сообщение об ошибке
    *
-   * @param  {string} message
+   * @param  {string}   message
+   * @param  {boolean}  isSave  вызвана ли функцией отправки данных на сервер
    */
-  var renderErrorMessage = function (message) {
+  var renderErrorMessage = function (message, isSave) {
 
     /**
      * Удаляем сообщение
      */
     var closePopupHandler = function () {
       popupError.remove();
+      if (!isSave) {
+        window.backend.load(successLoad, failLoad);
+      }
     };
 
     popupMessage.textContent = message;
@@ -76,9 +80,10 @@ window.data = (function () {
    * пока оставлю на случай, если - кроме сообщения - другие действия нужны будут
    *
    * @param  {string} message
+   * @param  {boolean} isSave вызвана ли функцией отправки данных на сервер
    */
-  var failLoad = function (message) {
-    renderErrorMessage(message);
+  var failLoad = function (message, isSave) {
+    renderErrorMessage(message, isSave);
   };
 
   window.backend.load(successLoad, failLoad);

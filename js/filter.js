@@ -17,7 +17,7 @@ window.filter = (function () {
   var checkArrLength = function (arr) {
     var sortedArr = arr.slice();
     if (sortedArr.length > ADS_QUANTITY) {
-      sortedArr = sortedArr.slice(ADS_QUANTITY);
+      sortedArr = sortedArr.slice(0, ADS_QUANTITY);
     }
     return sortedArr;
   };
