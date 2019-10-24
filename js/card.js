@@ -59,7 +59,7 @@ window.card = (function () {
           if (reFeatureClass.test(currentClassesArr[j])) {
             var currentClass = currentClassesArr[j];
             features[i].classList.remove(currentClass);
-            features[i].classList.add(window.data.MAP_FEATURES_CLASSES[arr[i]]);
+            features[i].classList.add(window.data.featuresClassesMap[arr[i]]);
           }
         }
       } else {
@@ -131,7 +131,7 @@ window.card = (function () {
       title.textContent = ad.offer.title;
       address.textContent = ad.offer.address;
       price.textContent = ad.offer.price + ' ₽/ночь';
-      popupType.textContent = window.data.MAP_TYPES[ad.offer.type];
+      popupType.textContent = window.data.housingTypesMap[ad.offer.type];
       popupTextCapacity.textContent = getCapacityMessage(ad.offer.rooms, ad.offer.guests);
       popupTextTime.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
       popupFeatures = getPopupFeatures(copyPopupFeatures, ad.offer.features);
@@ -144,11 +144,12 @@ window.card = (function () {
     /**
      * Отрисовывем нужную карточку по индексу пина
      *
+     * @param  {object} dataArr данные
      * @param  {number} index индекс кликнутого пина
      * @return {object}       отрисованная карточка
      */
-    renderCard: function (index) {
-      var card = this.getCard(window.data.serverData.adsArr[index]);
+    renderCard: function (dataArr, index) {
+      var card = this.getCard(dataArr[index]);
       if (checkCard(card)) {
         mapCardsFragment.appendChild(card);
         window.data.map.insertBefore(mapCardsFragment, filters);

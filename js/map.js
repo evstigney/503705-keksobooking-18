@@ -9,15 +9,17 @@ window.map = (function () {
   var map = window.data.map;
   var mapPins = map.querySelector('.map__pins');
   var mapPinsFragment = document.createDocumentFragment();
+  var ads = window.data.serverData.adsArr;
 
   /**
-   * Описываю отрисовку пинов на основе моковых данных
+   * Описываю отрисовку пинов данных
    *
+   * @param {object} arr массив с данными объявлений
    * @return {object}  отрисованные пины
    */
-  var renderMatchingPins = function () {
-    for (var i = 0; i < window.data.serverData.adsArr.length; i++) {
-      var pin = window.pin.renderPin(window.data.serverData.adsArr[i]);
+  var renderMatchingPins = function (arr) {
+    for (var i = 0; i < arr.length; i++) {
+      var pin = window.pin.renderPin(arr[i]);
       mapPinsFragment.appendChild(pin);
     }
     mapPins.appendChild(mapPinsFragment);
@@ -28,9 +30,10 @@ window.map = (function () {
    * Описываем отрисовку карточку в зависимости от кликнутого пина,
    * добавляем в нее событие закрытия по нажатию на ESCAPE или клику на крестик
    *
+   * @param  {object} dataArr текущий массив с данными
    * @param  {object} target пин, по которому произошел клик или ENTER
    */
-  var renderMatchingCard = function (target) {
+  var renderMatchingCard = function (dataArr, target) {
     var allPins = mapPins.querySelectorAll('.map__pin');
     var matchingPins = [];
     for (var i = 0; i < allPins.length; i++) {
@@ -39,7 +42,7 @@ window.map = (function () {
       }
     }
     var index = matchingPins.indexOf(target);
-    var card = window.card.renderCard(index);
+    var card = window.card.renderCard(dataArr, index);
 
     /**
      * По клику или ESCAPE удаляем карточку
@@ -47,7 +50,7 @@ window.map = (function () {
      * @param  {object} evt объект события Event
      */
     var closePopupButtonHandler = function (evt) {
-      if (evt.type === 'click' || evt.keyCode === window.util.ESC_KEYCODE) {
+      if (evt.type === 'click' || evt.keyCode === window.util.KeyCode.ESCAPE) {
         card.remove();
       }
     };
@@ -56,21 +59,23 @@ window.map = (function () {
     closePopupButton.addEventListener('click', closePopupButtonHandler);
     document.addEventListener('keydown', closePopupButtonHandler);
     document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.util.ESC_KEYCODE && !(document.querySelector('.map__card'))) {
+      if (evt.keyCode === window.util.KeyCode.ESCAPE && !(document.querySelector('.map__card'))) {
         document.removeEventListener('keydown', closePopupButtonHandler);
       }
     });
   };
 
   /**
-   * Отрисовывем пины на странице на основе моки,
+   * Отрисовывем пины на странице,
    * добавление событий открытия карточки по клику или ENTER,
    * проверка карточки
    *
+   * @param {object} arr
    * @return {object}  отрисованные на странице пины
    */
-  var renderMockingData = function () {
-    var pins = renderMatchingPins();
+  var renderPinsData = function (arr) {
+    arr = window.filter.byLength(arr.slice());
+    var pins = renderMatchingPins(arr);
     pins = pins.querySelectorAll('.map__pin');
 
     /**
@@ -81,8 +86,8 @@ window.map = (function () {
      * @param  {object} evt событие Event
      */
     var openPopupCardHandler = function (evt) {
-      if (evt.type === 'click' || evt.keyCode === window.util.ENTER_KEYCODE && document.activeElement === evt.currentTarget) {
-        renderMatchingCard(evt.currentTarget);
+      if (evt.type === 'click' || evt.keyCode === window.util.KeyCode.ENTER && document.activeElement === evt.currentTarget) {
+        renderMatchingCard(arr, evt.currentTarget);
       }
     };
 
@@ -108,7 +113,7 @@ window.map = (function () {
     map.classList.remove('map--faded');
     window.form.toggleFormToActive();
     window.util.removeDisabled(window.data.adForm.children);
-    renderMockingData();
+    renderPinsData(ads);
     window.pinMain.renderAddress();
   };
 
@@ -149,12 +154,14 @@ window.map = (function () {
   window.pinMain.pin.addEventListener('keydown', activateMapHandler);
 
   return {
+    ads: ads,
     mapPins: mapPins,
     reset: function () {
       window.pinMain.setStartCoords();
       removePins();
       window.card.remove();
       map.classList.add('map--faded');
-    }
+    },
+    renderPins: renderPinsData
   };
 })();

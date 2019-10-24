@@ -149,12 +149,15 @@ window.data = (function () {
   };
 
   return {
-    LOCATION_Y_MIN: LOCATION_Y_MIN,
-    LOCATION_Y_MAX: LOCATION_Y_MAX,
+    BoundingLocationY: {
+      MIN: LOCATION_Y_MIN,
+      MAX: LOCATION_Y_MAX
+    },
+
     /**
      * Карта соответствий наличия фичей (удобств) в жильте и css классов в разметке
      */
-    MAP_FEATURES_CLASSES: {
+    featuresClassesMap: {
       'wifi': 'popup__feature--wifi',
       'dishwasher': 'popup__feature--dishwasher',
       'parking': 'popup__feature--parking',
@@ -166,7 +169,7 @@ window.data = (function () {
     /**
      * Карта соответствий типов жилья и их значений
      */
-    MAP_TYPES: {
+    housingTypesMap: {
       'flat': 'Квартира',
       'bungalo': 'Бунгало',
       'house': 'Дом',
@@ -176,7 +179,7 @@ window.data = (function () {
     /**
      * Карта соответствий количества комнат и количества гостей
      */
-    MAP_CAPACITY: {
+    capacityMap: {
       1: ['1'],
       2: ['2', '1'],
       3: ['3', '2', '1'],
@@ -188,7 +191,7 @@ window.data = (function () {
      * а также сообщения об ошибке при неверном вводе стоимости для
      * данного типа жилья
      */
-    MAP_MIN_PRICE: {
+    minPriceMap: {
       'bungalo': {
         minPrice: '0',
         errorMessage: 'Для бунгало минимальная цена за ночь - 0 рублей.'

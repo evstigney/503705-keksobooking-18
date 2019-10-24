@@ -37,7 +37,7 @@ window.form = (function () {
   var validatePrice = function () {
     var currentType = adTypeSelect.value;
     if (adPriceField.validity.rangeUnderflow) {
-      adPriceField.setCustomValidity(window.data.MAP_MIN_PRICE[currentType].errorMessage);
+      adPriceField.setCustomValidity(window.data.minPriceMap[currentType].errorMessage);
     } else {
       adPriceField.setCustomValidity('');
     }
@@ -49,8 +49,8 @@ window.form = (function () {
    */
   var validateType = function () {
     var currentType = adTypeSelect.value;
-    adPriceField.min = window.data.MAP_MIN_PRICE[currentType].minPrice;
-    adPriceField.setAttribute('placeholder', window.data.MAP_MIN_PRICE[currentType].minPrice);
+    adPriceField.min = window.data.minPriceMap[currentType].minPrice;
+    adPriceField.setAttribute('placeholder', window.data.minPriceMap[currentType].minPrice);
   };
 
   /**
@@ -60,7 +60,7 @@ window.form = (function () {
   var validateCapacity = function () {
     var capacityOptions = adCapacitySelect.options;
     var selectedRooms = adRoomNumberSelect.value;
-    var selectedRoomsArr = window.data.MAP_CAPACITY[selectedRooms];
+    var selectedRoomsArr = window.data.capacityMap[selectedRooms];
     for (var i = 0; i < capacityOptions.length; i++) {
       var currentOption = capacityOptions[i];
       var flag = false;
