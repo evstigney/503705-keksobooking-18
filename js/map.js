@@ -72,7 +72,6 @@ window.map = (function () {
    * проверка карточки
    *
    * @param {object} arr
-   * @param {function} filter
    * @return {object}  отрисованные на странице пины
    */
   var renderPinsData = function (arr) {
