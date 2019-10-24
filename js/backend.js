@@ -12,7 +12,7 @@ window.backend = (function () {
   /**
    * Карта сообщений об ошибках
    */
-  var ErrorCode = {
+  var errorCodeMap = {
     0: 'нет интернет соединения',
     400: 'неверный запрос',
     401: 'пользователь не авторизован',
@@ -27,10 +27,10 @@ window.backend = (function () {
    * @return {string}
    */
   var getErrorMessage = function (status) {
-    if (!ErrorCode[status]) {
-      ErrorCode[status] = 'что-то пошло не так, мы уже решаем проблему';
+    if (!errorCodeMap[status]) {
+      errorCodeMap[status] = 'что-то пошло не так, мы уже решаем проблему';
     }
-    var message = 'Ошибка ' + status + ': ' + ErrorCode[status];
+    var message = 'Ошибка ' + status + ': ' + errorCodeMap[status];
     return message;
   };
 

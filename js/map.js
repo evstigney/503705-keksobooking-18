@@ -49,7 +49,7 @@ window.map = (function () {
      * @param  {object} evt объект события Event
      */
     var closePopupButtonHandler = function (evt) {
-      if (evt.type === 'click' || evt.keyCode === window.util.KeyCode.escape) {
+      if (evt.type === 'click' || evt.keyCode === window.util.KeyCode.ESCAPE) {
         card.remove();
       }
     };
@@ -58,7 +58,7 @@ window.map = (function () {
     closePopupButton.addEventListener('click', closePopupButtonHandler);
     document.addEventListener('keydown', closePopupButtonHandler);
     document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.util.KeyCode.escape && !(document.querySelector('.map__card'))) {
+      if (evt.keyCode === window.util.KeyCode.ESCAPE && !(document.querySelector('.map__card'))) {
         document.removeEventListener('keydown', closePopupButtonHandler);
       }
     });
@@ -85,7 +85,7 @@ window.map = (function () {
      * @param  {object} evt событие Event
      */
     var openPopupCardHandler = function (evt) {
-      if (evt.type === 'click' || evt.keyCode === window.util.KeyCode.enter && document.activeElement === evt.currentTarget) {
+      if (evt.type === 'click' || evt.keyCode === window.util.KeyCode.ENTER && document.activeElement === evt.currentTarget) {
         renderMatchingCard(evt.currentTarget);
       }
     };

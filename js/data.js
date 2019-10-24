@@ -149,8 +149,11 @@ window.data = (function () {
   };
 
   return {
-    LOCATION_Y_MIN: LOCATION_Y_MIN,
-    LOCATION_Y_MAX: LOCATION_Y_MAX,
+    BoundingLocationY: {
+      MIN: LOCATION_Y_MIN,
+      MAX: LOCATION_Y_MAX
+    },
+
     /**
      * Карта соответствий наличия фичей (удобств) в жильте и css классов в разметке
      */
@@ -166,7 +169,7 @@ window.data = (function () {
     /**
      * Карта соответствий типов жилья и их значений
      */
-    typesMap: {
+    housingTypesMap: {
       'flat': 'Квартира',
       'bungalo': 'Бунгало',
       'house': 'Дом',

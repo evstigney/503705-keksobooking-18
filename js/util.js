@@ -8,8 +8,8 @@
 window.util = (function () {
   return {
     KeyCode: {
-      escape: 27,
-      enter: 13
+      ESCAPE: 27,
+      ENTER: 13
     },
 
     /**
@@ -19,7 +19,7 @@ window.util = (function () {
      * @param  {function} action любая функция - обработчик события
      */
     isEscEvent: function (evt, action) {
-      if (evt.keyCode === this.KeyCode.escape) {
+      if (evt.keyCode === this.KeyCode.ESCAPE) {
         action();
       }
     },
@@ -31,7 +31,7 @@ window.util = (function () {
      * @param  {function} action любая функция - обработчик события
      */
     isEnterEvent: function (evt, action) {
-      if (evt.keyCode === this.KeyCode.enter) {
+      if (evt.keyCode === this.KeyCode.ENTER) {
         action();
       }
     },

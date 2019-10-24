@@ -91,8 +91,8 @@ window.pinMain = (function () {
         y: moveEvt.clientY
       };
       var styleTop = pinMain.offsetTop - shift.y;
-      if (location.y > window.data.LOCATION_Y_MAX || location.y < window.data.LOCATION_Y_MIN) {
-        location.y = (location.y > window.data.LOCATION_Y_MAX) ? window.data.LOCATION_Y_MAX : window.data.LOCATION_Y_MIN;
+      if (location.y > window.data.BoundingLocationY.MAX || location.y < window.data.BoundingLocationY.MIN) {
+        location.y = (location.y > window.data.BoundingLocationY.MAX) ? window.data.BoundingLocationY.MAX : window.data.BoundingLocationY.MIN;
         styleTop = pinMain.offsetTop;
       }
       var styleLeft = pinMain.offsetLeft - shift.x;
