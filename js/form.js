@@ -87,15 +87,21 @@ window.form = (function () {
   var renderSuccessMessage = function () {
     main.append(popupSuccess);
 
-    var removePopupHandler = function () {
-      popupSuccess.remove();
+    var removePopupHandler = function (evt) {
+      if (evt.type === 'keydown') {
+        window.util.isEscEvent(evt, function () {
+          popupSuccess.remove();
+        });
+      } else {
+        popupSuccess.remove();
+      }
+      document.removeEventListener('click', removePopupHandler);
+      document.removeEventListener('keydown', removePopupHandler);
     };
 
     if (main.querySelector('.success')) {
       document.addEventListener('click', removePopupHandler);
-      document.addEventListener('keydown', function (evt) {
-        window.util.isEscEvent(evt, removePopupHandler);
-      });
+      document.addEventListener('keydown', removePopupHandler);
     }
   };
 
@@ -115,6 +121,12 @@ window.form = (function () {
     window.map.reset();
   };
 
+  var onSubmitHandler = function (evt) {
+    window.backend.save(new FormData(adForm), onLoad, window.data.failLoad);
+    evt.preventDefault();
+    adForm.removeEventListener('submit', onSubmitHandler);
+  };
+
   adTimeinSelect.addEventListener('change', validateTimein);
   adTimeoutSelect.addEventListener('change', validateTimeout);
   adPriceField.addEventListener('change', validatePrice);
@@ -126,10 +138,7 @@ window.form = (function () {
     validateCapacity();
   });
 
-  adForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(adForm), onLoad, window.data.failLoad);
-    evt.preventDefault();
-  });
+  adForm.addEventListener('submit', onSubmitHandler);
 
   window.util.addDisabled(adForm.children);
   window.pinMain.renderAddress();
@@ -141,9 +150,11 @@ window.form = (function () {
     toggleFormToActive: function () {
       window.data.adForm.classList.remove('ad-form--disabled');
       noticeTitle.classList.remove('ad-form--disabled');
+      adForm.addEventListener('submit', onSubmitHandler);
     },
     validateCapacity: validateCapacity,
     validateType: validateType,
-    validateTimein: validateTimein
+    validateTimein: validateTimein,
+    submitForm: onSubmitHandler
   };
 })();

@@ -52,9 +52,21 @@ window.data = (function () {
 
     /**
      * Удаляем сообщение
+     *
+     * @param {object}  evt объект Event
      */
-    var closePopupHandler = function () {
-      popupError.remove();
+    var closePopupHandler = function (evt) {
+      if (evt.type === 'keydown') {
+        window.util.isEscEvent(evt, function () {
+          popupError.remove();
+        });
+      } else {
+        popupError.remove();
+      }
+      button.removeEventListener('click', closePopupHandler);
+      document.removeEventListener('click', closePopupHandler);
+      document.removeEventListener('keydown', closePopupHandler);
+
       if (!isSave) {
         window.backend.load(successLoad, failLoad);
       }
@@ -69,9 +81,7 @@ window.data = (function () {
 
       button.addEventListener('click', closePopupHandler);
       document.addEventListener('click', closePopupHandler);
-      document.addEventListener('keydown', function (evt) {
-        window.util.isEscEvent(evt, closePopupHandler);
-      });
+      document.addEventListener('keydown', closePopupHandler);
     }
   };
 
