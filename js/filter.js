@@ -6,8 +6,10 @@
  * @return {object} методы
  */
 window.filter = (function () {
-  var mapFilters = document.querySelector('.map__filters');
   var ADS_QUANTITY = 5;
+
+  var mapFilters = document.querySelector('.map__filters');
+
   var UsedFilter = {
     TYPE: {
       isApply: false,
@@ -20,6 +22,10 @@ window.filter = (function () {
     ROOMS: {
       isApply: false,
       target: mapFilters.querySelector('#housing-rooms')
+    },
+    GUESTS: {
+      isApply: false,
+      target: mapFilters.querySelector('#housing-guests')
     }
   };
 
@@ -98,6 +104,18 @@ window.filter = (function () {
       UsedFilter.ROOMS.isApply = true;
     } else {
       UsedFilter.ROOMS.isApply = false;
+    }
+    return arr;
+  };
+
+  UsedFilter.GUESTS.action = function (arr, value) {
+    if (value !== 'any') {
+      arr = arr.filter(function (ad) {
+        return String(ad.offer.guests) === value;
+      });
+      UsedFilter.GUESTS.isApply = true;
+    } else {
+      UsedFilter.GUESTS.isApply = false;
     }
     return arr;
   };

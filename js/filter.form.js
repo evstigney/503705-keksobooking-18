@@ -10,6 +10,7 @@ window.filter.form = (function () {
   var typeSelect = allFilters.TYPE.target;
   var priceSelect = allFilters.PRICE.target;
   var roomsSelect = allFilters.ROOMS.target;
+  var guestsSelect = allFilters.GUESTS.target;
 
   var applyFilter = function (target, action, arr) {
     map.querySelectorAll('.map__pin').forEach(function (pin) {
@@ -37,6 +38,11 @@ window.filter.form = (function () {
     checkUsedFilters();
   };
 
+  var guestsSelectChangeHandler = function () {
+    allFilters.GUESTS.isApply = true;
+    checkUsedFilters();
+  };
+
   var checkUsedFilters = function () {
     var adsArr = ads.slice();
     for (var key in allFilters) {
@@ -49,4 +55,5 @@ window.filter.form = (function () {
   typeSelect.addEventListener('change', typeSelectChangeHandler);
   priceSelect.addEventListener('change', priceSelectChangeHandler);
   roomsSelect.addEventListener('change', roomsSelectChangeHandler);
+  guestsSelect.addEventListener('change', guestsSelectChangeHandler);
 })();
