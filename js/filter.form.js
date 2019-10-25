@@ -6,10 +6,10 @@
 window.filter.form = (function () {
   var map = document.querySelector('.map');
   var ads = window.data.serverData.adsArr;
-  var mapFilters = document.querySelector('.map__filters');
-  var typeSelect = mapFilters.querySelector('#housing-type');
-  var priceSelect = mapFilters.querySelector('#housing-price');
   var allFilters = window.filter.UsedFilter;
+  var typeSelect = allFilters.TYPE.target;
+  var priceSelect = allFilters.PRICE.target;
+  var roomsSelect = allFilters.ROOMS.target;
 
   var applyFilter = function (target, action, arr) {
     map.querySelectorAll('.map__pin').forEach(function (pin) {
@@ -32,6 +32,11 @@ window.filter.form = (function () {
     checkUsedFilters();
   };
 
+  var roomsSelectChangeHandler = function () {
+    allFilters.ROOMS.isApply = true;
+    checkUsedFilters();
+  };
+
   var checkUsedFilters = function () {
     var adsArr = ads.slice();
     for (var key in allFilters) {
@@ -42,6 +47,6 @@ window.filter.form = (function () {
   };
 
   typeSelect.addEventListener('change', typeSelectChangeHandler);
-
   priceSelect.addEventListener('change', priceSelectChangeHandler);
+  roomsSelect.addEventListener('change', roomsSelectChangeHandler);
 })();

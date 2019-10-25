@@ -7,7 +7,7 @@
  */
 window.filter = (function () {
   var mapFilters = document.querySelector('.map__filters');
-  var ADS_QUANTITY = 10;
+  var ADS_QUANTITY = 5;
   var UsedFilter = {
     TYPE: {
       isApply: false,
@@ -16,6 +16,10 @@ window.filter = (function () {
     PRICE: {
       isApply: false,
       target: mapFilters.querySelector('#housing-price')
+    },
+    ROOMS: {
+      isApply: false,
+      target: mapFilters.querySelector('#housing-rooms')
     }
   };
 
@@ -82,6 +86,18 @@ window.filter = (function () {
       UsedFilter.PRICE.isApply = true;
     } else {
       UsedFilter.PRICE.isApply = false;
+    }
+    return arr;
+  };
+
+  UsedFilter.ROOMS.action = function (arr, value) {
+    if (value !== 'any') {
+      arr = arr.filter(function (ad) {
+        return String(ad.offer.rooms) === value;
+      });
+      UsedFilter.ROOMS.isApply = true;
+    } else {
+      UsedFilter.ROOMS.isApply = false;
     }
     return arr;
   };
