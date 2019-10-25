@@ -26,6 +26,10 @@ window.filter = (function () {
     GUESTS: {
       isApply: false,
       target: mapFilters.querySelector('#housing-guests')
+    },
+    FEATURES: {
+      isApply: false,
+      target: mapFilters.querySelector('#housing-features').querySelectorAll('[name="features"]')
     }
   };
 
@@ -116,6 +120,27 @@ window.filter = (function () {
       UsedFilter.GUESTS.isApply = true;
     } else {
       UsedFilter.GUESTS.isApply = false;
+    }
+    return arr;
+  };
+
+  UsedFilter.FEATURES.action = function (arr, value) {
+    if (value.length > 0) {
+      arr = arr.filter(function (ad) {
+        var flag = false;
+        for (var i = 0; i < value.length; i++) {
+          if (ad.offer.features.includes(value[i])) {
+            flag = true;
+          } else {
+            flag = false;
+            break;
+          }
+        }
+        return flag;
+      });
+      UsedFilter.FEATURES.isApply = true;
+    } else {
+      UsedFilter.FEATURES.isApply = false;
     }
     return arr;
   };
