@@ -173,22 +173,22 @@ window.data = (function () {
      * Карта соответствий наличия фичей (удобств) в жильте и css классов в разметке
      */
     featuresClassesMap: {
-      'wifi': 'popup__feature--wifi',
-      'dishwasher': 'popup__feature--dishwasher',
-      'parking': 'popup__feature--parking',
-      'washer': 'popup__feature--washer',
-      'elevator': 'popup__feature--elevator',
-      'conditioner': 'popup__feature--conditioner'
+      wifi: 'popup__feature--wifi',
+      dishwasher: 'popup__feature--dishwasher',
+      parking: 'popup__feature--parking',
+      washer: 'popup__feature--washer',
+      elevator: 'popup__feature--elevator',
+      conditioner: 'popup__feature--conditioner'
     },
 
     /**
      * Карта соответствий типов жилья и их значений
      */
-    housingTypesMap: {
-      'flat': 'Квартира',
-      'bungalo': 'Бунгало',
-      'house': 'Дом',
-      'palace': 'Дворец'
+    HousingTypes: {
+      FLAT: 'Квартира',
+      BUNGALO: 'Бунгало',
+      HOUSE: 'Дом',
+      PALACE: 'Дворец'
     },
 
     /**
