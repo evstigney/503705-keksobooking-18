@@ -45,27 +45,27 @@ window.filter.form = (function () {
 
   var typeSelectChangeHandler = function () {
     allFilters.TYPE.isApply = true;
-    checkUsedFilters();
+    window.debounce(checkUsedFilters);
   };
 
   var priceSelectChangeHandler = function () {
     allFilters.PRICE.isApply = true;
-    checkUsedFilters();
+    window.debounce(checkUsedFilters);
   };
 
   var roomsSelectChangeHandler = function () {
     allFilters.ROOMS.isApply = true;
-    checkUsedFilters();
+    window.debounce(checkUsedFilters);
   };
 
   var guestsSelectChangeHandler = function () {
     allFilters.GUESTS.isApply = true;
-    checkUsedFilters();
+    window.debounce(checkUsedFilters);
   };
 
   var featureCheckboxesChangeHandler = function () {
     allFilters.FEATURES.isApply = true;
-    checkUsedFilters();
+    window.debounce(checkUsedFilters);
   };
 
   typeSelect.addEventListener('change', typeSelectChangeHandler);
