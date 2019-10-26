@@ -13,6 +13,14 @@ window.filter.form = (function () {
   var guestsSelect = allFilters.GUESTS.target;
   var featureCheckboxes = allFilters.FEATURES.target;
 
+  /**
+   * Применяем фильтр
+   *
+   * @param  {type} value  выбранное значение фильтра
+   * @param  {function} action функция фильтрации
+   * @param  {object} arr    данные объявлений
+   * @return {object}        отфильтрованные данные
+   */
   var applyFilter = function (value, action, arr) {
     map.querySelectorAll('.map__pin').forEach(function (pin) {
       if (window.pin.isPin(pin)) {
@@ -24,6 +32,9 @@ window.filter.form = (function () {
     return filteredAds;
   };
 
+  /**
+   * Управление фильтрами
+   */
   var checkUsedFilters = function () {
     var adsArr = ads.slice();
     for (var key in allFilters) {

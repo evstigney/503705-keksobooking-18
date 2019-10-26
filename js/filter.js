@@ -47,6 +47,12 @@ window.filter = (function () {
     return sortedArr;
   };
 
+  /**
+   * Ищем соответствие цены значениям селекта
+   *
+   * @param  {number} price  цена
+   * @return {string}        значение селекта
+   */
   var getPriceValue = function (price) {
     var value = 'any';
     var priceMap = {
@@ -64,11 +70,11 @@ window.filter = (function () {
   };
 
   /**
-   * Сортировка по типу жилья
+   * Фильтрация по типу жилья
    *
    * @param  {object} arr  данные объявлений
    * @param  {string} type тип жилья
-   * @return {object}      отсортированные данные
+   * @return {object}      отфильтрованные данные
    */
   UsedFilter.TYPE.action = function (arr, type) {
     UsedFilter.TYPE.isApply = true;
@@ -83,6 +89,13 @@ window.filter = (function () {
     return arr;
   };
 
+  /**
+   * Фильтрация по цене
+   *
+   * @param  {object} arr   данные объявлений
+   * @param  {string} value значение селекта (интервал для цены)
+   * @return {object}       отфильтрованные данные
+   */
   UsedFilter.PRICE.action = function (arr, value) {
     var isMatchingPrice = function (ad) {
       var flag = false;
@@ -100,6 +113,13 @@ window.filter = (function () {
     return arr;
   };
 
+  /**
+   * Фильтрация по количестку комнат
+   *
+   * @param  {object} arr   данные объявлений
+   * @param  {string} value количество комнат
+   * @return {object}       отфильтрованные данные
+   */
   UsedFilter.ROOMS.action = function (arr, value) {
     if (value !== 'any') {
       arr = arr.filter(function (ad) {
@@ -112,6 +132,13 @@ window.filter = (function () {
     return arr;
   };
 
+  /**
+   * Фильтрация по количество гостей
+   *
+   * @param  {object} arr   данные объявлений
+   * @param  {string} value количество гостей
+   * @return {object}       отфильтрованные данные
+   */
   UsedFilter.GUESTS.action = function (arr, value) {
     if (value !== 'any') {
       arr = arr.filter(function (ad) {
@@ -124,6 +151,13 @@ window.filter = (function () {
     return arr;
   };
 
+  /**
+   * Фильтрация по фичам
+   *
+   * @param  {object} arr   данные объявлений
+   * @param  {object} value выбранные фичи
+   * @return {object}       отфильтрованные данные
+   */
   UsedFilter.FEATURES.action = function (arr, value) {
     if (value.length > 0) {
       arr = arr.filter(function (ad) {
