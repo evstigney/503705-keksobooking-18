@@ -114,6 +114,7 @@ window.pinMain = (function () {
       upEvt.preventDefault();
       map.removeEventListener('mousedown', onMouseDown);
       map.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
     };
     map.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);

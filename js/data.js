@@ -45,15 +45,31 @@ window.data = (function () {
   /**
    * Отрисовываем на странице сообщение об ошибке
    *
-   * @param  {string} message
+   * @param  {string}   message
+   * @param  {boolean}  isSave  вызвана ли функцией отправки данных на сервер
    */
-  var renderErrorMessage = function (message) {
+  var renderErrorMessage = function (message, isSave) {
 
     /**
      * Удаляем сообщение
+     *
+     * @param {object}  evt объект Event
      */
-    var closePopupHandler = function () {
-      popupError.remove();
+    var closePopupHandler = function (evt) {
+      if (evt.type === 'keydown') {
+        window.util.isEscEvent(evt, function () {
+          popupError.remove();
+        });
+      } else {
+        popupError.remove();
+      }
+      button.removeEventListener('click', closePopupHandler);
+      document.removeEventListener('click', closePopupHandler);
+      document.removeEventListener('keydown', closePopupHandler);
+
+      if (!isSave) {
+        window.backend.load(successLoad, failLoad);
+      }
     };
 
     popupMessage.textContent = message;
@@ -65,9 +81,7 @@ window.data = (function () {
 
       button.addEventListener('click', closePopupHandler);
       document.addEventListener('click', closePopupHandler);
-      document.addEventListener('keydown', function (evt) {
-        window.util.isEscEvent(evt, closePopupHandler);
-      });
+      document.addEventListener('keydown', closePopupHandler);
     }
   };
 
@@ -76,9 +90,10 @@ window.data = (function () {
    * пока оставлю на случай, если - кроме сообщения - другие действия нужны будут
    *
    * @param  {string} message
+   * @param  {boolean} isSave вызвана ли функцией отправки данных на сервер
    */
-  var failLoad = function (message) {
-    renderErrorMessage(message);
+  var failLoad = function (message, isSave) {
+    renderErrorMessage(message, isSave);
   };
 
   window.backend.load(successLoad, failLoad);
@@ -158,22 +173,22 @@ window.data = (function () {
      * Карта соответствий наличия фичей (удобств) в жильте и css классов в разметке
      */
     featuresClassesMap: {
-      'wifi': 'popup__feature--wifi',
-      'dishwasher': 'popup__feature--dishwasher',
-      'parking': 'popup__feature--parking',
-      'washer': 'popup__feature--washer',
-      'elevator': 'popup__feature--elevator',
-      'conditioner': 'popup__feature--conditioner'
+      wifi: 'popup__feature--wifi',
+      dishwasher: 'popup__feature--dishwasher',
+      parking: 'popup__feature--parking',
+      washer: 'popup__feature--washer',
+      elevator: 'popup__feature--elevator',
+      conditioner: 'popup__feature--conditioner'
     },
 
     /**
      * Карта соответствий типов жилья и их значений
      */
-    housingTypesMap: {
-      'flat': 'Квартира',
-      'bungalo': 'Бунгало',
-      'house': 'Дом',
-      'palace': 'Дворец'
+    HousingTypes: {
+      FLAT: 'Квартира',
+      BUNGALO: 'Бунгало',
+      HOUSE: 'Дом',
+      PALACE: 'Дворец'
     },
 
     /**

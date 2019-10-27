@@ -127,6 +127,10 @@ window.map = (function () {
     window.form.validateCapacity();
     window.form.validateType();
     window.form.validateTimein();
+    if (map.querySelectorAll('.map__pin').length > 1) {
+      window.pinMain.pin.removeEventListener('mousedown', activateMap);
+      window.pinMain.pin.removeEventListener('keydown', activateMapHandler);
+    }
   };
 
   /**
@@ -135,7 +139,11 @@ window.map = (function () {
    * @param  {object} evt Объект Event
    */
   var activateMapHandler = function (evt) {
-    window.util.isEnterEvent(evt, activateMap);
+    if (evt.type === 'keydown') {
+      window.util.isEnterEvent(evt, activateMap);
+    } else {
+      activateMap();
+    }
   };
 
   /**
@@ -150,7 +158,7 @@ window.map = (function () {
     }
   };
 
-  window.pinMain.pin.addEventListener('mousedown', activateMap);
+  window.pinMain.pin.addEventListener('mousedown', activateMapHandler);
   window.pinMain.pin.addEventListener('keydown', activateMapHandler);
 
   return {
@@ -161,6 +169,8 @@ window.map = (function () {
       removePins();
       window.card.remove();
       map.classList.add('map--faded');
+      window.pinMain.pin.addEventListener('mousedown', activateMapHandler);
+      window.pinMain.pin.addEventListener('keydown', activateMapHandler);
     },
     renderPins: renderPinsData
   };

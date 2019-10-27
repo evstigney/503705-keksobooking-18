@@ -9,6 +9,8 @@ window.backend = (function () {
   var URL = 'https://js.dump.academy/keksobooking';
   var TIMEOUT = 6000;
 
+  var isSave = false;
+
   /**
    * Карта сообщений об ошибках
    */
@@ -56,16 +58,25 @@ window.backend = (function () {
       xhr.responseType = 'json';
       xhr.timeout = TIMEOUT;
 
+      isSave = false;
+
+      var onErrorHandler = function () {
+        onError(getErrorMessage(xhr.status), isSave);
+      };
+
+      var onTimeoutHandler = function () {
+        onTimeout(onError);
+        xhr.removeEventListener('timeout', onTimeoutHandler);
+      };
+
+      xhr.addEventListener('error', onErrorHandler);
+
+      xhr.addEventListener('timeout', onTimeoutHandler);
+
       xhr.addEventListener('load', function () {
         onLoad(xhr.response);
-      });
-
-      xhr.addEventListener('error', function () {
-        onError(getErrorMessage(xhr.status));
-      });
-
-      xhr.addEventListener('timeout', function () {
-        onTimeout(onError);
+        xhr.removeEventListener('timeout', onTimeoutHandler);
+        xhr.removeEventListener('error', onErrorHandler);
       });
 
       xhr.open('GET', URL + '/data');
@@ -84,16 +95,24 @@ window.backend = (function () {
       xhr.responseType = 'json';
       xhr.timeout = TIMEOUT;
 
+      isSave = true;
+
+      var onErrorHandler = function () {
+        onError(getErrorMessage(xhr.status), isSave);
+        xhr.removeEventListener('error', onErrorHandler);
+      };
+
+      var onTimeoutHandler = function () {
+        onTimeout(onError);
+        xhr.removeEventListener('timeout', onTimeoutHandler);
+      };
+
+      xhr.addEventListener('error', onErrorHandler);
+
+      xhr.addEventListener('timeout', onTimeoutHandler);
+
       xhr.addEventListener('load', function () {
         onLoad(xhr.response);
-      });
-
-      xhr.addEventListener('error', function () {
-        onError(getErrorMessage(xhr.status));
-      });
-
-      xhr.addEventListener('timeout', function () {
-        onTimeout(onError);
       });
 
       xhr.open('POST', URL);
