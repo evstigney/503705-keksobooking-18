@@ -26,6 +26,10 @@ window.filter.form = (function () {
       if (window.pin.isPin(pin)) {
         pin.remove();
       }
+      var card = map.querySelector('.map__card.popup');
+      if (card) {
+        card.remove();
+      }
     });
     var filteredAds = action(arr, value);
     window.map.renderPins(filteredAds);
