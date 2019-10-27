@@ -70,23 +70,34 @@ window.filter = (function () {
   };
 
   /**
-   * Фильтрация по типу жилья
+   * Простой фильтр по введенному значению
    *
-   * @param  {object} arr  данные объявлений
-   * @param  {string} type тип жилья
-   * @return {object}      отфильтрованные данные
+   * @param  {object} arr    данные объявлений
+   * @param  {string} value  введенное значение
+   * @param  {string} filter фильтр
+   * @return {object}        отфильтрованные данные
    */
-  UsedFilter.TYPE.action = function (arr, type) {
-    UsedFilter.TYPE.isApply = true;
-    if (type !== 'any') {
+  var filterByValue = function (arr, value, filter) {
+    if (value !== 'any') {
       arr = arr.filter(function (ad) {
-        return ad.offer.type === type;
+        return String(ad.offer[filter]) === value;
       });
-      UsedFilter.TYPE.isApply = true;
+      UsedFilter[filter.toUpperCase()].isApply = true;
     } else {
-      UsedFilter.TYPE.isApply = false;
+      UsedFilter[filter.toUpperCase()].isApply = false;
     }
     return arr;
+  };
+
+  /**
+   * Фильтрация по типу жилья
+   *
+   * @param  {object} arr   данные объявлений
+   * @param  {string} value введенное значение
+   * @return {object}       отфильтрованные данные
+   */
+  UsedFilter.TYPE.action = function (arr, value) {
+    return filterByValue(arr, value, 'type');
   };
 
   /**
@@ -121,15 +132,7 @@ window.filter = (function () {
    * @return {object}       отфильтрованные данные
    */
   UsedFilter.ROOMS.action = function (arr, value) {
-    if (value !== 'any') {
-      arr = arr.filter(function (ad) {
-        return String(ad.offer.rooms) === value;
-      });
-      UsedFilter.ROOMS.isApply = true;
-    } else {
-      UsedFilter.ROOMS.isApply = false;
-    }
-    return arr;
+    return filterByValue(arr, value, 'rooms');
   };
 
   /**
@@ -140,15 +143,7 @@ window.filter = (function () {
    * @return {object}       отфильтрованные данные
    */
   UsedFilter.GUESTS.action = function (arr, value) {
-    if (value !== 'any') {
-      arr = arr.filter(function (ad) {
-        return String(ad.offer.guests) === value;
-      });
-      UsedFilter.GUESTS.isApply = true;
-    } else {
-      UsedFilter.GUESTS.isApply = false;
-    }
-    return arr;
+    return filterByValue(arr, value, 'guests');
   };
 
   /**
