@@ -58,36 +58,38 @@ window.filter.form = (function () {
     }
   };
 
-  var typeSelectChangeHandler = function () {
-    UsedFilter.TYPE.isApply = true;
+  /**
+   * Запускаем фильтр
+   *
+   * @param  {string} filter
+   */
+  var initFilter = function (filter) {
+    UsedFilter[filter].isApply = true;
     window.debounce(checkUsedFilters);
   };
 
-  var priceSelectChangeHandler = function () {
-    UsedFilter.PRICE.isApply = true;
-    window.debounce(checkUsedFilters);
+  /**
+   * Обработчик события изменения фильтра
+   *
+   * @param  {object} evt объект Event
+   */
+  var filterChangeHandler = function (evt) {
+    for (var key in UsedFilter) {
+      if (key === 'FEATURES') {
+        initFilter(key);
+      } else {
+        if (UsedFilter[key].target === evt.target) {
+          initFilter(key);
+        }
+      }
+    }
   };
 
-  var roomsSelectChangeHandler = function () {
-    UsedFilter.ROOMS.isApply = true;
-    window.debounce(checkUsedFilters);
-  };
-
-  var guestsSelectChangeHandler = function () {
-    UsedFilter.GUESTS.isApply = true;
-    window.debounce(checkUsedFilters);
-  };
-
-  var featureCheckboxesChangeHandler = function () {
-    UsedFilter.FEATURES.isApply = true;
-    window.debounce(checkUsedFilters);
-  };
-
-  typeSelect.addEventListener('change', typeSelectChangeHandler);
-  priceSelect.addEventListener('change', priceSelectChangeHandler);
-  roomsSelect.addEventListener('change', roomsSelectChangeHandler);
-  guestsSelect.addEventListener('change', guestsSelectChangeHandler);
+  typeSelect.addEventListener('change', filterChangeHandler);
+  priceSelect.addEventListener('change', filterChangeHandler);
+  roomsSelect.addEventListener('change', filterChangeHandler);
+  guestsSelect.addEventListener('change', filterChangeHandler);
   featureCheckboxes.forEach(function (checkbox) {
-    checkbox.addEventListener('change', featureCheckboxesChangeHandler);
+    checkbox.addEventListener('change', filterChangeHandler);
   });
 })();
