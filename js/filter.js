@@ -150,17 +150,15 @@ window.filter = (function () {
    * Фильтрация по фичам
    *
    * @param  {object} arr   данные объявлений
-   * @param  {object} value выбранные фичи
+   * @param  {object} features массив выбранных фич
    * @return {object}       отфильтрованные данные
    */
-  UsedFilter.FEATURES.action = function (arr, value) {
-    if (value.length > 0) {
+  UsedFilter.FEATURES.action = function (arr, features) {
+    if (features.length > 0) {
       arr = arr.filter(function (ad) {
-        var flag = false;
-        for (var i = 0; i < value.length; i++) {
-          if (ad.offer.features.includes(value[i])) {
-            flag = true;
-          } else {
+        var flag = true;
+        for (var i = 0; i < features.length; i++) {
+          if (!ad.offer.features.includes(features[i])) {
             flag = false;
             break;
           }
