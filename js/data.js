@@ -120,10 +120,7 @@ window.data = (function () {
     var max = elem.getBoundingClientRect().width;
     var locationX = window.util.getRandomNumber(0, max);
     var locationY = window.util.getRandomNumber(LOCATION_Y_MIN, LOCATION_Y_MAX);
-    var location = {
-      x: locationX,
-      y: locationY
-    };
+    var location = new window.Location(locationX, locationY);
     return location;
   };
 
@@ -153,10 +150,7 @@ window.data = (function () {
           'description': 'С точки зрения банальной эрудиции каждый индивидуум не может игнорировать критерии утопического субъективизма.',
           'photos': window.util.getRandomArr(PHOTOS_ARR)
         },
-        'location': {
-          'x': locationParameters.x,
-          'y': locationParameters.y
-        }
+        'location': new window.Location(locationParameters.x, locationParameters.y)
       };
       mockingAds.push(ad);
     }
@@ -207,22 +201,10 @@ window.data = (function () {
      * данного типа жилья
      */
     minPriceMap: {
-      'bungalo': {
-        minPrice: '0',
-        errorMessage: 'Для бунгало минимальная цена за ночь - 0 рублей.'
-      },
-      'flat': {
-        minPrice: '1000',
-        errorMessage: 'Для квартиры минимальная цена за ночь - 1000 рублей.'
-      },
-      'palace': {
-        minPrice: '10000',
-        errorMessage: 'Для дворца минимальная цена за ночь - 10000 рублей.'
-      },
-      'house': {
-        minPrice: '5000',
-        errorMessage: 'Для дома минимальная цена за ночь - 5000 рублей.'
-      }
+      'bungalo': new window.MinPrice('0', 'Для бунгало минимальная цена за ночь - 0 рублей.'),
+      'flat': new window.MinPrice('1000', 'Для квартиры минимальная цена за ночь - 1000 рублей.'),
+      'palace': new window.MinPrice('10000', 'Для дворца минимальная цена за ночь - 10000 рублей.'),
+      'house': new window.MinPrice('5000', 'Для дома минимальная цена за ночь - 5000 рублей.')
     },
     map: map,
     main: main,

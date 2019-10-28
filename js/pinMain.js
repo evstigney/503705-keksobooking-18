@@ -15,10 +15,10 @@ window.pinMain = (function () {
   var MAIN_PIN_BUTTON_WIDTH = pinButton.getBoundingClientRect().width;
   var MAIN_PIN_BUTTON_HEIGHT = pinButton.getBoundingClientRect().height;
 
-  var location = {
-    x: Math.round(pinButton.offsetLeft + MAIN_PIN_BUTTON_WIDTH / 2),
-    y: Math.round(pinButton.offsetTop + MAIN_PIN_BUTTON_HEIGHT)
-  };
+  var location = new window.Location(
+      Math.round(pinButton.offsetLeft + MAIN_PIN_BUTTON_WIDTH / 2),
+      Math.round(pinButton.offsetTop + MAIN_PIN_BUTTON_HEIGHT)
+  );
 
   /**
    * Получаем координаты
@@ -26,12 +26,7 @@ window.pinMain = (function () {
    * @return {object} координаты
    */
   var getStartCoords = function () {
-    var x = location.x;
-    var y = location.y;
-    return {
-      x: x,
-      y: y
-    };
+    return new window.Location(location.x, location.y);
   };
 
   var pinStartCoords = getStartCoords();
@@ -66,10 +61,7 @@ window.pinMain = (function () {
    */
   var onMouseDown = function (evt) {
     evt.preventDefault();
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
+    var startCoords = new window.Location(evt.clientX, evt.clientY);
 
     /**
      * Описываем событие по перемещению зажатой мыши
@@ -78,10 +70,7 @@ window.pinMain = (function () {
      */
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
-      };
+      var shift = new window.Location(startCoords.x - moveEvt.clientX, startCoords.y - moveEvt.clientY);
       location = {
         x: location.x - shift.x,
         y: location.y - shift.y

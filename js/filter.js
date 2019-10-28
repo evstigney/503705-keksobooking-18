@@ -11,26 +11,11 @@ window.filter = (function () {
   var mapFilters = document.querySelector('.map__filters');
 
   var UsedFilter = {
-    TYPE: {
-      isApply: false,
-      target: mapFilters.querySelector('#housing-type')
-    },
-    PRICE: {
-      isApply: false,
-      target: mapFilters.querySelector('#housing-price')
-    },
-    ROOMS: {
-      isApply: false,
-      target: mapFilters.querySelector('#housing-rooms')
-    },
-    GUESTS: {
-      isApply: false,
-      target: mapFilters.querySelector('#housing-guests')
-    },
-    FEATURES: {
-      isApply: false,
-      target: mapFilters.querySelector('#housing-features').querySelectorAll('[name="features"]')
-    }
+    TYPE: new window.UsedFilter(false, mapFilters.querySelector('#housing-type')),
+    PRICE: new window.UsedFilter(false, mapFilters.querySelector('#housing-price')),
+    ROOMS: new window.UsedFilter(false, mapFilters.querySelector('#housing-rooms')),
+    GUESTS: new window.UsedFilter(false, mapFilters.querySelector('#housing-guests')),
+    FEATURES: new window.UsedFilter(false, mapFilters.querySelector('#housing-features').querySelectorAll('[name="features"]'))
   };
 
   /**

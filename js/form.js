@@ -108,6 +108,7 @@ window.form = (function () {
   var resetForm = function () {
     adForm.reset();
     adForm.classList.add('ad-form--disabled');
+    noticeTitle.classList.add('ad-form--disabled');
     window.util.addDisabled(adForm.children);
     validateCapacity();
   };
