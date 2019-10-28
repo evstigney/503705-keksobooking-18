@@ -8,18 +8,18 @@
 
   var avatar = new window.UserPhoto(
       document.querySelector('#avatar'),
-      document.querySelector('img[alt="Аватар пользователя"]')
+      document.querySelector('img[alt="Аватар пользователя"]'),
+      document.querySelector('.ad-form-header__drop-zone')
   );
   var housingPhoto = new window.UserPhoto(
       document.querySelector('#images'),
-      document.querySelector('#images-preview')
+      document.querySelector('#images-preview'),
+      document.querySelector('.ad-form__drop-zone')
   );
 
-  avatar.upload();
+  avatar.uploadByClick();
+  avatar.uploadByDnD();
 
-  housingPhoto.fileChooser.addEventListener('change', function () {
-    housingPhoto.preview.classList.remove('visually-hidden');
-  });
-
-  housingPhoto.upload();
+  housingPhoto.uploadByClick();
+  housingPhoto.uploadByDnD();
 })();
