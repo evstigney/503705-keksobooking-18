@@ -11,6 +11,7 @@ window.util = (function () {
       ESCAPE: 27,
       ENTER: 13
     },
+    FILE_TYPES: ['gif', 'jpg', 'jpeg', 'png'],
 
     /**
      * Событие происходит по нажатию клавиши ESC

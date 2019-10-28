@@ -14,4 +14,28 @@
     this.target = target;
     this.action = action;
   };
+  window.UserPhoto = function (fileChooser, preview) {
+    this.fileChooser = fileChooser;
+    this.preview = preview;
+  };
+  window.UserPhoto.prototype.upload = function () {
+    var fileChooser = this.fileChooser;
+    var preview = this.preview;
+    fileChooser.addEventListener('change', function () {
+      var file = fileChooser.files[0];
+      if (file) {
+        var fileName = file.name.toLowerCase();
+        var matches = window.util.FILE_TYPES.some(function (type) {
+          return fileName.endsWith(type);
+        });
+        if (matches) {
+          var reader = new FileReader();
+          reader.addEventListener('load', function () {
+            preview.src = reader.result;
+          });
+          reader.readAsDataURL(file);
+        }
+      }
+    });
+  };
 })();
