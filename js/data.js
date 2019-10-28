@@ -158,6 +158,10 @@ window.data = (function () {
   };
 
   return {
+
+    /**
+     * Вертикальные ограничения передвижения гл пина
+     */
     BoundingLocationY: {
       MIN: LOCATION_Y_MIN,
       MAX: LOCATION_Y_MAX

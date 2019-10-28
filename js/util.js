@@ -7,10 +7,18 @@
  */
 window.util = (function () {
   return {
+
+    /**
+     * Коды клавиатуры
+     */
     KeyCode: {
       ESCAPE: 27,
       ENTER: 13
     },
+
+    /**
+     * Поддерживаемые расширения изображений
+     */
     FILE_TYPES: ['gif', 'jpg', 'jpeg', 'png'],
 
     /**
