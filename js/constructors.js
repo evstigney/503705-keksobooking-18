@@ -117,8 +117,7 @@
     });
     dropBox.addEventListener('drop', function (evt) {
       preview.classList.remove('visually-hidden');
-      var fileData = evt.dataTransfer;
-      var file = fileData;
+      var file = evt.dataTransfer;
       file = file.files[0];
       uploadFile(file, preview);
     });
