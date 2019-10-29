@@ -60,23 +60,23 @@ window.backend = (function () {
 
       isSave = false;
 
-      var onErrorHandler = function () {
+      var errorHandler = function () {
         onError(getErrorMessage(xhr.status), isSave);
       };
 
-      var onTimeoutHandler = function () {
+      var timeoutHandler = function () {
         onTimeout(onError);
-        xhr.removeEventListener('timeout', onTimeoutHandler);
+        xhr.removeEventListener('timeout', timeoutHandler);
       };
 
-      xhr.addEventListener('error', onErrorHandler);
+      xhr.addEventListener('error', errorHandler);
 
-      xhr.addEventListener('timeout', onTimeoutHandler);
+      xhr.addEventListener('timeout', timeoutHandler);
 
       xhr.addEventListener('load', function () {
         onLoad(xhr.response);
-        xhr.removeEventListener('timeout', onTimeoutHandler);
-        xhr.removeEventListener('error', onErrorHandler);
+        xhr.removeEventListener('timeout', timeoutHandler);
+        xhr.removeEventListener('error', errorHandler);
       });
 
       xhr.open('GET', URL + '/data');
@@ -97,19 +97,19 @@ window.backend = (function () {
 
       isSave = true;
 
-      var onErrorHandler = function () {
+      var errorHandler = function () {
         onError(getErrorMessage(xhr.status), isSave);
-        xhr.removeEventListener('error', onErrorHandler);
+        xhr.removeEventListener('error', errorHandler);
       };
 
-      var onTimeoutHandler = function () {
+      var timeoutHandler = function () {
         onTimeout(onError);
-        xhr.removeEventListener('timeout', onTimeoutHandler);
+        xhr.removeEventListener('timeout', timeoutHandler);
       };
 
-      xhr.addEventListener('error', onErrorHandler);
+      xhr.addEventListener('error', errorHandler);
 
-      xhr.addEventListener('timeout', onTimeoutHandler);
+      xhr.addEventListener('timeout', timeoutHandler);
 
       xhr.addEventListener('load', function () {
         onLoad(xhr.response);
