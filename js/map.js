@@ -48,18 +48,18 @@ window.map = (function () {
      *
      * @param  {object} evt объект события Event
      */
-    var closePopupButtonHandler = function (evt) {
+    var popupButtonCloseHandler = function (evt) {
       if (evt.type === 'click' || evt.keyCode === window.util.KeyCode.ESCAPE) {
         card.remove();
       }
     };
 
     var closePopupButton = card.querySelector('.popup__close');
-    closePopupButton.addEventListener('click', closePopupButtonHandler);
-    document.addEventListener('keydown', closePopupButtonHandler);
+    closePopupButton.addEventListener('click', popupButtonCloseHandler);
+    document.addEventListener('keydown', popupButtonCloseHandler);
     document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.util.KeyCode.ESCAPE && !(document.querySelector('.map__card'))) {
-        document.removeEventListener('keydown', closePopupButtonHandler);
+        document.removeEventListener('keydown', popupButtonCloseHandler);
       }
     });
   };
@@ -82,7 +82,7 @@ window.map = (function () {
      *
      * @param  {object} evt событие Event
      */
-    var openPopupCardHandler = function (evt) {
+    var popupCardOpenHandler = function (evt) {
       if (evt.type === 'click' || evt.keyCode === window.util.KeyCode.ENTER && document.activeElement === evt.currentTarget) {
         renderMatchingCard(arr, evt.currentTarget);
       }
@@ -90,8 +90,8 @@ window.map = (function () {
 
     for (var i = 0; i < pins.length; i++) {
       if (window.pin.isPin(pins[i])) {
-        pins[i].addEventListener('click', openPopupCardHandler);
-        pins[i].addEventListener('keydown', openPopupCardHandler);
+        pins[i].addEventListener('click', popupCardOpenHandler);
+        pins[i].addEventListener('keydown', popupCardOpenHandler);
       }
     }
     return pins;
@@ -126,7 +126,7 @@ window.map = (function () {
     window.form.validateTimein();
     if (map.querySelectorAll('.map__pin').length > 1) {
       window.pinMain.pin.removeEventListener('mousedown', activateMap);
-      window.pinMain.pin.removeEventListener('keydown', activateMapHandler);
+      window.pinMain.pin.removeEventListener('keydown', mapActivateHandler);
     }
   };
 
@@ -135,7 +135,7 @@ window.map = (function () {
    *
    * @param  {object} evt Объект Event
    */
-  var activateMapHandler = function (evt) {
+  var mapActivateHandler = function (evt) {
     if (evt.type === 'keydown') {
       window.util.isEnterEvent(evt, activateMap);
     } else {
@@ -155,8 +155,8 @@ window.map = (function () {
     }
   };
 
-  window.pinMain.pin.addEventListener('mousedown', activateMapHandler);
-  window.pinMain.pin.addEventListener('keydown', activateMapHandler);
+  window.pinMain.pin.addEventListener('mousedown', mapActivateHandler);
+  window.pinMain.pin.addEventListener('keydown', mapActivateHandler);
 
   return {
     ads: ads,
@@ -166,8 +166,8 @@ window.map = (function () {
       removePins();
       window.card.remove();
       map.classList.add('map--faded');
-      window.pinMain.pin.addEventListener('mousedown', activateMapHandler);
-      window.pinMain.pin.addEventListener('keydown', activateMapHandler);
+      window.pinMain.pin.addEventListener('mousedown', mapActivateHandler);
+      window.pinMain.pin.addEventListener('keydown', mapActivateHandler);
     },
     renderPins: renderPinsData
   };

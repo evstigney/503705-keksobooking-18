@@ -55,7 +55,7 @@ window.data = (function () {
      *
      * @param {object}  evt объект Event
      */
-    var closePopupHandler = function (evt) {
+    var popupCloseHandler = function (evt) {
       if (evt.type === 'keydown') {
         window.util.isEscEvent(evt, function () {
           popupError.remove();
@@ -63,9 +63,9 @@ window.data = (function () {
       } else {
         popupError.remove();
       }
-      button.removeEventListener('click', closePopupHandler);
-      document.removeEventListener('click', closePopupHandler);
-      document.removeEventListener('keydown', closePopupHandler);
+      button.removeEventListener('click', popupCloseHandler);
+      document.removeEventListener('click', popupCloseHandler);
+      document.removeEventListener('keydown', popupCloseHandler);
 
       if (!isSave) {
         window.backend.load(successLoad, failLoad);
@@ -79,9 +79,9 @@ window.data = (function () {
       var popup = main.querySelector('.error');
       var button = popup.querySelector('.error__button');
 
-      button.addEventListener('click', closePopupHandler);
-      document.addEventListener('click', closePopupHandler);
-      document.addEventListener('keydown', closePopupHandler);
+      button.addEventListener('click', popupCloseHandler);
+      document.addEventListener('click', popupCloseHandler);
+      document.addEventListener('keydown', popupCloseHandler);
     }
   };
 

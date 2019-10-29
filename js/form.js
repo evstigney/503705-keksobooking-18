@@ -87,7 +87,7 @@ window.form = (function () {
   var renderSuccessMessage = function () {
     main.append(popupSuccess);
 
-    var removePopupHandler = function (evt) {
+    var popupRemoveHandler = function (evt) {
       if (evt.type === 'keydown') {
         window.util.isEscEvent(evt, function () {
           popupSuccess.remove();
@@ -95,13 +95,13 @@ window.form = (function () {
       } else {
         popupSuccess.remove();
       }
-      document.removeEventListener('click', removePopupHandler);
-      document.removeEventListener('keydown', removePopupHandler);
+      document.removeEventListener('click', popupRemoveHandler);
+      document.removeEventListener('keydown', popupRemoveHandler);
     };
 
     if (main.querySelector('.success')) {
-      document.addEventListener('click', removePopupHandler);
-      document.addEventListener('keydown', removePopupHandler);
+      document.addEventListener('click', popupRemoveHandler);
+      document.addEventListener('keydown', popupRemoveHandler);
     }
   };
 
@@ -122,10 +122,10 @@ window.form = (function () {
     window.map.reset();
   };
 
-  var onSubmitHandler = function (evt) {
+  var submitHandler = function (evt) {
     window.backend.save(new FormData(adForm), onLoad, window.data.failLoad);
     evt.preventDefault();
-    adForm.removeEventListener('submit', onSubmitHandler);
+    adForm.removeEventListener('submit', submitHandler);
   };
 
   adTimeinSelect.addEventListener('change', validateTimein);
@@ -139,7 +139,7 @@ window.form = (function () {
     validateCapacity();
   });
 
-  adForm.addEventListener('submit', onSubmitHandler);
+  adForm.addEventListener('submit', submitHandler);
 
   window.util.addDisabled(adForm.children);
   window.pinMain.renderAddress();
@@ -151,11 +151,11 @@ window.form = (function () {
     toggleFormToActive: function () {
       window.data.adForm.classList.remove('ad-form--disabled');
       noticeTitle.classList.remove('ad-form--disabled');
-      adForm.addEventListener('submit', onSubmitHandler);
+      adForm.addEventListener('submit', submitHandler);
     },
     validateCapacity: validateCapacity,
     validateType: validateType,
     validateTimein: validateTimein,
-    submitForm: onSubmitHandler
+    submitForm: submitHandler
   };
 })();
