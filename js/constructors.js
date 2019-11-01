@@ -68,10 +68,10 @@
    * @param  {object} file
    * @param  {object} preview img
    */
-  window.UserPhoto.prototype._uploadFile = function (file, preview) {
+  window.UserPhoto.prototype.uploadFile = function (file, preview) {
     if (file) {
       var fileName = file.name.toLowerCase();
-      var matches = window.util.FILE_TYPES.some(function (type) {
+      var matches = window.util.IMAGE_FILE_TYPES.some(function (type) {
         return fileName.endsWith(type);
       });
       if (matches) {
@@ -92,7 +92,7 @@
   window.UserPhoto.prototype.uploadByClick = function () {
     var fileChooser = this.fileChooser;
     var preview = this.preview;
-    var uploadFile = this._uploadFile;
+    var uploadFile = this.uploadFile;
     fileChooser.addEventListener('change', function () {
       preview.classList.remove('visually-hidden');
       var file = fileChooser.files[0];
@@ -108,7 +108,7 @@
   window.UserPhoto.prototype.uploadByDnD = function () {
     var dropBox = this.dropBox;
     var preview = this.preview;
-    var uploadFile = this._uploadFile;
+    var uploadFile = this.uploadFile;
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function (evtName) {
       dropBox.addEventListener(evtName, function (evt) {
         evt.preventDefault();

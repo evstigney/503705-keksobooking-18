@@ -19,7 +19,7 @@ window.util = (function () {
     /**
      * Поддерживаемые расширения изображений
      */
-    FILE_TYPES: ['gif', 'jpg', 'jpeg', 'png'],
+    IMAGE_FILE_TYPES: ['gif', 'jpg', 'jpeg', 'png'],
 
     /**
      * Событие происходит по нажатию клавиши ESC
