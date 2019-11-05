@@ -60,6 +60,10 @@ window.pinMain = (function () {
   var onMouseDown = function (evt) {
     evt.preventDefault();
     var startCoords = new window.Location(evt.clientX, evt.clientY);
+    if (map.querySelectorAll('.map__pin').length > 1) {
+      window.pinMain.pin.removeEventListener('mousedown', window.map.activate);
+      window.pinMain.pin.removeEventListener('keydown', window.map.activate);
+    }
 
     /**
      * Описываем событие по перемещению зажатой мыши

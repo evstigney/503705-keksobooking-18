@@ -9,7 +9,6 @@ window.map = (function () {
   var map = window.data.map;
   var mapPins = map.querySelector('.map__pins');
   var mapPinsFragment = document.createDocumentFragment();
-  var ads = window.data.serverData.adsArr;
 
   /**
    * Описываю отрисовку пинов данных
@@ -102,7 +101,7 @@ window.map = (function () {
     map.classList.remove('map--faded');
     window.form.toggleFormToActive();
     window.util.removeDisabled(window.data.adForm.children);
-    renderPinsData(ads);
+    renderPinsData(window.data.serverData.adsArr);
     window.pinMain.renderAddress();
   };
 
@@ -116,10 +115,6 @@ window.map = (function () {
     window.form.validateCapacity();
     window.form.validateType();
     window.form.validateTimein();
-    if (map.querySelectorAll('.map__pin').length > 1) {
-      window.pinMain.pin.removeEventListener('mousedown', activateMap);
-      window.pinMain.pin.removeEventListener('keydown', mapActivateHandler);
-    }
   };
 
   /**
@@ -128,12 +123,12 @@ window.map = (function () {
    * @param  {object} evt Объект Event
    */
   var mapActivateHandler = function (evt) {
+    window.backend.load(window.data.successLoad, window.data.failLoad);
     if (evt.type === 'keydown') {
       window.util.isEnterEvent(evt, activateMap);
     } else {
       activateMap();
     }
-    window.backend.load(window.data.successLoad, window.data.failLoad);
   };
 
   /**
@@ -152,8 +147,9 @@ window.map = (function () {
   window.pinMain.pin.addEventListener('keydown', mapActivateHandler);
 
   return {
-    ads: ads,
+    ads: window.data.serverData.adsArr,
     mapPins: mapPins,
+    activate: mapActivateHandler,
     reset: function () {
       window.pinMain.setStartCoords();
       removePins();
