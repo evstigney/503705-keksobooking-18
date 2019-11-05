@@ -44,16 +44,15 @@ window.filter.form = (function () {
     for (var key in UsedFilter) {
       if (UsedFilter[key].isApply) {
         if (key === 'FEATURES') {
-          var valueArr = [];
-          featureCheckboxes.forEach(function (checkbox) {
-            if (checkbox.checked) {
-              valueArr.push(checkbox.value);
-            }
+          var valueArr = Array.from(featureCheckboxes).filter(function (checkbox) {
+            return checkbox.checked === true;
+          }).map(function (checkbox) {
+            return checkbox.value;
           });
-          adsArr = applyFilter(valueArr, UsedFilter[key].action, adsArr);
-        } else {
-          adsArr = applyFilter(UsedFilter[key].target.value, UsedFilter[key].action, adsArr);
         }
+        adsArr = applyFilter(valueArr, UsedFilter[key].action, adsArr);
+      } else {
+        adsArr = applyFilter(UsedFilter[key].target.value, UsedFilter[key].action, adsArr);
       }
     }
   };
