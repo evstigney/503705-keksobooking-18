@@ -3,13 +3,12 @@
 /**
  * Получение данных с сервера
  *
- * @return {object}  методы загрузки и сохранения
+ * @return {object} методы загрузки и сохранения
  */
 window.backend = (function () {
   var URL = 'https://js.dump.academy/keksobooking';
   var TIMEOUT = 6000;
-
-  var isSave = false;
+  var isDataSaveFunction = false;
 
   /**
    * Карта сообщений об ошибках
@@ -32,8 +31,7 @@ window.backend = (function () {
     if (!errorCodeMap[status]) {
       errorCodeMap[status] = 'что-то пошло не так, мы уже решаем проблему';
     }
-    var message = 'Ошибка ' + status + ': ' + errorCodeMap[status];
-    return message;
+    return 'Ошибка ' + status + ': ' + errorCodeMap[status];
   };
 
   /**
@@ -57,28 +55,21 @@ window.backend = (function () {
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';
       xhr.timeout = TIMEOUT;
-
-      isSave = false;
-
-      var errorHandler = function () {
-        onError(getErrorMessage(xhr.status), isSave);
+      isDataSaveFunction = false;
+      var onErrorHandler = function () {
+        onError(getErrorMessage(xhr.status), isDataSaveFunction);
       };
-
-      var timeoutHandler = function () {
+      var onTimeoutHandler = function () {
         onTimeout(onError);
-        xhr.removeEventListener('timeout', timeoutHandler);
+        xhr.removeEventListener('timeout', onTimeoutHandler);
       };
-
-      xhr.addEventListener('error', errorHandler);
-
-      xhr.addEventListener('timeout', timeoutHandler);
-
+      xhr.addEventListener('error', onErrorHandler);
+      xhr.addEventListener('timeout', onTimeoutHandler);
       xhr.addEventListener('load', function () {
         onLoad(xhr.response);
-        xhr.removeEventListener('timeout', timeoutHandler);
-        xhr.removeEventListener('error', errorHandler);
+        xhr.removeEventListener('timeout', onTimeoutHandler);
+        xhr.removeEventListener('error', onErrorHandler);
       });
-
       xhr.open('GET', URL + '/data');
       xhr.send();
     },
@@ -94,27 +85,20 @@ window.backend = (function () {
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';
       xhr.timeout = TIMEOUT;
-
-      isSave = true;
-
-      var errorHandler = function () {
-        onError(getErrorMessage(xhr.status), isSave);
-        xhr.removeEventListener('error', errorHandler);
+      isDataSaveFunction = true;
+      var onErrorHandler = function () {
+        onError(getErrorMessage(xhr.status), isDataSaveFunction);
+        xhr.removeEventListener('error', onErrorHandler);
       };
-
-      var timeoutHandler = function () {
+      var onTimeoutHandler = function () {
         onTimeout(onError);
-        xhr.removeEventListener('timeout', timeoutHandler);
+        xhr.removeEventListener('timeout', onTimeoutHandler);
       };
-
-      xhr.addEventListener('error', errorHandler);
-
-      xhr.addEventListener('timeout', timeoutHandler);
-
+      xhr.addEventListener('error', onErrorHandler);
+      xhr.addEventListener('timeout', onTimeoutHandler);
       xhr.addEventListener('load', function () {
         onLoad(xhr.response);
       });
-
       xhr.open('POST', URL);
       xhr.send(data);
     }

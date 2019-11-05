@@ -10,11 +10,9 @@ window.pinMain = (function () {
   var pinMain = map.querySelector('.map__pin--main');
   var pinButton = map.querySelector('button.map__pin--main');
   var addressField = window.data.adAddressField;
-
   var MAP_WIDTH = map.getBoundingClientRect().width;
   var MAIN_PIN_BUTTON_WIDTH = pinButton.getBoundingClientRect().width;
   var MAIN_PIN_BUTTON_HEIGHT = pinButton.getBoundingClientRect().height;
-
   var location = new window.Location(
       Math.round(pinButton.offsetLeft + MAIN_PIN_BUTTON_WIDTH / 2),
       Math.round(pinButton.offsetTop + MAIN_PIN_BUTTON_HEIGHT)

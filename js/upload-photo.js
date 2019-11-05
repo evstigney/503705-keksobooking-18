@@ -6,7 +6,6 @@
 (function () {
   var housingPhotoImg =
     '<img width="70" height="70" alt="Фото жилья" src="" id="images-preview" class="visually-hidden" style="border-radius: 5px;">';
-
   document.querySelector('.ad-form__photo').insertAdjacentHTML('afterbegin', housingPhotoImg);
 
   /**
@@ -29,7 +28,6 @@
 
   avatar.uploadByClick();
   avatar.uploadByDnD();
-
   housingPhoto.uploadByClick();
   housingPhoto.uploadByDnD();
 })();

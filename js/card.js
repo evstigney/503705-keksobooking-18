@@ -34,12 +34,11 @@ window.card = (function () {
     if (reRooms.test(rooms.toString())) {
       roomsInCase = 'комнат';
     }
-    var reGuests = /1{1}\b/;
-    if (reGuests.test(guests.toString()) && guests !== 11) {
+    var reGuests = /1+\b/;
+    if (reGuests.test(guests.toString())) {
       guestsInCase = 'гостя';
     }
-    var message = rooms + ' ' + roomsInCase + ' для ' + guests + ' ' + guestsInCase;
-    return message;
+    return rooms + ' ' + roomsInCase + ' для ' + guests + ' ' + guestsInCase;
   };
 
   /**
@@ -77,26 +76,27 @@ window.card = (function () {
    * @return {object}      блок в разметке, куда добавлены фотографии жилья
    */
   var getPopupPhotos = function (elem, arr) {
-    var photo = elem.querySelector('img');
-    var i = 0;
-    photo.src = arr[i];
-    i++;
-    for (i; i < arr.length; i++) {
-      var photoNext = photo.cloneNode(true);
-      photoNext.src = arr[i];
-      elem.appendChild(photoNext);
+    if (arr.length > 0) {
+      var photo = elem.querySelector('img');
+      photo.src = arr[0];
+      for (var i = 1; i < arr.length; i++) {
+        var photoNext = photo.cloneNode(true);
+        photoNext.src = arr[i];
+        elem.appendChild(photoNext);
+      }
+    } else {
+      elem.classList.add('visually-hidden');
     }
     return elem;
   };
 
   /**
-   * Проверяем перед открытием карточки - не открыта ли другая на странице,
-   * если открыта - предыдущую удаляем
+   * Проверяем перед открытием карточки
    *
    * @param {object} nextCard карточка объявления
    * @return {boolean}        нужно ли отрисовывать новую карточку
    */
-  var checkCard = function (nextCard) {
+  var isCardAlreadyExists = function (nextCard) {
     var flag = true;
     var previousCard = window.data.map.querySelector('.map__card.popup');
     if (previousCard && previousCard === nextCard) {
@@ -109,7 +109,7 @@ window.card = (function () {
 
   return {
     /**
-     * Составляем нужную карточку для конкретного объявления
+     * Составляем карточку для объявления
      *
      * @param  {object} ad объект из массива с объявлениями (одно объявление)
      * @return {object}    карточка объявления
@@ -142,7 +142,7 @@ window.card = (function () {
     },
 
     /**
-     * Отрисовывем нужную карточку по индексу пина
+     * Отрисовывем карточку по индексу пина
      *
      * @param  {object} dataArr данные
      * @param  {number} index индекс кликнутого пина
@@ -150,7 +150,7 @@ window.card = (function () {
      */
     renderCard: function (dataArr, index) {
       var card = this.getCard(dataArr[index]);
-      if (checkCard(card)) {
+      if (isCardAlreadyExists(card)) {
         mapCardsFragment.appendChild(card);
         window.data.map.insertBefore(mapCardsFragment, filters);
       }

@@ -7,7 +7,6 @@
  */
 window.util = (function () {
   return {
-
     /**
      * Коды клавиатуры
      */
@@ -43,62 +42,6 @@ window.util = (function () {
       if (evt.keyCode === this.KeyCode.ENTER) {
         action();
       }
-    },
-
-    /**
-     * Получаем случайное целое число в заданном интервале
-     *
-     * @param  {number} minNumber минимальное число
-     * @param  {number} maxNumber максимальное число
-     * @return {number}           случайное число
-     */
-    getRandomNumber: function (minNumber, maxNumber) {
-      return Math.floor(Math.random() * (Math.floor(maxNumber) - Math.ceil(minNumber) + 1) + Math.ceil(minNumber));
-    },
-
-    /**
-     * Почулаем случайное значение из заданного массива
-     *
-     * @param  {object} arr массив с данными
-     * @return {type}     случайное значение из массива, независимо от его типа данных
-     */
-    getRandomValue: function (arr) {
-      var min = 0;
-      var max = arr.length - 1;
-      var index = this.getRandomNumber(min, max);
-      return arr[index];
-    },
-
-    /**
-     * Получаем случайный массив случайной длинны из заданного массива
-     *
-     * @param  {object} arr заданный массив с данными
-     * @return {object}     случайный массив
-     */
-    getRandomArr: function (arr) {
-      var min = 1;
-      var max = arr.length - 1;
-      var maxIndex = this.getRandomNumber(min, max);
-      var randomArr = [];
-      var flag = true;
-      for (var i = 0; i <= maxIndex; i++) {
-        var currentIndex = this.getRandomNumber(0, arr.length - 1);
-        if (i > 0) {
-          for (var j = 0; j < randomArr.length; j++) {
-            flag = true;
-            var currentValue = arr[currentIndex];
-            var randomValue = randomArr[j];
-            if (currentValue === randomValue) {
-              flag = false;
-              break;
-            }
-          }
-        }
-        if (flag) {
-          randomArr.push(arr[currentIndex]);
-        }
-      }
-      return randomArr;
     },
 
     /**

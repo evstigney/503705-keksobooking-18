@@ -86,7 +86,6 @@ window.form = (function () {
    */
   var renderSuccessMessage = function () {
     main.append(popupSuccess);
-
     var popupRemoveHandler = function (evt) {
       if (evt.type === 'keydown') {
         window.util.isEscEvent(evt, function () {
@@ -98,13 +97,15 @@ window.form = (function () {
       document.removeEventListener('click', popupRemoveHandler);
       document.removeEventListener('keydown', popupRemoveHandler);
     };
-
     if (main.querySelector('.success')) {
       document.addEventListener('click', popupRemoveHandler);
       document.addEventListener('keydown', popupRemoveHandler);
     }
   };
 
+  /**
+   * Приводим форму в начальное состояние
+   */
   var resetForm = function () {
     adForm.reset();
     adForm.classList.add('ad-form--disabled');
@@ -122,6 +123,11 @@ window.form = (function () {
     window.map.reset();
   };
 
+  /**
+   * Обработчик события отправки формы
+   *
+   * @param  {object} evt объект Event
+   */
   var submitHandler = function (evt) {
     window.backend.save(new FormData(adForm), onLoad, window.data.failLoad);
     evt.preventDefault();
@@ -138,7 +144,6 @@ window.form = (function () {
   adRoomNumberSelect.addEventListener('change', function () {
     validateCapacity();
   });
-
   adForm.addEventListener('submit', submitHandler);
 
   window.util.addDisabled(adForm.children);

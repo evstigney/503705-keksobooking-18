@@ -6,6 +6,7 @@
  * @return {object} набор конструкторов
  */
 (function () {
+  var DRAG_EVENTS = ['dragenter', 'dragover', 'dragleave', 'drop'];
 
   /**
    * Координаты
@@ -109,7 +110,7 @@
     var dropBox = this.dropBox;
     var preview = this.preview;
     var uploadFile = this.uploadFile;
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function (evtName) {
+    DRAG_EVENTS.forEach(function (evtName) {
       dropBox.addEventListener(evtName, function (evt) {
         evt.preventDefault();
         evt.stopPropagation();

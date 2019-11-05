@@ -6,21 +6,8 @@
  * @return {object}
  */
 window.data = (function () {
-  var ADS_QUANTITY = 8;
   var LOCATION_Y_MIN = 130;
   var LOCATION_Y_MAX = 630;
-  var PRICE_MIN = 1000;
-  var PRICE_MAX = 100000;
-  var TYPES_ARR = ['palace', 'flat', 'house', 'bungalo'];
-  var ROOMS_MIN = 1;
-  var ROOMS_MAX = 10;
-  var GUESTS_MIN = 1;
-  var GUESTS_MAX = 50;
-  var CHECKIN_TIMES_ARR = ['12:00', '13:00', '14:00'];
-  var CHECKOUT_TIMES_ARR = ['12:00', '13:00', '14:00'];
-  var FEATURES_ARR = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-  var PHOTOS_ARR = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-
   var map = document.querySelector('.map');
   var main = document.querySelector('main');
   var adForm = document.querySelector('.ad-form');
@@ -46,10 +33,9 @@ window.data = (function () {
    * Отрисовываем на странице сообщение об ошибке
    *
    * @param  {string}   message
-   * @param  {boolean}  isSave  вызвана ли функцией отправки данных на сервер
+   * @param  {boolean}  isDataSaveFunction  вызвана ли функцией отправки данных на сервер
    */
-  var renderErrorMessage = function (message, isSave) {
-
+  var renderErrorMessage = function (message, isDataSaveFunction) {
     /**
      * Удаляем сообщение
      *
@@ -66,99 +52,24 @@ window.data = (function () {
       button.removeEventListener('click', popupCloseHandler);
       document.removeEventListener('click', popupCloseHandler);
       document.removeEventListener('keydown', popupCloseHandler);
-
-      if (!isSave) {
-        window.backend.load(successLoad, failLoad);
+      if (!isDataSaveFunction) {
+        window.backend.load(successLoad, renderErrorMessage);
       }
     };
-
     popupMessage.textContent = message;
     main.append(popupError);
-
     if (main.querySelector('.error')) {
       var popup = main.querySelector('.error');
       var button = popup.querySelector('.error__button');
-
       button.addEventListener('click', popupCloseHandler);
       document.addEventListener('click', popupCloseHandler);
       document.addEventListener('keydown', popupCloseHandler);
     }
   };
 
-  /**
-   * Обработки ошибки загрузки данных
-   * пока оставлю на случай, если - кроме сообщения - другие действия нужны будут
-   *
-   * @param  {string} message
-   * @param  {boolean} isSave вызвана ли функцией отправки данных на сервер
-   */
-  var failLoad = function (message, isSave) {
-    renderErrorMessage(message, isSave);
-  };
-
-  window.backend.load(successLoad, failLoad);
-
-  /**
-   * Получаем адрес мокового аватара пользователя
-   *
-   * @param  {number} index индекс текущего объявления
-   * @return {string}       адрес изображения аватара пользователя
-   */
-  var getAuthorAvatar = function (index) {
-    index = '0' + (index + 1);
-    return 'img/avatars/user' + index + '.png';
-  };
-
-  /**
-   * Получаем координаты пина пользователя - набор случайных цифр
-   * в заданном диапазоне
-   *
-   * @param  {object} elem пин пользователя (обычный, не главный)
-   * @return {object}      объект с координатами x y пина
-   */
-  var getLocationParameters = function (elem) {
-    var max = elem.getBoundingClientRect().width;
-    var locationX = window.util.getRandomNumber(0, max);
-    var locationY = window.util.getRandomNumber(LOCATION_Y_MIN, LOCATION_Y_MAX);
-    var location = new window.Location(locationX, locationY);
-    return location;
-  };
-
-  /**
-   * Составляем массив из объектов с моковыми данными
-   *
-   * @return {object}  массив с моковыми данными
-   */
-  var getMockingAdsArr = function () {
-    var mockingAds = [];
-    for (var i = 0; i < ADS_QUANTITY; i++) {
-      var locationParameters = getLocationParameters(map);
-      var ad = {
-        'author': {
-          'avatar': getAuthorAvatar(i)
-        },
-        'offer': {
-          'title': 'Заголовок предложения. Это очень хорошее предложение.',
-          'address': locationParameters.x + ', ' + locationParameters.y,
-          'price': window.util.getRandomNumber(PRICE_MIN, PRICE_MAX),
-          'type': window.util.getRandomValue(TYPES_ARR),
-          'rooms': window.util.getRandomNumber(ROOMS_MIN, ROOMS_MAX),
-          'guests': window.util.getRandomNumber(GUESTS_MIN, GUESTS_MAX),
-          'checkin': window.util.getRandomValue(CHECKIN_TIMES_ARR),
-          'checkout': window.util.getRandomValue(CHECKOUT_TIMES_ARR),
-          'features': window.util.getRandomArr(FEATURES_ARR),
-          'description': 'С точки зрения банальной эрудиции каждый индивидуум не может игнорировать критерии утопического субъективизма.',
-          'photos': window.util.getRandomArr(PHOTOS_ARR)
-        },
-        'location': new window.Location(locationParameters.x, locationParameters.y)
-      };
-      mockingAds.push(ad);
-    }
-    return mockingAds;
-  };
+  window.backend.load(successLoad, renderErrorMessage);
 
   return {
-
     /**
      * Вертикальные ограничения передвижения гл пина
      */
@@ -214,12 +125,9 @@ window.data = (function () {
     main: main,
     adForm: adForm,
     adAddressField: adAddressField,
-    mockingData: {
-      adsArr: getMockingAdsArr()
-    },
     serverData: {
       adsArr: serverAdsArr
     },
-    failLoad: failLoad
+    failLoad: renderErrorMessage
   };
 })();

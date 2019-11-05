@@ -53,7 +53,6 @@ window.map = (function () {
         card.remove();
       }
     };
-
     var closePopupButton = card.querySelector('.popup__close');
     closePopupButton.addEventListener('click', popupButtonCloseHandler);
     document.addEventListener('keydown', popupButtonCloseHandler);
@@ -87,7 +86,6 @@ window.map = (function () {
         renderMatchingCard(arr, evt.currentTarget);
       }
     };
-
     for (var i = 0; i < pins.length; i++) {
       if (window.pin.isPin(pins[i])) {
         pins[i].addEventListener('click', popupCardOpenHandler);

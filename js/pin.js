@@ -10,7 +10,7 @@ window.pin = (function () {
 
   return {
     /**
-     * составляем один html элемент пина на основе заданного объявления
+     * Составляем один html элемент пина на основе заданного объявления
      *
      * @param  {object} ad объявление - объект с данными одного объявления
      * @return {object}    html элемент пина на основе заданного объявления
@@ -28,11 +28,10 @@ window.pin = (function () {
      * Проверяем является ли пин обычным (т е не главным)
      *
      * @param  {object} elem проверяемый пин
-     * @return {boolean}     true - пин обычный, false - главный
+     * @return {boolean} true - пин обычный, false - главный
      */
     isPin: function (elem) {
-      var flag = (elem.classList.contains('map__pin--main')) ? false : true;
-      return flag;
+      return !elem.classList.contains('map__pin--main');
     }
   };
 })();
