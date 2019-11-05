@@ -1,177 +1,73 @@
 'use strict';
 
-/**
- * Модуль с функциями сортировки данных
- *
- * @return {object} методы
- */
-window.filter = (function () {
-  var ADS_QUANTITY = 5;
-  var mapFilters = document.querySelector('.map__filters');
-  var UsedFilter = {
-    TYPE: {
-      isApply: false,
-      target: mapFilters.querySelector('#housing-type')
-    },
-    PRICE: {
-      isApply: false,
-      target: mapFilters.querySelector('#housing-price')
-    },
-    ROOMS: {
-      isApply: false,
-      target: mapFilters.querySelector('#housing-rooms')
-    },
-    GUESTS: {
-      isApply: false,
-      target: mapFilters.querySelector('#housing-guests')
-    },
-    FEATURES: {
-      isApply: false,
-      target: mapFilters.querySelector('#housing-features').querySelectorAll('[name="features"]')
+(function () {
+  var map = window.data.map;
+  var filterForm = document.querySelector('.map__filters');
+  var typeSelect = filterForm.querySelector('#housing-type');
+  var priceSelect = filterForm.querySelector('#housing-price');
+  var roomsSelect = filterForm.querySelector('#housing-rooms');
+  var guestsSelect = filterForm.querySelector('#housing-guests');
+  var featureCheckboxes = filterForm.querySelectorAll('input[name="features"]');
+
+  var isMatchingPrice = function (price, value) {
+    if (value !== 'any') {
+      var priceMap = {
+        middle: price >= 10000 && price <= 50000,
+        low: price < 10000,
+        high: price > 50000
+      };
+      return (priceMap[value]) ? true : false;
+    } else {
+      return true;
     }
   };
 
-  /**
-   * Проверка количества выходных данных
-   *
-   * @param  {object} arr весь массив данных
-   * @return {object}     массив определенной длинны
-   */
-  var checkArrLength = function (arr) {
-    var sortedArr = arr.slice();
-    if (sortedArr.length > ADS_QUANTITY) {
-      sortedArr = sortedArr.slice(0, ADS_QUANTITY);
-    }
-    return sortedArr;
-  };
-
-  /**
-   * Ищем соответствие цены значениям селекта
-   *
-   * @param  {number} price  цена
-   * @return {string}        значение селекта
-   */
-  var getPriceValue = function (price) {
-    var value = 'any';
-    var priceMap = {
-      middle: price >= 10000 && price <= 50000,
-      low: price < 10000,
-      high: price > 50000
-    };
-    for (var key in priceMap) {
-      if (priceMap[key]) {
-        value = key;
+  var isMatchingFeatures = function (adFeatures, selectedFeatures) {
+    var flag = true;
+    for (var i = 0; i < selectedFeatures.length; i++) {
+      if (!adFeatures.includes(selectedFeatures[i])) {
+        flag = false;
         break;
       }
     }
-    return value;
+    return flag;
   };
 
-  /**
-   * Простой фильтр по введенному значению
-   *
-   * @param  {object} arr    данные объявлений
-   * @param  {string} value  введенное значение
-   * @param  {string} filter фильтр
-   * @return {object}        отфильтрованные данные
-   */
-  var filterByValue = function (arr, value, filter) {
-    if (value !== 'any') {
-      arr = arr.filter(function (ad) {
-        return String(ad.offer[filter]) === value;
-      });
-      UsedFilter[filter.toUpperCase()].isApply = true;
-    } else {
-      UsedFilter[filter.toUpperCase()].isApply = false;
-    }
-    return arr;
-  };
-
-  /**
-   * Фильтрация по типу жилья
-   *
-   * @param  {object} arr   данные объявлений
-   * @param  {string} value введенное значение
-   * @return {object}       отфильтрованные данные
-   */
-  UsedFilter.TYPE.action = function (arr, value) {
-    return filterByValue(arr, value, 'type');
-  };
-
-  /**
-   * Фильтрация по цене
-   *
-   * @param  {object} arr   данные объявлений
-   * @param  {string} value значение селекта (интервал для цены)
-   * @return {object}       отфильтрованные данные
-   */
-  UsedFilter.PRICE.action = function (arr, value) {
-    var isMatchingPrice = function (ad) {
-      var flag = false;
-      if (getPriceValue(ad.offer.price) === value) {
-        flag = true;
+  var filterFormChangeHandler = function () {
+    var ads = window.data.serverData.adsArr.slice()
+              .filter(function (ad) {
+                return ad.offer.type === typeSelect.value || typeSelect.value === 'any';
+              })
+              .filter(function (ad) {
+                return isMatchingPrice(ad.offer.price, priceSelect.value);
+              })
+              .filter(function (ad) {
+                return String(ad.offer.rooms) === roomsSelect.value || roomsSelect.value === 'any';
+              })
+              .filter(function (ad) {
+                return String(ad.offer.guests) === guestsSelect.value || guestsSelect.value === 'any';
+              })
+              .filter(function (ad) {
+                var selectedFeatures = Array.from(featureCheckboxes)
+                                            .filter(function (checkbox) {
+                                              return checkbox.checked === true;
+                                            })
+                                            .map(function (checkbox) {
+                                              return checkbox.value;
+                                            });
+                return isMatchingFeatures(ad.offer.features, selectedFeatures);
+              });
+    document.querySelectorAll('.map__pin').forEach(function (pin) {
+      if (window.pin.isPin(pin)) {
+        pin.remove();
       }
-      return flag;
-    };
-    if (value !== 'any') {
-      arr = arr.filter(isMatchingPrice);
-      UsedFilter.PRICE.isApply = true;
-    } else {
-      UsedFilter.PRICE.isApply = false;
+    });
+    var card = map.querySelector('.map__card.popup');
+    if (card) {
+      card.remove();
     }
-    return arr;
+    window.map.renderPins(ads);
   };
 
-  /**
-   * Фильтрация по количестку комнат
-   *
-   * @param  {object} arr   данные объявлений
-   * @param  {string} value количество комнат
-   * @return {object}       отфильтрованные данные
-   */
-  UsedFilter.ROOMS.action = function (arr, value) {
-    return filterByValue(arr, value, 'rooms');
-  };
-
-  /**
-   * Фильтрация по количество гостей
-   *
-   * @param  {object} arr   данные объявлений
-   * @param  {string} value количество гостей
-   * @return {object}       отфильтрованные данные
-   */
-  UsedFilter.GUESTS.action = function (arr, value) {
-    return filterByValue(arr, value, 'guests');
-  };
-
-  /**
-   * Фильтрация по фичам
-   *
-   * @param  {object} arr   данные объявлений
-   * @param  {object} features массив выбранных фич
-   * @return {object}       отфильтрованные данные
-   */
-  UsedFilter.FEATURES.action = function (arr, features) {
-    if (features.length > 0) {
-      arr = arr.filter(function (ad) {
-        var flag = true;
-        for (var i = 0; i < features.length; i++) {
-          if (!ad.offer.features.includes(features[i])) {
-            flag = false;
-            break;
-          }
-        }
-        return flag;
-      });
-      UsedFilter.FEATURES.isApply = true;
-    } else {
-      UsedFilter.FEATURES.isApply = false;
-    }
-    return arr;
-  };
-
-  return {
-    UsedFilter: UsedFilter,
-    byLength: checkArrLength
-  };
+  filterForm.addEventListener('change', filterFormChangeHandler);
 })();

@@ -9,6 +9,7 @@ window.map = (function () {
   var map = window.data.map;
   var mapPins = map.querySelector('.map__pins');
   var mapPinsFragment = document.createDocumentFragment();
+  var PINS_QUANTITY = 5;
 
   /**
    * Описываю отрисовку пинов данных
@@ -63,8 +64,7 @@ window.map = (function () {
    * @return {object}  отрисованные на странице пины
    */
   var renderPinsData = function (arr) {
-    arr = window.filter.byLength(arr.slice());
-    var pins = renderMatchingPins(arr);
+    var pins = renderMatchingPins(arr.slice(0, PINS_QUANTITY));
     pins = pins.querySelectorAll('.map__pin');
 
     /**
