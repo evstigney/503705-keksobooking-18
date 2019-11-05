@@ -67,8 +67,6 @@ window.data = (function () {
     }
   };
 
-  window.backend.load(successLoad, renderErrorMessage);
-
   return {
     /**
      * Вертикальные ограничения передвижения гл пина
@@ -128,6 +126,7 @@ window.data = (function () {
     serverData: {
       adsArr: serverAdsArr
     },
-    failLoad: renderErrorMessage
+    failLoad: renderErrorMessage,
+    successLoad: successLoad
   };
 })();

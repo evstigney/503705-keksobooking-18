@@ -20,6 +20,7 @@ window.map = (function () {
   var renderMatchingPins = function (arr) {
     for (var i = 0; i < arr.length; i++) {
       var pin = window.pin.renderPin(arr[i]);
+      pin.setAttribute('data-id', i);
       mapPinsFragment.appendChild(pin);
     }
     mapPins.appendChild(mapPinsFragment);
@@ -33,14 +34,7 @@ window.map = (function () {
    * @param  {object} target пин, по которому произошел клик или ENTER
    */
   var renderMatchingCard = function (dataArr, target) {
-    var allPins = mapPins.querySelectorAll('.map__pin');
-    var matchingPins = [];
-    for (var i = 0; i < allPins.length; i++) {
-      if (window.pin.isPin(allPins[i])) {
-        matchingPins.push(allPins[i]);
-      }
-    }
-    var index = matchingPins.indexOf(target);
+    var index = target.getAttribute('data-id');
     var card = window.card.renderCard(dataArr, index);
 
     /**
@@ -139,6 +133,7 @@ window.map = (function () {
     } else {
       activateMap();
     }
+    window.backend.load(window.data.successLoad, window.data.failLoad);
   };
 
   /**
