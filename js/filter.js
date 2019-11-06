@@ -21,7 +21,6 @@
    * @return {boolean}
    */
   var isMatchingPrice = function (adPrice, selectedPrice) {
-    selectedPrice = Number(selectedPrice);
     if (selectedPrice !== 'any') {
       var priceMap = {
         middle: adPrice >= MIN_CUTOFF_VALUE_FOR_THE_PRICE && adPrice <= MAX_CUTOFF_VALUE_FOR_THE_PRICE,
