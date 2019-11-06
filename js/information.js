@@ -5,7 +5,7 @@
  *
  * @return {object}  набор методов
  */
-window.card = (function () {
+window.information = (function () {
   var mapCard = document.querySelector('#card').content.querySelector('.map__card');
   var mapCardsFragment = document.createDocumentFragment();
   var filters = document.querySelector('.map__filters-container');
@@ -156,6 +156,6 @@ window.card = (function () {
       }
       return card;
     },
-    remove: removeCard
+    removeCard: removeCard
   };
 })();

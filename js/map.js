@@ -35,7 +35,7 @@ window.map = (function () {
    */
   var renderMatchingCard = function (dataArr, target) {
     var index = target.getAttribute('data-id');
-    var card = window.card.renderCard(dataArr, index);
+    var card = window.information.renderCard(dataArr, index);
 
     /**
      * По клику или ESCAPE удаляем карточку
@@ -153,7 +153,7 @@ window.map = (function () {
     reset: function () {
       window.pinMain.setStartCoords();
       removePins();
-      window.card.remove();
+      window.information.removeCard();
       map.classList.add('map--faded');
       window.pinMain.pin.addEventListener('mousedown', mapActivateHandler);
       window.pinMain.pin.addEventListener('keydown', mapActivateHandler);
