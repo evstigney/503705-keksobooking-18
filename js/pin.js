@@ -15,7 +15,7 @@ window.pin = (function () {
      * @param  {object} ad объявление - объект с данными одного объявления
      * @return {object}    html элемент пина на основе заданного объявления
      */
-    renderPin: function (ad) {
+    render: function (ad) {
       var pinElement = mapPin.cloneNode(true);
       var pinElementImg = pinElement.querySelector('img');
       pinElement.style = 'left: ' + (ad.location.x - pinElement.querySelector('img').style.width / 2) + 'px; top: ' + (ad.location.y - pinElement.querySelector('img').style.height) + 'px;';
@@ -30,7 +30,7 @@ window.pin = (function () {
      * @param  {object} elem проверяемый пин
      * @return {boolean} true - пин обычный, false - главный
      */
-    isPin: function (elem) {
+    isCommon: function (elem) {
       return !elem.classList.contains('map__pin--main');
     }
   };

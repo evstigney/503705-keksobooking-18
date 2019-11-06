@@ -40,11 +40,11 @@
   };
 
   var isMatchingValue = function (adValue, selectedValue) {
-    return adValue === selectedValue || selectedValue === 'any';
+    return String(adValue) === selectedValue || selectedValue === 'any';
   };
 
   var filterFormChangeHandler = function () {
-    var ads = window.data.serverData.adsArr.slice()
+    var ads = window.data.server.adsArr.slice()
               .filter(function (ad) {
                 return isMatchingValue(ad.offer.type, typeSelect.value) &&
                       isMatchingPrice(ad.offer.price, priceSelect.value) &&
@@ -53,7 +53,7 @@
                       isMatchingFeatures(ad.offer.features);
               });
     document.querySelectorAll('.map__pin').forEach(function (pin) {
-      if (window.pin.isPin(pin)) {
+      if (window.pin.isCommon(pin)) {
         pin.remove();
       }
     });

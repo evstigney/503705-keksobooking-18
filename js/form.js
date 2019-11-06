@@ -153,7 +153,7 @@ window.form = (function () {
     /**
      * Метод визуально переключает форму в активное состояние путем удаления классов
      */
-    toggleFormToActive: function () {
+    toggleToActive: function () {
       window.data.adForm.classList.remove('ad-form--disabled');
       noticeTitle.classList.remove('ad-form--disabled');
       adForm.addEventListener('submit', submitHandler);

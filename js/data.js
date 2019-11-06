@@ -123,7 +123,7 @@ window.data = (function () {
     main: main,
     adForm: adForm,
     adAddressField: adAddressField,
-    serverData: {
+    server: {
       adsArr: serverAdsArr
     },
     failLoad: renderErrorMessage,

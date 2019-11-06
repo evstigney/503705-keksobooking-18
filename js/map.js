@@ -19,7 +19,7 @@ window.map = (function () {
    */
   var renderMatchingPins = function (arr) {
     for (var i = 0; i < arr.length; i++) {
-      var pin = window.pin.renderPin(arr[i]);
+      var pin = window.pin.render(arr[i]);
       pin.setAttribute('data-id', i);
       mapPinsFragment.appendChild(pin);
     }
@@ -80,7 +80,7 @@ window.map = (function () {
       }
     };
     for (var i = 0; i < pins.length; i++) {
-      if (window.pin.isPin(pins[i])) {
+      if (window.pin.isCommon(pins[i])) {
         pins[i].addEventListener('click', popupCardOpenHandler);
         pins[i].addEventListener('keydown', popupCardOpenHandler);
       }
@@ -99,9 +99,9 @@ window.map = (function () {
    */
   var activatePage = function () {
     map.classList.remove('map--faded');
-    window.form.toggleFormToActive();
+    window.form.toggleToActive();
     window.util.removeDisabled(window.data.adForm.children);
-    renderPinsData(window.data.serverData.adsArr);
+    renderPinsData(window.data.server.adsArr);
     window.pinMain.renderAddress();
   };
 
@@ -147,8 +147,7 @@ window.map = (function () {
   window.pinMain.pin.addEventListener('keydown', mapActivateHandler);
 
   return {
-    ads: window.data.serverData.adsArr,
-    mapPins: mapPins,
+    ads: window.data.server.adsArr,
     activate: mapActivateHandler,
     reset: function () {
       window.pinMain.setStartCoords();
