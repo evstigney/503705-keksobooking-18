@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * Модуль фильтрации пинов
+ */
 (function () {
   var MIN_CUTOFF_VALUE_FOR_THE_PRICE = 10000;
   var MAX_CUTOFF_VALUE_FOR_THE_PRICE = 50000;
@@ -10,7 +13,15 @@
   var guestsSelect = filterForm.querySelector('#housing-guests');
   var featureCheckboxes = filterForm.querySelectorAll('input[name="features"]');
 
+  /**
+   * Проверяем соответствие цены
+   *
+   * @param  {number} adPrice       цена в объявлении
+   * @param  {string} selectedPrice выбранная цена
+   * @return {boolean}
+   */
   var isMatchingPrice = function (adPrice, selectedPrice) {
+    selectedPrice = Number(selectedPrice);
     if (selectedPrice !== 'any') {
       var priceMap = {
         middle: adPrice >= MIN_CUTOFF_VALUE_FOR_THE_PRICE && adPrice <= MAX_CUTOFF_VALUE_FOR_THE_PRICE,
@@ -23,6 +34,12 @@
     }
   };
 
+  /**
+   * Проверяем соответствие фич
+   *
+   * @param  {object} adFeatures фичи объявлений
+   * @return {boolean}
+   */
   var isMatchingFeatures = function (adFeatures) {
     var selectedFeatures = Array.from(featureCheckboxes)
                                 .filter(function (checkbox) {
@@ -41,10 +58,20 @@
     return isMatching;
   };
 
+  /**
+   * Проверяем соответствие значений
+   *
+   * @param  {type} adValue значение в объявлении
+   * @param  {string} selectedValue выбранное значение
+   * @return {boolean}
+   */
   var isMatchingValue = function (adValue, selectedValue) {
     return String(adValue) === selectedValue || selectedValue === 'any';
   };
 
+  /**
+   * Отфильтровываем неподходящие пины
+   */
   var filterFormChangeHandler = function () {
     var ads = window.data.server.adsArr.slice()
               .filter(function (ad) {

@@ -34,6 +34,9 @@ window.data = (function () {
     Array.from(data).forEach(function (object) {
       serverAdsArr.push(object);
     });
+    if (serverAdsArr.length > 0) {
+      window.map.renderPins(serverAdsArr);
+    }
     return serverAdsArr;
   };
 
@@ -118,8 +121,7 @@ window.data = (function () {
 
     /**
      * Карта соответствий типа жилья и его минимальной стоимости,
-     * а также сообщения об ошибке при неверном вводе стоимости для
-     * данного типа жилья
+     * сообщения об ошибке
      */
     minPriceMap: {
       'bungalo': new window.MinPrice(MIN_PRICE_FOR_THE_BUNGALO, ERROR_MESSAGE_FOR_THE_BUNGALO),

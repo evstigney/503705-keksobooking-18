@@ -44,6 +44,13 @@ window.backend = (function () {
     action(message);
   };
 
+  /**
+   * Получаем ответ сервера
+   *
+   * @param  {function} onLoad
+   * @param  {function} onError
+   * @return {object} ответ сервера
+   */
   var getRequest = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';

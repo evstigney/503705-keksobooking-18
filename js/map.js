@@ -90,19 +90,12 @@ window.map = (function () {
   };
 
   /**
-   * Описание активации страницы:
-   * удаляем у карты полупрозрачность
-   * переключаем форму в активный режим
-   * удаляем у детей формы атрибут addDisabled
-   * отрисовываем моки
-   * отрисовывем адрес гл пина в форму в поле с адресом
-   * удаляем обработчик активации страницы
+   * Описание активации страницы
    */
   var activatePage = function () {
     map.classList.remove('map--faded');
     window.form.toggleToActive();
     window.util.removeDisabled(window.data.adForm.children);
-    renderPinsData(window.data.server.adsArr);
     window.pinMain.renderAddress();
   };
 
