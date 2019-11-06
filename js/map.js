@@ -18,6 +18,7 @@ window.map = (function () {
    * @return {object}  отрисованные пины
    */
   var renderMatchingPins = function (arr) {
+    arr = Array.from(arr);
     for (var i = 0; i < arr.length; i++) {
       var pin = window.pin.render(arr[i]);
       pin.setAttribute('data-id', i);
@@ -79,12 +80,12 @@ window.map = (function () {
         renderMatchingCard(arr, evt.currentTarget);
       }
     };
-    for (var i = 0; i < pins.length; i++) {
-      if (window.pin.isCommon(pins[i])) {
-        pins[i].addEventListener('click', popupCardOpenHandler);
-        pins[i].addEventListener('keydown', popupCardOpenHandler);
+    pins.forEach(function (pin) {
+      if (window.pin.isCommon(pin)) {
+        pin.addEventListener('click', popupCardOpenHandler);
+        pin.addEventListener('keydown', popupCardOpenHandler);
       }
-    }
+    });
     return pins;
   };
 

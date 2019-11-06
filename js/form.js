@@ -58,9 +58,9 @@ window.form = (function () {
    *  количество гостей, которые к этому количеству комнат не подходят по ТЗ
    */
   var validateCapacity = function () {
-    var capacityOptions = adCapacitySelect.options;
+    var capacityOptions = Array.from(adCapacitySelect.options);
     var selectedRooms = adRoomNumberSelect.value;
-    var selectedRoomsArr = window.data.capacityMap[selectedRooms];
+    var selectedRoomsArr = Array.from(window.data.capacityMap[selectedRooms]);
     for (var i = 0; i < capacityOptions.length; i++) {
       var currentOption = capacityOptions[i];
       var flag = false;

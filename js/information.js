@@ -49,18 +49,17 @@ window.information = (function () {
    * @return {object}      блок в размеке с фичами, к которым добавлены корректные css классы
    */
   var getPopupFeatures = function (elem, arr) {
-    var features = elem.querySelectorAll('.popup__feature');
+    var features = Array.from(elem.querySelectorAll('.popup__feature'));
     for (var i = features.length - 1; i >= 0; i--) {
       if (i < arr.length) {
-        var currentClassesArr = features[i].classList;
+        var currentClassesArr = Array.from(features[i].classList);
         var reFeatureClass = /\bpopup__feature--/;
-        for (var j = 0; j < currentClassesArr.length; j++) {
-          if (reFeatureClass.test(currentClassesArr[j])) {
-            var currentClass = currentClassesArr[j];
+        currentClassesArr.forEach(function (currentClass) {
+          if (reFeatureClass.test(currentClass)) {
             features[i].classList.remove(currentClass);
             features[i].classList.add(window.data.featuresClassesMap[arr[i]]);
           }
-        }
+        });
       } else {
         features[i].remove();
       }

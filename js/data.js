@@ -23,9 +23,9 @@ window.data = (function () {
    * @return {object}      массив полученных данных
    */
   var successLoad = function (data) {
-    for (var i = 0; i < data.length; i++) {
-      serverAdsArr.push(data[i]);
-    }
+    Array.from(data).forEach(function (object) {
+      serverAdsArr.push(object);
+    });
     return serverAdsArr;
   };
 
