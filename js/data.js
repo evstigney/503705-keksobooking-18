@@ -8,6 +8,14 @@
 window.data = (function () {
   var LOCATION_Y_MIN = 130;
   var LOCATION_Y_MAX = 630;
+  var MIN_PRICE_FOR_THE_BUNGALO = '0';
+  var ERROR_MESSAGE_FOR_THE_BUNGALO = 'Для бунгало минимальная цена за ночь - 0 рублей.';
+  var MIN_PRICE_FOR_THE_FLAT = '1000';
+  var ERROR_MESSAGE_FOR_THE_FLAT = 'Для квартиры минимальная цена за ночь - 1000 рублей.';
+  var MIN_PRICE_FOR_THE_PALACE = '10000';
+  var ERROR_MESSAGE_FOR_THE_PALACE = 'Для дворца минимальная цена за ночь - 10000 рублей.';
+  var MIN_PRICE_FOR_THE_HOUSE = '5000';
+  var ERROR_MESSAGE_FOR_THE_HOUSE = 'Для дома минимальная цена за ночь - 5000 рублей.';
   var map = document.querySelector('.map');
   var main = document.querySelector('main');
   var adForm = document.querySelector('.ad-form');
@@ -114,10 +122,10 @@ window.data = (function () {
      * данного типа жилья
      */
     minPriceMap: {
-      'bungalo': new window.MinPrice('0', 'Для бунгало минимальная цена за ночь - 0 рублей.'),
-      'flat': new window.MinPrice('1000', 'Для квартиры минимальная цена за ночь - 1000 рублей.'),
-      'palace': new window.MinPrice('10000', 'Для дворца минимальная цена за ночь - 10000 рублей.'),
-      'house': new window.MinPrice('5000', 'Для дома минимальная цена за ночь - 5000 рублей.')
+      'bungalo': new window.MinPrice(MIN_PRICE_FOR_THE_BUNGALO, ERROR_MESSAGE_FOR_THE_BUNGALO),
+      'flat': new window.MinPrice(MIN_PRICE_FOR_THE_FLAT, ERROR_MESSAGE_FOR_THE_FLAT),
+      'palace': new window.MinPrice(MIN_PRICE_FOR_THE_PALACE, ERROR_MESSAGE_FOR_THE_PALACE),
+      'house': new window.MinPrice(MIN_PRICE_FOR_THE_HOUSE, ERROR_MESSAGE_FOR_THE_HOUSE)
     },
     map: map,
     main: main,

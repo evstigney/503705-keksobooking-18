@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var MIN_CUTOFF_VALUE_FOR_THE_PRICE = 10000;
+  var MAX_CUTOFF_VALUE_FOR_THE_PRICE = 50000;
   var filterForm = document.querySelector('.map__filters');
   var typeSelect = filterForm.querySelector('#housing-type');
   var priceSelect = filterForm.querySelector('#housing-price');
@@ -11,9 +13,9 @@
   var isMatchingPrice = function (adPrice, selectedPrice) {
     if (selectedPrice !== 'any') {
       var priceMap = {
-        middle: adPrice >= 10000 && adPrice <= 50000,
-        low: adPrice < 10000,
-        high: adPrice > 50000
+        middle: adPrice >= MIN_CUTOFF_VALUE_FOR_THE_PRICE && adPrice <= MAX_CUTOFF_VALUE_FOR_THE_PRICE,
+        low: adPrice < MIN_CUTOFF_VALUE_FOR_THE_PRICE,
+        high: adPrice > MAX_CUTOFF_VALUE_FOR_THE_PRICE
       };
       return (priceMap[selectedPrice]) ? true : false;
     } else {
