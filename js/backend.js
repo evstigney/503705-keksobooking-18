@@ -44,6 +44,27 @@ window.backend = (function () {
     action(message);
   };
 
+  var getRequest = function (onLoad, onError) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+    xhr.timeout = TIMEOUT;
+    var onErrorHandler = function () {
+      onError(getErrorMessage(xhr.status), isDataSaveFunction);
+    };
+    var onTimeoutHandler = function () {
+      onTimeout(onError);
+      xhr.removeEventListener('timeout', onTimeoutHandler);
+    };
+    xhr.addEventListener('error', onErrorHandler);
+    xhr.addEventListener('timeout', onTimeoutHandler);
+    xhr.addEventListener('load', function () {
+      onLoad(xhr.response);
+      xhr.removeEventListener('timeout', onTimeoutHandler);
+      xhr.removeEventListener('error', onErrorHandler);
+    });
+    return xhr;
+  };
+
   return {
     /**
      * Загрузка данных с сервера
@@ -52,24 +73,8 @@ window.backend = (function () {
      * @param  {function} onError ошибка загрузки
      */
     load: function (onLoad, onError) {
-      var xhr = new XMLHttpRequest();
-      xhr.responseType = 'json';
-      xhr.timeout = TIMEOUT;
       isDataSaveFunction = false;
-      var onErrorHandler = function () {
-        onError(getErrorMessage(xhr.status), isDataSaveFunction);
-      };
-      var onTimeoutHandler = function () {
-        onTimeout(onError);
-        xhr.removeEventListener('timeout', onTimeoutHandler);
-      };
-      xhr.addEventListener('error', onErrorHandler);
-      xhr.addEventListener('timeout', onTimeoutHandler);
-      xhr.addEventListener('load', function () {
-        onLoad(xhr.response);
-        xhr.removeEventListener('timeout', onTimeoutHandler);
-        xhr.removeEventListener('error', onErrorHandler);
-      });
+      var xhr = getRequest(onLoad, onError);
       xhr.open('GET', URL + '/data');
       xhr.send();
     },
@@ -82,23 +87,8 @@ window.backend = (function () {
      * @param  {function} onError
      */
     save: function (data, onLoad, onError) {
-      var xhr = new XMLHttpRequest();
-      xhr.responseType = 'json';
-      xhr.timeout = TIMEOUT;
       isDataSaveFunction = true;
-      var onErrorHandler = function () {
-        onError(getErrorMessage(xhr.status), isDataSaveFunction);
-        xhr.removeEventListener('error', onErrorHandler);
-      };
-      var onTimeoutHandler = function () {
-        onTimeout(onError);
-        xhr.removeEventListener('timeout', onTimeoutHandler);
-      };
-      xhr.addEventListener('error', onErrorHandler);
-      xhr.addEventListener('timeout', onTimeoutHandler);
-      xhr.addEventListener('load', function () {
-        onLoad(xhr.response);
-      });
+      var xhr = getRequest(onLoad, onError);
       xhr.open('POST', URL);
       xhr.send(data);
     }
